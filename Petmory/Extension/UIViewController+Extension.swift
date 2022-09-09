@@ -76,3 +76,37 @@ extension UIViewController {
         }
     }
 }
+
+//MARK: - Transition
+
+extension UIViewController {
+    enum TransitionStyle {
+        case present
+        case presentOver
+        case presentNavigation
+        case push
+        case pop
+        case dismiss
+    }
+    
+    func transition<T: UIViewController> (_ viewController: T, transitionStyle: TransitionStyle) {
+        switch transitionStyle {
+        case .present:
+            viewController.modalPresentationStyle = .fullScreen
+            self.present(viewController, animated: true)
+        case .presentOver:
+            viewController.modalPresentationStyle = .overFullScreen
+            self.present(viewController, animated: true)
+        case .presentNavigation:
+            let navi = UINavigationController(rootViewController: viewController)
+            navi.modalPresentationStyle = .fullScreen
+            self.present(navi, animated: true)
+        case .push:
+            self.navigationController?.pushViewController(viewController, animated: true)
+        case .pop:
+            self.navigationController?.popViewController(animated: true)
+        case .dismiss:
+            self.dismiss(animated: true)
+        }
+    }
+}

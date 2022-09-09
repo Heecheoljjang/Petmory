@@ -29,6 +29,15 @@
 		97CF58A928CAE4420062FEB9 /* CustomFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CF58A828CAE4420062FEB9 /* CustomFont.swift */; };
 		97CF58AD28CB02F60062FEB9 /* AllMemoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CF58AC28CB02F60062FEB9 /* AllMemoryView.swift */; };
 		97CF58AF28CB03010062FEB9 /* AllMemoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CF58AE28CB03010062FEB9 /* AllMemoryViewController.swift */; };
+		97CF58B228CB4C6E0062FEB9 /* AllMemoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CF58B128CB4C6E0062FEB9 /* AllMemoryTableViewCell.swift */; };
+		97CF58B428CB4DF10062FEB9 /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CF58B328CB4DF10062FEB9 /* UITableViewCell+Extension.swift */; };
+		97CF58B628CB4E830062FEB9 /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CF58B528CB4E830062FEB9 /* BaseTableViewCell.swift */; };
+		97CF58B828CB55EC0062FEB9 /* AllMemoryViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CF58B728CB55EC0062FEB9 /* AllMemoryViewController+Extension.swift */; };
+		97CF58BB28CB5EBF0062FEB9 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CF58BA28CB5EBF0062FEB9 /* SearchView.swift */; };
+		97CF58BD28CB5ECA0062FEB9 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CF58BC28CB5ECA0062FEB9 /* SearchViewController.swift */; };
+		97CF58CB28CBA03D0062FEB9 /* AllMemoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CF58CA28CBA03D0062FEB9 /* AllMemoryCollectionViewCell.swift */; };
+		97CF58CD28CBA2C70062FEB9 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CF58CC28CBA2C70062FEB9 /* BaseCollectionViewCell.swift */; };
+		97CF58CF28CBA31F0062FEB9 /* UICollectionViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CF58CE28CBA31F0062FEB9 /* UICollectionViewCell+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +62,15 @@
 		97CF58A828CAE4420062FEB9 /* CustomFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFont.swift; sourceTree = "<group>"; };
 		97CF58AC28CB02F60062FEB9 /* AllMemoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllMemoryView.swift; sourceTree = "<group>"; };
 		97CF58AE28CB03010062FEB9 /* AllMemoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllMemoryViewController.swift; sourceTree = "<group>"; };
+		97CF58B128CB4C6E0062FEB9 /* AllMemoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllMemoryTableViewCell.swift; sourceTree = "<group>"; };
+		97CF58B328CB4DF10062FEB9 /* UITableViewCell+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Extension.swift"; sourceTree = "<group>"; };
+		97CF58B528CB4E830062FEB9 /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
+		97CF58B728CB55EC0062FEB9 /* AllMemoryViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllMemoryViewController+Extension.swift"; sourceTree = "<group>"; };
+		97CF58BA28CB5EBF0062FEB9 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		97CF58BC28CB5ECA0062FEB9 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		97CF58CA28CBA03D0062FEB9 /* AllMemoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllMemoryCollectionViewCell.swift; sourceTree = "<group>"; };
+		97CF58CC28CBA2C70062FEB9 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
+		97CF58CE28CBA31F0062FEB9 /* UICollectionViewCell+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +128,7 @@
 				97CF588A28C8CBBF0062FEB9 /* Main */,
 				97CF588B28C8CBD50062FEB9 /* Calendar */,
 				97CF588C28C8CBDE0062FEB9 /* MyPet */,
+				97CF58B928CB5EA30062FEB9 /* Search */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -128,6 +147,8 @@
 			children = (
 				97CF588D28C8CC020062FEB9 /* BaseViewController.swift */,
 				97CF588F28C8CC0B0062FEB9 /* BaseView.swift */,
+				97CF58B528CB4E830062FEB9 /* BaseTableViewCell.swift */,
+				97CF58CC28CBA2C70062FEB9 /* BaseCollectionViewCell.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -168,6 +189,9 @@
 			children = (
 				97CF589928CA33800062FEB9 /* UIViewController+Extension.swift */,
 				97CF58A628CAE2A60062FEB9 /* UIColor+Extension.swift */,
+				97CF58CE28CBA31F0062FEB9 /* UICollectionViewCell+Extension.swift */,
+				97CF58B328CB4DF10062FEB9 /* UITableViewCell+Extension.swift */,
+				97CF58B728CB55EC0062FEB9 /* AllMemoryViewController+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -186,10 +210,29 @@
 		97CF58AB28CAFB650062FEB9 /* AllMemory */ = {
 			isa = PBXGroup;
 			children = (
+				97CF58B028CB4C630062FEB9 /* Cell */,
 				97CF58AC28CB02F60062FEB9 /* AllMemoryView.swift */,
 				97CF58AE28CB03010062FEB9 /* AllMemoryViewController.swift */,
 			);
 			path = AllMemory;
+			sourceTree = "<group>";
+		};
+		97CF58B028CB4C630062FEB9 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				97CF58B128CB4C6E0062FEB9 /* AllMemoryTableViewCell.swift */,
+				97CF58CA28CBA03D0062FEB9 /* AllMemoryCollectionViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		97CF58B928CB5EA30062FEB9 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				97CF58BA28CB5EBF0062FEB9 /* SearchView.swift */,
+				97CF58BC28CB5ECA0062FEB9 /* SearchViewController.swift */,
+			);
+			path = Search;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -274,16 +317,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97CF58B228CB4C6E0062FEB9 /* AllMemoryTableViewCell.swift in Sources */,
+				97CF58BB28CB5EBF0062FEB9 /* SearchView.swift in Sources */,
+				97CF58B828CB55EC0062FEB9 /* AllMemoryViewController+Extension.swift in Sources */,
 				97CF589A28CA33800062FEB9 /* UIViewController+Extension.swift in Sources */,
+				97CF58CB28CBA03D0062FEB9 /* AllMemoryCollectionViewCell.swift in Sources */,
 				97CF58A328CAC6D70062FEB9 /* MainView.swift in Sources */,
+				97CF58B428CB4DF10062FEB9 /* UITableViewCell+Extension.swift in Sources */,
+				97CF58CF28CBA31F0062FEB9 /* UICollectionViewCell+Extension.swift in Sources */,
 				97CF589428C9058E0062FEB9 /* Repository.swift in Sources */,
 				97CF58A728CAE2A60062FEB9 /* UIColor+Extension.swift in Sources */,
 				97CF588928C8CB8F0062FEB9 /* TabBarController.swift in Sources */,
+				97CF58CD28CBA2C70062FEB9 /* BaseCollectionViewCell.swift in Sources */,
 				97CF589228C9057C0062FEB9 /* RealmModel.swift in Sources */,
+				97CF58BD28CB5ECA0062FEB9 /* SearchViewController.swift in Sources */,
 				97CF588E28C8CC020062FEB9 /* BaseViewController.swift in Sources */,
 				97CF589028C8CC0B0062FEB9 /* BaseView.swift in Sources */,
 				97CF58AD28CB02F60062FEB9 /* AllMemoryView.swift in Sources */,
 				97CF58AF28CB03010062FEB9 /* AllMemoryViewController.swift in Sources */,
+				97CF58B628CB4E830062FEB9 /* BaseTableViewCell.swift in Sources */,
 				9799F84528C7741C00E1C12C /* AppDelegate.swift in Sources */,
 				97CF58A928CAE4420062FEB9 /* CustomFont.swift in Sources */,
 				9799F84728C7741C00E1C12C /* SceneDelegate.swift in Sources */,

@@ -34,7 +34,7 @@ protocol UserPetRepositoryType {
     func deletePet(item: UserPet)
 }
 
-final class UserMemoryRepository: UserMemoryRepositoryType, UserPetRepositoryType {
+final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType {
     
     private let localRealm = try! Realm()
     
