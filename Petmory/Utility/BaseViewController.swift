@@ -13,6 +13,8 @@ class BaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configure()
+        setUpController()
     }
     
     func configure() {}
