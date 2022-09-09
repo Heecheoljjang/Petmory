@@ -22,18 +22,13 @@ final class MainViewController: BaseViewController {
     
     override func setUpController() {
         
-        let menuButton = UIBarButtonItem(image: UIImage(systemName: "line.horizontal.3"), style: .plain, target: self, action: #selector(showAllMemory))
+        let menuButton = UIBarButtonItem(image: UIImage(systemName: "line.horizontal.3"), style: .plain, target: self, action: #selector(presentAllMemory))
         navigationItem.leftBarButtonItem = menuButton
-    }
-    
-    private func setButtonAction() {
-        //네비게이션 바버튼
-        
-        //작성버튼
+        navigationController?.navigationBar.tintColor = .diaryColor
     }
     
     //MARK: - @objc
-    @objc private func showAllMemory() {
-        
+    @objc private func presentAllMemory() {
+        transition(AllMemoryViewController(), transitionStyle: .presentNavigation)
     }
 }
