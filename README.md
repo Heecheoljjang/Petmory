@@ -156,7 +156,15 @@
   ~~~
   let cellSize = CGSize(width: "두부두부".size(withAttributes: nil).width + 20, height: 52)
   ~~~
-
+  
+- UIColor 헥사코드
+  ~~~
+  extension UIColor {
+    static let diaryColor = UIColor(red: 0x40/0xFF, green: 0x53/0xFF, blue: 0x36/0xFF, alpha: 1)
+    static let stringColor = UIColor(red: 0xEC/0xFF, green: 0xD8/0xFF, blue: 0xCF/0xFF, alpha: 1)
+  }
+  ~~~
+  
 #### 내일 할 것
 
 - 다이어리 탭했을때 리스트 띄우기
