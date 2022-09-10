@@ -52,7 +52,7 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType {
     
     //검색화면
     func fetchSearched(keyword: String) -> Results<UserMemory> {
-        return localRealm.objects(UserMemory.self).filter("memoryTitle CONTAINS[c] '\(keyword)' OR memoryContent CONTAINS[c] '\(keyword)' OR memoryDate CONTAINS[c] '\(keyword)'")
+        return localRealm.objects(UserMemory.self).filter("memoryTitle CONTAINS[c] '\(keyword)' OR memoryContent CONTAINS[c] '\(keyword)'")
     }
     
     //기록 추가
