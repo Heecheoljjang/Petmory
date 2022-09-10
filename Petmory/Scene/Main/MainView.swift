@@ -57,6 +57,7 @@ final class MainView: BaseView {
         return label
     }()
     
+    //MARK: 작성 버튼
     let writingButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.filled()
@@ -74,6 +75,18 @@ final class MainView: BaseView {
         return button
     }()
     
+    //MARK: 안내 문구
+    let zeroContentsLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.text = "사랑하는 반려동물과의\n\n소중한 하루를 기록해보세요 :)"
+        label.font = UIFont(name: CustomFont.medium, size: 12)
+        label.textColor = .lightGray
+        
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -84,7 +97,7 @@ final class MainView: BaseView {
             outerView.addSubview($0)
         }
         
-        [writingButton, outerView].forEach {
+        [writingButton, outerView, zeroContentsLabel].forEach {
             self.addSubview($0)
         }
         backgroundColor = .white
@@ -125,6 +138,11 @@ final class MainView: BaseView {
             make.size.equalTo(60)
             make.bottom.equalTo(self.safeAreaLayoutGuide).offset(-20)
             make.trailing.equalTo(self.safeAreaLayoutGuide).offset(-20)
+        }
+        
+        zeroContentsLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().offset(200)
         }
         
     }

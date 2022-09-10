@@ -7,10 +7,19 @@
 
 import Foundation
 import UIKit
+import RealmSwift
 
 final class TodayListViewController: BaseViewController {
     
     var mainView = TodayListView()
+    
+    let repository = UserRepository()
+    
+    var tasks: Results<UserMemory>! {
+        didSet {
+            mainView.tableView.reloadData()
+        }
+    }
     
     override func loadView() {
         self.view = mainView
@@ -18,6 +27,12 @@ final class TodayListViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        tasks = repository.fetch()
     }
         
     override func configure() {

@@ -7,10 +7,21 @@
 
 import Foundation
 import UIKit
+import RealmSwift
 
 final class MainViewController: BaseViewController {
     
     private var mainView = MainView()
+    
+    let repository = UserRepository()
+    
+    var tasks: Results<UserMemory>! {
+        didSet {
+            //페이지 바꾸기
+            print("\(tasks.count)")
+            mainView.pageLabel.text = "\(tasks.count)페이지"
+        }
+    }
     
     override func loadView() {
         self.view = mainView
@@ -18,6 +29,21 @@ final class MainViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        tasks = repository.fetch()
+        
+        if tasks.count == 0 {
+            mainView.outerView.isHidden = true
+            mainView.zeroContentsLabel.isHidden = false
+        } else {
+            mainView.outerView.isHidden = false
+            mainView.zeroContentsLabel.isHidden = true
+        }
     }
     
     override func setUpController() {
@@ -25,6 +51,13 @@ final class MainViewController: BaseViewController {
         let menuButton = UIBarButtonItem(image: UIImage(systemName: "line.horizontal.3"), style: .plain, target: self, action: #selector(presentAllMemory))
         navigationItem.leftBarButtonItem = menuButton
         navigationController?.navigationBar.tintColor = .diaryColor
+        
+    }
+    
+    override func configure() {
+        super.configure()
+        
+        mainView.writingButton.addTarget(self, action: #selector(presentWritingView), for: .touchUpInside)
     }
     
     override func setUpGesture() {
@@ -39,5 +72,9 @@ final class MainViewController: BaseViewController {
     
     @objc private func pushTodayList() {
         transition(TodayListViewController(), transitionStyle: .push)
+    }
+    
+    @objc private func presentWritingView() {
+        transition(WritingViewController(), transitionStyle: .presentNavigation)
     }
 }
