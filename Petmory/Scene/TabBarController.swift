@@ -11,6 +11,8 @@ import UIKit
 final class TabBarController: UITabBarController {
     
     private let mainViewController = MainViewController()
+    private let calendarViewController = CalendarViewController()
+    private let myPetViewController = MyPetViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,9 +24,14 @@ final class TabBarController: UITabBarController {
     private func configure() {
         
         let navMain = UINavigationController(rootViewController: mainViewController)
-        mainViewController.tabBarItem.image = UIImage(systemName: "book.fill")
+        let navCalendar = UINavigationController(rootViewController: calendarViewController)
+        let navMyPet = UINavigationController(rootViewController: myPetViewController)
         
-        setViewControllers([navMain], animated: true)
+        navMain.tabBarItem.image = UIImage(named: "DiaryTabBarIcon")
+        navCalendar.tabBarItem.image = UIImage(named: "CalendarTabBarIcon")
+        navMyPet.tabBarItem.image = UIImage(systemName: "pawprint.fill")
+
+        setViewControllers([navMain, navCalendar, navMyPet], animated: true)
     }
     
     private func setUpAppearance() {
@@ -32,7 +39,7 @@ final class TabBarController: UITabBarController {
         let appearance = UITabBarAppearance()
         appearance.backgroundColor = .white
         tabBar.scrollEdgeAppearance = appearance
-        tabBar.tintColor = .black
+        tabBar.tintColor = .diaryColor
         
     }
     
