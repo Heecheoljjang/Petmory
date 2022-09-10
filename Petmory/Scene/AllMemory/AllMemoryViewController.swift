@@ -13,8 +13,18 @@ final class AllMemoryViewController: BaseViewController {
     
     var mainView = AllMemoryView()
     
-    var tasks: Results<UserMemory>!
-    var petList: Results<UserPet>!
+    let repository = UserRepository()
+    
+    var tasks: Results<UserMemory>! {
+        didSet {
+            mainView.tableView.reloadData()
+        }
+    }
+    var petList: Results<UserPet>! {
+        didSet {
+            mainView.collectionView.reloadData()
+        }
+    }
     
     override func loadView() {
         self.view = mainView
@@ -22,6 +32,13 @@ final class AllMemoryViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        tasks = repository.fetch()
+        petList = repository.fetch()
     }
     
     override func setUpController() {

@@ -16,6 +16,8 @@ final class MyPetView: BaseView {
     
     override func configure() {
         super.configure()
+            
+        backgroundColor = .stringColor
     }
     
     override func setUpContraints() {
