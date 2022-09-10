@@ -69,6 +69,6 @@ final class AllMemoryViewController: BaseViewController {
         transition(self, transitionStyle: .dismiss)
     }
     @objc private func pushSearchView() {
-        //transition(self, transitionStyle: .push)
+        transition(SearchViewController(), transitionStyle: .push)
     }
 }

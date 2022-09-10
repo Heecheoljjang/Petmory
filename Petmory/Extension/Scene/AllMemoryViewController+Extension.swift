@@ -45,9 +45,7 @@ extension AllMemoryViewController: UICollectionViewDelegate, UICollectionViewDat
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-//        let cellSize = CGSize(width: topicList[indexPath.item].size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)]).width + 20, height: 30)
-//        return cellSize
+
         let cellSize = CGSize(width: petList[indexPath.item].petName.size(withAttributes: nil).width + 20, height: 52)
         return cellSize
     }
