@@ -18,7 +18,7 @@ protocol UserMemoryRepositoryType {
     
     func addMemory(item: UserMemory)
     
-    func updateMemory(item: UserMemory, title: String, content: String, petList: List<String?>)
+    func updateMemory(item: UserMemory, title: String, content: String, petList: List<String>)
     
     func deleteMemory(item: UserMemory)
 }
@@ -36,7 +36,7 @@ protocol UserPetRepositoryType {
 
 final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType {
     
-    private let localRealm = try! Realm()
+    let localRealm = try! Realm()
     
     //MARK: - Memory
     
@@ -60,13 +60,14 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType {
         do {
             try localRealm.write {
                 localRealm.add(item)
+                print(localRealm.configuration.fileURL!)
             }
         } catch {
             print("기록 추가 오류")
         }
     }
     
-    func updateMemory(item: UserMemory, title: String, content: String, petList: List<String?>) {
+    func updateMemory(item: UserMemory, title: String, content: String, petList: List<String>) {
         do {
             try localRealm.write {
                 item.memoryTitle = title
