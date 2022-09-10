@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9786304828CC15570042C2E2 /* TodayListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786304728CC15570042C2E2 /* TodayListView.swift */; };
+		9786304A28CC15630042C2E2 /* TodayListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786304928CC15630042C2E2 /* TodayListViewController.swift */; };
+		9786304D28CC1B3C0042C2E2 /* TodayListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786304C28CC1B3C0042C2E2 /* TodayListTableViewCell.swift */; };
+		9786305128CC34040042C2E2 /* TodayListViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786305028CC34040042C2E2 /* TodayListViewController+Extension.swift */; };
 		9799F84528C7741C00E1C12C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9799F84428C7741C00E1C12C /* AppDelegate.swift */; };
 		9799F84728C7741C00E1C12C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9799F84628C7741C00E1C12C /* SceneDelegate.swift */; };
 		9799F84E28C7741D00E1C12C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9799F84D28C7741D00E1C12C /* Assets.xcassets */; };
@@ -41,6 +45,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9786304728CC15570042C2E2 /* TodayListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayListView.swift; sourceTree = "<group>"; };
+		9786304928CC15630042C2E2 /* TodayListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayListViewController.swift; sourceTree = "<group>"; };
+		9786304C28CC1B3C0042C2E2 /* TodayListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayListTableViewCell.swift; sourceTree = "<group>"; };
+		9786305028CC34040042C2E2 /* TodayListViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodayListViewController+Extension.swift"; sourceTree = "<group>"; };
 		9799F84128C7741C00E1C12C /* Petmory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Petmory.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9799F84428C7741C00E1C12C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9799F84628C7741C00E1C12C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -87,6 +95,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9786304628CC153E0042C2E2 /* TodayList */ = {
+			isa = PBXGroup;
+			children = (
+				9786304B28CC1B1F0042C2E2 /* Cell */,
+				9786304728CC15570042C2E2 /* TodayListView.swift */,
+				9786304928CC15630042C2E2 /* TodayListViewController.swift */,
+			);
+			path = TodayList;
+			sourceTree = "<group>";
+		};
+		9786304B28CC1B1F0042C2E2 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				9786304C28CC1B3C0042C2E2 /* TodayListTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		9799F83828C7741C00E1C12C = {
 			isa = PBXGroup;
 			children = (
@@ -164,6 +190,7 @@
 		97CF588A28C8CBBF0062FEB9 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				9786304628CC153E0042C2E2 /* TodayList */,
 				97CF58A228CAC6D70062FEB9 /* MainView.swift */,
 				97CF58A428CAC6E00062FEB9 /* MainViewController.swift */,
 			);
@@ -192,6 +219,7 @@
 				97CF58CE28CBA31F0062FEB9 /* UICollectionViewCell+Extension.swift */,
 				97CF58B328CB4DF10062FEB9 /* UITableViewCell+Extension.swift */,
 				97CF58B728CB55EC0062FEB9 /* AllMemoryViewController+Extension.swift */,
+				9786305028CC34040042C2E2 /* TodayListViewController+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -331,6 +359,7 @@
 				97CF58CD28CBA2C70062FEB9 /* BaseCollectionViewCell.swift in Sources */,
 				97CF589228C9057C0062FEB9 /* RealmModel.swift in Sources */,
 				97CF58BD28CB5ECA0062FEB9 /* SearchViewController.swift in Sources */,
+				9786304A28CC15630042C2E2 /* TodayListViewController.swift in Sources */,
 				97CF588E28C8CC020062FEB9 /* BaseViewController.swift in Sources */,
 				97CF589028C8CC0B0062FEB9 /* BaseView.swift in Sources */,
 				97CF58AD28CB02F60062FEB9 /* AllMemoryView.swift in Sources */,
@@ -339,6 +368,9 @@
 				9799F84528C7741C00E1C12C /* AppDelegate.swift in Sources */,
 				97CF58A928CAE4420062FEB9 /* CustomFont.swift in Sources */,
 				9799F84728C7741C00E1C12C /* SceneDelegate.swift in Sources */,
+				9786304D28CC1B3C0042C2E2 /* TodayListTableViewCell.swift in Sources */,
+				9786304828CC15570042C2E2 /* TodayListView.swift in Sources */,
+				9786305128CC34040042C2E2 /* TodayListViewController+Extension.swift in Sources */,
 				97CF58A528CAC6E00062FEB9 /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

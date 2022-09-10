@@ -27,8 +27,17 @@ final class MainViewController: BaseViewController {
         navigationController?.navigationBar.tintColor = .diaryColor
     }
     
+    override func setUpGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(pushTodayList))
+        mainView.outerView.addGestureRecognizer(tapGesture)
+    }
+    
     //MARK: - @objc
     @objc private func presentAllMemory() {
         transition(AllMemoryViewController(), transitionStyle: .presentNavigation)
+    }
+    
+    @objc private func pushTodayList() {
+        transition(TodayListViewController(), transitionStyle: .push)
     }
 }

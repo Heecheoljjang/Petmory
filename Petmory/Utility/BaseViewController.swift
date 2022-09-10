@@ -15,9 +15,12 @@ class BaseViewController: UIViewController {
         
         configure()
         setUpController()
+        setUpGesture()
     }
     
     func configure() {}
     
     func setUpController() {}
+    
+    func setUpGesture() {}
 }
