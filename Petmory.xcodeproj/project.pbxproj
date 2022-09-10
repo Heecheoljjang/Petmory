@@ -11,6 +11,8 @@
 		9786304A28CC15630042C2E2 /* TodayListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786304928CC15630042C2E2 /* TodayListViewController.swift */; };
 		9786304D28CC1B3C0042C2E2 /* TodayListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786304C28CC1B3C0042C2E2 /* TodayListTableViewCell.swift */; };
 		9786305128CC34040042C2E2 /* TodayListViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786305028CC34040042C2E2 /* TodayListViewController+Extension.swift */; };
+		9786305428CC3B570042C2E2 /* WritingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786305328CC3B570042C2E2 /* WritingView.swift */; };
+		9786305628CC3B5E0042C2E2 /* WritingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786305528CC3B5E0042C2E2 /* WritingViewController.swift */; };
 		9799F84528C7741C00E1C12C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9799F84428C7741C00E1C12C /* AppDelegate.swift */; };
 		9799F84728C7741C00E1C12C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9799F84628C7741C00E1C12C /* SceneDelegate.swift */; };
 		9799F84E28C7741D00E1C12C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9799F84D28C7741D00E1C12C /* Assets.xcassets */; };
@@ -49,6 +51,8 @@
 		9786304928CC15630042C2E2 /* TodayListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayListViewController.swift; sourceTree = "<group>"; };
 		9786304C28CC1B3C0042C2E2 /* TodayListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayListTableViewCell.swift; sourceTree = "<group>"; };
 		9786305028CC34040042C2E2 /* TodayListViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodayListViewController+Extension.swift"; sourceTree = "<group>"; };
+		9786305328CC3B570042C2E2 /* WritingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingView.swift; sourceTree = "<group>"; };
+		9786305528CC3B5E0042C2E2 /* WritingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingViewController.swift; sourceTree = "<group>"; };
 		9799F84128C7741C00E1C12C /* Petmory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Petmory.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9799F84428C7741C00E1C12C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9799F84628C7741C00E1C12C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -111,6 +115,15 @@
 				9786304C28CC1B3C0042C2E2 /* TodayListTableViewCell.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		9786305228CC3B4D0042C2E2 /* Writing */ = {
+			isa = PBXGroup;
+			children = (
+				9786305328CC3B570042C2E2 /* WritingView.swift */,
+				9786305528CC3B5E0042C2E2 /* WritingViewController.swift */,
+			);
+			path = Writing;
 			sourceTree = "<group>";
 		};
 		9799F83828C7741C00E1C12C = {
@@ -190,6 +203,7 @@
 		97CF588A28C8CBBF0062FEB9 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				9786305228CC3B4D0042C2E2 /* Writing */,
 				9786304628CC153E0042C2E2 /* TodayList */,
 				97CF58A228CAC6D70062FEB9 /* MainView.swift */,
 				97CF58A428CAC6E00062FEB9 /* MainViewController.swift */,
@@ -348,10 +362,12 @@
 				97CF58B228CB4C6E0062FEB9 /* AllMemoryTableViewCell.swift in Sources */,
 				97CF58BB28CB5EBF0062FEB9 /* SearchView.swift in Sources */,
 				97CF58B828CB55EC0062FEB9 /* AllMemoryViewController+Extension.swift in Sources */,
+				9786305628CC3B5E0042C2E2 /* WritingViewController.swift in Sources */,
 				97CF589A28CA33800062FEB9 /* UIViewController+Extension.swift in Sources */,
 				97CF58CB28CBA03D0062FEB9 /* AllMemoryCollectionViewCell.swift in Sources */,
 				97CF58A328CAC6D70062FEB9 /* MainView.swift in Sources */,
 				97CF58B428CB4DF10062FEB9 /* UITableViewCell+Extension.swift in Sources */,
+				9786305428CC3B570042C2E2 /* WritingView.swift in Sources */,
 				97CF58CF28CBA31F0062FEB9 /* UICollectionViewCell+Extension.swift in Sources */,
 				97CF589428C9058E0062FEB9 /* Repository.swift in Sources */,
 				97CF58A728CAE2A60062FEB9 /* UIColor+Extension.swift in Sources */,
