@@ -28,8 +28,13 @@ final class TabBarController: UITabBarController {
         let navMyPet = UINavigationController(rootViewController: myPetViewController)
         
         navMain.tabBarItem.image = UIImage(named: "DiaryTabBarIcon")
+        //navMain.tabBarItem.imageInsets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+        
         navCalendar.tabBarItem.image = UIImage(named: "CalendarTabBarIcon")
-        navMyPet.tabBarItem.image = UIImage(systemName: "pawprint.fill")
+        //navCalendar.tabBarItem.imageInsets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+
+        navMyPet.tabBarItem.image = UIImage(named: "PetTabBarIcon")
+        //navMyPet.tabBarItem.imageInsets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
 
         setViewControllers([navMain, navCalendar, navMyPet], animated: true)
     }
