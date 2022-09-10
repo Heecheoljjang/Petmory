@@ -36,6 +36,7 @@ final class SearchResultTableViewCell: BaseTableViewCell {
         [memoryDate, memoryTitle].forEach {
             self.addSubview($0)
         }
+        backgroundColor = .stringColor
     }
     
     override func setUpConstraints() {

@@ -13,14 +13,14 @@ final class AllMemoryTableViewCell: BaseTableViewCell {
     
     let memoryTitle: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: CustomFont.bold, size: 18)
+        label.font = UIFont(name: CustomFont.medium, size: 18)
         
         return label
     }()
     
     let memoryDate: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: CustomFont.light, size: 13)
+        label.font = UIFont(name: CustomFont.medium, size: 13)
         label.textColor = .lightGray
         
         return label

@@ -35,7 +35,7 @@ final class AllMemoryView: BaseView {
     let withLabel: UILabel = {
         let label = UILabel()
         label.text = "with"
-        
+        label.font = UIFont(name: CustomFont.bold, size: 15)
         return label
     }()
     
@@ -46,7 +46,7 @@ final class AllMemoryView: BaseView {
     override func configure() {
         super.configure()
         
-        [tableView,collectionView].forEach {
+        [tableView, collectionView, withLabel].forEach {
             self.addSubview($0)
         }
         backgroundColor = .systemBackground
@@ -55,11 +55,18 @@ final class AllMemoryView: BaseView {
     override func setUpContraints() {
         super.setUpContraints()
         
-        collectionView.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalTo(self.safeAreaLayoutGuide)
+        withLabel.snp.makeConstraints { make in
+            make.leading.equalTo(self).offset(20)
+            make.top.equalTo(self.safeAreaLayoutGuide)
             make.height.equalTo(52)
         }
-            
+        
+        collectionView.snp.makeConstraints { make in
+            make.top.trailing.equalTo(self.safeAreaLayoutGuide)
+            make.leading.equalTo(withLabel.snp.trailing).offset(12)
+            make.height.equalTo(52)
+        }
+
         tableView.snp.makeConstraints { make in
             make.top.equalTo(collectionView.snp.bottom)
             make.horizontalEdges.bottom.equalTo(self.safeAreaLayoutGuide)
