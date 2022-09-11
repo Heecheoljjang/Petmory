@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import RealmSwift
+import IQKeyboardManagerSwift
 
 final class WritingViewController: BaseViewController {
     
@@ -15,7 +16,15 @@ final class WritingViewController: BaseViewController {
     
     let repository = UserRepository()
     
-    var petList: List<String> = List<String>()
+    var petList: Results<UserPet>!
+    
+    var withList = List<String>()
+    
+    var petIsSelected = [Bool]() {
+        didSet {
+            print(petIsSelected)
+        }
+    }
     
     override func loadView() {
         self.view = mainView
@@ -24,32 +33,35 @@ final class WritingViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        petList.append("아아아아아")
-        petList.append("호호")
-        petList.append("윤희철")
-        petList.append("짱")
-        petList.append("안녕안녕나는윤희철")
+        petList = repository.fetchPet()
+        
+        IQKeyboardManager.shared.enable = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        petIsSelected = [Bool](repeating: true, count: petList.count)
     }
     
     override func setUpController() {
         super.setUpController()
         
-        let doneButton = UIBarButtonItem(image: UIImage(systemName: "checkmark"), style: .plain, target: self, action: #selector(finishWriting))
-        let cancelButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(cancelWriting))
+        let doneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(finishWriting))
+        let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancelWriting))
+        navigationController?.navigationBar.tintColor = .diaryColor
         navigationItem.rightBarButtonItem = doneButton
         navigationItem.leftBarButtonItem = cancelButton
+        
+        title = Date().dateToString()
+        
     }
     
     //MARK: - @objc
     @objc private func finishWriting() {
         //데이터 저장
         
-        let task = UserMemory(memoryTitle: mainView.titleTextField.text!, memoryDate: Date(), petList: petList, memoryContent: mainView.contentTextView.text)
+        let task = UserMemory(memoryTitle: mainView.titleTextField.text!, memoryDate: Date(), petList: withList, memoryContent: mainView.contentTextView.text)
         repository.addMemory(item: task)
         
         transition(self, transitionStyle: .dismiss)
@@ -58,5 +70,8 @@ final class WritingViewController: BaseViewController {
         //alert띄워서 지울지말지 확인
         
         transition(self, transitionStyle: .dismiss)
+    }
+    @objc private func presentPhotoPickerView() {
+        
     }
 }

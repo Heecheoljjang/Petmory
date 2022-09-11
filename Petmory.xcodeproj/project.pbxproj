@@ -26,6 +26,11 @@
 		97C7CBC428CD8974007743FF /* RegisterPetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C7CBC328CD8974007743FF /* RegisterPetView.swift */; };
 		97C7CBC628CD8981007743FF /* RegisterPetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C7CBC528CD8981007743FF /* RegisterPetViewController.swift */; };
 		97C7CBC828CDC3D7007743FF /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C7CBC728CDC3D7007743FF /* Date+Extension.swift */; };
+		97C7CBCE28CE3626007743FF /* WritingPetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C7CBCD28CE3626007743FF /* WritingPetCollectionViewCell.swift */; };
+		97C7CBD028CE3695007743FF /* BasePetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C7CBCF28CE3695007743FF /* BasePetCollectionViewCell.swift */; };
+		97C7CBD228CE4560007743FF /* WritingImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C7CBD128CE455F007743FF /* WritingImageCollectionViewCell.swift */; };
+		97C7CBD528CE59FF007743FF /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 97C7CBD428CE59FF007743FF /* IQKeyboardManagerSwift */; };
+		97C7CBD728CE6A17007743FF /* WritingViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C7CBD628CE6A17007743FF /* WritingViewController+Extension.swift */; };
 		97CF588228C8C9390062FEB9 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 97CF588128C8C9390062FEB9 /* SnapKit */; };
 		97CF588528C8C9820062FEB9 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 97CF588428C8C9820062FEB9 /* Realm */; };
 		97CF588728C8C9820062FEB9 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 97CF588628C8C9820062FEB9 /* RealmSwift */; };
@@ -51,7 +56,7 @@
 		97CF58BB28CB5EBF0062FEB9 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CF58BA28CB5EBF0062FEB9 /* SearchView.swift */; };
 		97CF58BD28CB5ECA0062FEB9 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CF58BC28CB5ECA0062FEB9 /* SearchViewController.swift */; };
 		97CF58CB28CBA03D0062FEB9 /* AllMemoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CF58CA28CBA03D0062FEB9 /* AllMemoryCollectionViewCell.swift */; };
-		97CF58CD28CBA2C70062FEB9 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CF58CC28CBA2C70062FEB9 /* BaseCollectionViewCell.swift */; };
+		97CF58CD28CBA2C70062FEB9 /* BaseImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CF58CC28CBA2C70062FEB9 /* BaseImageCollectionViewCell.swift */; };
 		97CF58CF28CBA31F0062FEB9 /* UICollectionViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CF58CE28CBA31F0062FEB9 /* UICollectionViewCell+Extension.swift */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +82,10 @@
 		97C7CBC328CD8974007743FF /* RegisterPetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPetView.swift; sourceTree = "<group>"; };
 		97C7CBC528CD8981007743FF /* RegisterPetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPetViewController.swift; sourceTree = "<group>"; };
 		97C7CBC728CDC3D7007743FF /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		97C7CBCD28CE3626007743FF /* WritingPetCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingPetCollectionViewCell.swift; sourceTree = "<group>"; };
+		97C7CBCF28CE3695007743FF /* BasePetCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePetCollectionViewCell.swift; sourceTree = "<group>"; };
+		97C7CBD128CE455F007743FF /* WritingImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		97C7CBD628CE6A17007743FF /* WritingViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WritingViewController+Extension.swift"; sourceTree = "<group>"; };
 		97CF588828C8CB8F0062FEB9 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		97CF588D28C8CC020062FEB9 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		97CF588F28C8CC0B0062FEB9 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
@@ -99,7 +108,7 @@
 		97CF58BA28CB5EBF0062FEB9 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		97CF58BC28CB5ECA0062FEB9 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		97CF58CA28CBA03D0062FEB9 /* AllMemoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllMemoryCollectionViewCell.swift; sourceTree = "<group>"; };
-		97CF58CC28CBA2C70062FEB9 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
+		97CF58CC28CBA2C70062FEB9 /* BaseImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		97CF58CE28CBA31F0062FEB9 /* UICollectionViewCell+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -109,6 +118,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				97CF588728C8C9820062FEB9 /* RealmSwift in Frameworks */,
+				97C7CBD528CE59FF007743FF /* IQKeyboardManagerSwift in Frameworks */,
 				97CF588528C8C9820062FEB9 /* Realm in Frameworks */,
 				97CF588228C8C9390062FEB9 /* SnapKit in Frameworks */,
 			);
@@ -138,6 +148,7 @@
 		9786305228CC3B4D0042C2E2 /* Writing */ = {
 			isa = PBXGroup;
 			children = (
+				97C7CBCC28CE3617007743FF /* Cell */,
 				9786305328CC3B570042C2E2 /* WritingView.swift */,
 				9786305528CC3B5E0042C2E2 /* WritingViewController.swift */,
 			);
@@ -150,6 +161,7 @@
 				97CF58B728CB55EC0062FEB9 /* AllMemoryViewController+Extension.swift */,
 				9786305028CC34040042C2E2 /* TodayListViewController+Extension.swift */,
 				9786306828CC92E30042C2E2 /* SearchViewController+Extension.swift */,
+				97C7CBD628CE6A17007743FF /* WritingViewController+Extension.swift */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -231,7 +243,8 @@
 				97CF588D28C8CC020062FEB9 /* BaseViewController.swift */,
 				97CF588F28C8CC0B0062FEB9 /* BaseView.swift */,
 				97CF58B528CB4E830062FEB9 /* BaseTableViewCell.swift */,
-				97CF58CC28CBA2C70062FEB9 /* BaseCollectionViewCell.swift */,
+				97CF58CC28CBA2C70062FEB9 /* BaseImageCollectionViewCell.swift */,
+				97C7CBCF28CE3695007743FF /* BasePetCollectionViewCell.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -251,6 +264,15 @@
 				97C7CBC528CD8981007743FF /* RegisterPetViewController.swift */,
 			);
 			path = RegisterPet;
+			sourceTree = "<group>";
+		};
+		97C7CBCC28CE3617007743FF /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				97C7CBCD28CE3626007743FF /* WritingPetCollectionViewCell.swift */,
+				97C7CBD128CE455F007743FF /* WritingImageCollectionViewCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		97CF588A28C8CBBF0062FEB9 /* Main */ = {
@@ -356,6 +378,7 @@
 				97CF588128C8C9390062FEB9 /* SnapKit */,
 				97CF588428C8C9820062FEB9 /* Realm */,
 				97CF588628C8C9820062FEB9 /* RealmSwift */,
+				97C7CBD428CE59FF007743FF /* IQKeyboardManagerSwift */,
 			);
 			productName = Petmory;
 			productReference = 9799F84128C7741C00E1C12C /* Petmory.app */;
@@ -388,6 +411,7 @@
 			packageReferences = (
 				97CF588028C8C9390062FEB9 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				97CF588328C8C9820062FEB9 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				97C7CBD328CE59FF007743FF /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 			);
 			productRefGroup = 9799F84228C7741C00E1C12C /* Products */;
 			projectDirPath = "";
@@ -427,6 +451,7 @@
 				9786305628CC3B5E0042C2E2 /* WritingViewController.swift in Sources */,
 				97CF589A28CA33800062FEB9 /* UIViewController+Extension.swift in Sources */,
 				9786305F28CC5A980042C2E2 /* MyPetViewController.swift in Sources */,
+				97C7CBD728CE6A17007743FF /* WritingViewController+Extension.swift in Sources */,
 				97CF58CB28CBA03D0062FEB9 /* AllMemoryCollectionViewCell.swift in Sources */,
 				97CF58A328CAC6D70062FEB9 /* MainView.swift in Sources */,
 				97CF58B428CB4DF10062FEB9 /* UITableViewCell+Extension.swift in Sources */,
@@ -436,11 +461,13 @@
 				97CF58A728CAE2A60062FEB9 /* UIColor+Extension.swift in Sources */,
 				9786305B28CC5A2F0042C2E2 /* CalendarViewController.swift in Sources */,
 				97CF588928C8CB8F0062FEB9 /* TabBarController.swift in Sources */,
-				97CF58CD28CBA2C70062FEB9 /* BaseCollectionViewCell.swift in Sources */,
+				97CF58CD28CBA2C70062FEB9 /* BaseImageCollectionViewCell.swift in Sources */,
 				97CF589228C9057C0062FEB9 /* RealmModel.swift in Sources */,
 				97CF58BD28CB5ECA0062FEB9 /* SearchViewController.swift in Sources */,
+				97C7CBD028CE3695007743FF /* BasePetCollectionViewCell.swift in Sources */,
 				9786304A28CC15630042C2E2 /* TodayListViewController.swift in Sources */,
 				97CF588E28C8CC020062FEB9 /* BaseViewController.swift in Sources */,
+				97C7CBD228CE4560007743FF /* WritingImageCollectionViewCell.swift in Sources */,
 				97CF589028C8CC0B0062FEB9 /* BaseView.swift in Sources */,
 				9786305D28CC5A900042C2E2 /* MyPetView.swift in Sources */,
 				97C7CBC628CD8981007743FF /* RegisterPetViewController.swift in Sources */,
@@ -449,6 +476,7 @@
 				97CF58AF28CB03010062FEB9 /* AllMemoryViewController.swift in Sources */,
 				9786306728CC87200042C2E2 /* SearchResultTableViewCell.swift in Sources */,
 				97CF58B628CB4E830062FEB9 /* BaseTableViewCell.swift in Sources */,
+				97C7CBCE28CE3626007743FF /* WritingPetCollectionViewCell.swift in Sources */,
 				9799F84528C7741C00E1C12C /* AppDelegate.swift in Sources */,
 				97CF58A928CAE4420062FEB9 /* CustomFont.swift in Sources */,
 				9799F84728C7741C00E1C12C /* SceneDelegate.swift in Sources */,
@@ -667,6 +695,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		97C7CBD328CE59FF007743FF /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.5.0;
+			};
+		};
 		97CF588028C8C9390062FEB9 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -686,6 +722,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		97C7CBD428CE59FF007743FF /* IQKeyboardManagerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97C7CBD328CE59FF007743FF /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
+			productName = IQKeyboardManagerSwift;
+		};
 		97CF588128C8C9390062FEB9 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 97CF588028C8C9390062FEB9 /* XCRemoteSwiftPackageReference "SnapKit" */;
