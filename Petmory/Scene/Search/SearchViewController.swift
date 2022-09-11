@@ -12,14 +12,16 @@ import RealmSwift
 final class SearchViewController: BaseViewController {
     
     var mainView = SearchView()
-    
-    let resultVC = SearchResultViewController()
-    
+        
     let repository = UserRepository()
     
     var tasks: Results<UserMemory>! {
         didSet {
-            resultVC.mainView.tableView.reloadData()
+            if tasks.count == 0 {
+                mainView.tableView.isHidden = true
+            } else {
+                mainView.tableView.isHidden = false
+            }
         }
     }
     
@@ -29,18 +31,29 @@ final class SearchViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tasks = repository.fetchSearched(keyword: "")
     }
-    
+ 
     override func setUpController() {
         super.setUpController()
         
-        let searchController = UISearchController(searchResultsController: resultVC)
-        searchController.searchBar.placeholder = "검색"
-        searchController.searchBar.setValue("취소", forKey: "cancelButtonText")
-        searchController.searchBar.tintColor = .diaryColor
-        searchController.searchResultsUpdater = self
-        resultVC.mainView.tableView.delegate = self
-        resultVC.mainView.tableView.dataSource = self
-        navigationItem.searchController = searchController
+        let searchBar = UISearchBar()
+        searchBar.placeholder = "제목, 내용 검색"
+        searchBar.delegate = self
+        self.navigationItem.titleView = searchBar
+
     }
+    
+    override func configure() {
+        super.configure()
+        
+        mainView.tableView.delegate = self
+        mainView.tableView.dataSource = self
+    }
+    
+    //MARK: - @objc
+    @objc private func cancelSearch() {
+        transition(self, transitionStyle: .pop)
+    }
+    
 }

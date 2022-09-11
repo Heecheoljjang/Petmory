@@ -8,16 +8,16 @@
 import Foundation
 import UIKit
 
-extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating {
+extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return resultVC.tasks.count
+        return tasks.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.identifier) as? SearchResultTableViewCell else { return UITableViewCell() }
-        cell.memoryTitle.text = resultVC.tasks[indexPath.row].memoryTitle
-        cell.memoryDate.text = "\(resultVC.tasks[indexPath.row].memoryDate)"
+        cell.memoryTitle.text = tasks[indexPath.row].memoryTitle
+        cell.memoryDate.text = "\(tasks[indexPath.row].memoryDate.dateToString())"
         
         return cell
     }
@@ -26,11 +26,13 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UISe
         return 88
     }
     
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text else { return }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
-        resultVC.tasks = repository.fetchSearched(keyword: text)
-        resultVC.mainView.tableView.reloadData()
+        guard let text = searchBar.text else { return }
+        tasks = repository.fetchSearched(keyword: text)
+        
+        mainView.tableView.reloadData()
+        
     }
     
 }

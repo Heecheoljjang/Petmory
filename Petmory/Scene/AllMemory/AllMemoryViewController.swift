@@ -63,6 +63,7 @@ final class AllMemoryViewController: BaseViewController {
         navigationItem.rightBarButtonItem = searchButton
         
         navigationController?.navigationBar.tintColor = .diaryColor
+        navigationItem.backButtonTitle = ""
         
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .white

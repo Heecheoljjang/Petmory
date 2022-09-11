@@ -17,8 +17,6 @@
 		9786305B28CC5A2F0042C2E2 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786305A28CC5A2F0042C2E2 /* CalendarViewController.swift */; };
 		9786305D28CC5A900042C2E2 /* MyPetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786305C28CC5A8F0042C2E2 /* MyPetView.swift */; };
 		9786305F28CC5A980042C2E2 /* MyPetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786305E28CC5A980042C2E2 /* MyPetViewController.swift */; };
-		9786306228CC870A0042C2E2 /* SearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786306128CC870A0042C2E2 /* SearchResultView.swift */; };
-		9786306428CC87130042C2E2 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786306328CC87130042C2E2 /* SearchResultViewController.swift */; };
 		9786306728CC87200042C2E2 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786306628CC87200042C2E2 /* SearchResultTableViewCell.swift */; };
 		9786306928CC92E30042C2E2 /* SearchViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786306828CC92E30042C2E2 /* SearchViewController+Extension.swift */; };
 		9799F84528C7741C00E1C12C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9799F84428C7741C00E1C12C /* AppDelegate.swift */; };
@@ -68,8 +66,6 @@
 		9786305A28CC5A2F0042C2E2 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		9786305C28CC5A8F0042C2E2 /* MyPetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPetView.swift; sourceTree = "<group>"; };
 		9786305E28CC5A980042C2E2 /* MyPetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPetViewController.swift; sourceTree = "<group>"; };
-		9786306128CC870A0042C2E2 /* SearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultView.swift; sourceTree = "<group>"; };
-		9786306328CC87130042C2E2 /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
 		9786306628CC87200042C2E2 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		9786306828CC92E30042C2E2 /* SearchViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchViewController+Extension.swift"; sourceTree = "<group>"; };
 		9799F84128C7741C00E1C12C /* Petmory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Petmory.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -162,8 +158,6 @@
 			isa = PBXGroup;
 			children = (
 				9786306528CC87160042C2E2 /* Cell */,
-				9786306128CC870A0042C2E2 /* SearchResultView.swift */,
-				9786306328CC87130042C2E2 /* SearchResultViewController.swift */,
 			);
 			path = Result;
 			sourceTree = "<group>";
@@ -449,7 +443,6 @@
 				97CF588E28C8CC020062FEB9 /* BaseViewController.swift in Sources */,
 				97CF589028C8CC0B0062FEB9 /* BaseView.swift in Sources */,
 				9786305D28CC5A900042C2E2 /* MyPetView.swift in Sources */,
-				9786306428CC87130042C2E2 /* SearchResultViewController.swift in Sources */,
 				97C7CBC628CD8981007743FF /* RegisterPetViewController.swift in Sources */,
 				97CF58AD28CB02F60062FEB9 /* AllMemoryView.swift in Sources */,
 				9786305928CC5A260042C2E2 /* CalendarView.swift in Sources */,
@@ -459,7 +452,6 @@
 				9799F84528C7741C00E1C12C /* AppDelegate.swift in Sources */,
 				97CF58A928CAE4420062FEB9 /* CustomFont.swift in Sources */,
 				9799F84728C7741C00E1C12C /* SceneDelegate.swift in Sources */,
-				9786306228CC870A0042C2E2 /* SearchResultView.swift in Sources */,
 				9786304D28CC1B3C0042C2E2 /* TodayListTableViewCell.swift in Sources */,
 				9786304828CC15570042C2E2 /* TodayListView.swift in Sources */,
 				9786305128CC34040042C2E2 /* TodayListViewController+Extension.swift in Sources */,
