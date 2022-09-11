@@ -40,9 +40,11 @@ final class MainViewController: BaseViewController {
         if tasks.count == 0 {
             mainView.outerView.isHidden = true
             mainView.zeroContentsLabel.isHidden = false
+            mainView.tapLabel.isHidden = true
         } else {
             mainView.outerView.isHidden = false
             mainView.zeroContentsLabel.isHidden = true
+            mainView.tapLabel.isHidden = false
         }
     }
     
@@ -67,7 +69,11 @@ final class MainViewController: BaseViewController {
     
     //MARK: - @objc
     @objc private func presentAllMemory() {
-        transition(AllMemoryViewController(), transitionStyle: .presentNavigation)
+        if tasks.count == 0 {
+            print("no")
+        } else {
+            transition(AllMemoryViewController(), transitionStyle: .presentNavigation)
+        }
     }
     
     @objc private func pushTodayList() {

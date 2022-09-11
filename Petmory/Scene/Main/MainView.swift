@@ -87,6 +87,17 @@ final class MainView: BaseView {
         return label
     }()
     
+    let tapLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.text = "다이어리를 열어\n\n오늘 작성한 기록들을 확인해보세요 :)"
+        label.font = UIFont(name: CustomFont.medium, size: 12)
+        label.textColor = .lightGray
+        
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -97,7 +108,7 @@ final class MainView: BaseView {
             outerView.addSubview($0)
         }
         
-        [writingButton, outerView, zeroContentsLabel].forEach {
+        [writingButton, outerView, zeroContentsLabel, tapLabel].forEach {
             self.addSubview($0)
         }
         backgroundColor = .white
@@ -105,9 +116,10 @@ final class MainView: BaseView {
     
     override func setUpContraints() {
         outerView.snp.makeConstraints { make in
-            make.width.equalTo(self.snp.width).multipliedBy(0.6)
-            make.height.equalTo(outerView.snp.width).multipliedBy(1.3)
-            make.center.equalToSuperview()
+            make.width.equalTo(self.snp.width).multipliedBy(0.7)
+            make.height.equalTo(outerView.snp.width).multipliedBy(1.4)
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(-32)
         }
         
         stringView.snp.makeConstraints { make in
@@ -130,7 +142,7 @@ final class MainView: BaseView {
         }
         
         pageLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(outerView.snp.top).offset(-12)
+            make.bottom.equalTo(outerView.snp.bottom).offset(40)
             make.centerX.equalTo(outerView)
         }
         
@@ -138,6 +150,11 @@ final class MainView: BaseView {
             make.size.equalTo(60)
             make.bottom.equalTo(self.safeAreaLayoutGuide).offset(-20)
             make.trailing.equalTo(self.safeAreaLayoutGuide).offset(-20)
+        }
+        
+        tapLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(outerView.snp.top).offset(-40)
         }
         
         zeroContentsLabel.snp.makeConstraints { make in
