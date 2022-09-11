@@ -27,6 +27,7 @@
 		9799F85128C7741D00E1C12C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9799F84F28C7741D00E1C12C /* LaunchScreen.storyboard */; };
 		97C7CBC428CD8974007743FF /* RegisterPetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C7CBC328CD8974007743FF /* RegisterPetView.swift */; };
 		97C7CBC628CD8981007743FF /* RegisterPetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C7CBC528CD8981007743FF /* RegisterPetViewController.swift */; };
+		97C7CBC828CDC3D7007743FF /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C7CBC728CDC3D7007743FF /* Date+Extension.swift */; };
 		97CF588228C8C9390062FEB9 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 97CF588128C8C9390062FEB9 /* SnapKit */; };
 		97CF588528C8C9820062FEB9 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 97CF588428C8C9820062FEB9 /* Realm */; };
 		97CF588728C8C9820062FEB9 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 97CF588628C8C9820062FEB9 /* RealmSwift */; };
@@ -79,6 +80,7 @@
 		9799F85228C7741D00E1C12C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97C7CBC328CD8974007743FF /* RegisterPetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPetView.swift; sourceTree = "<group>"; };
 		97C7CBC528CD8981007743FF /* RegisterPetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPetViewController.swift; sourceTree = "<group>"; };
+		97C7CBC728CDC3D7007743FF /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		97CF588828C8CB8F0062FEB9 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		97CF588D28C8CC020062FEB9 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		97CF588F28C8CC0B0062FEB9 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
@@ -294,6 +296,7 @@
 				97CF58A628CAE2A60062FEB9 /* UIColor+Extension.swift */,
 				97CF58CE28CBA31F0062FEB9 /* UICollectionViewCell+Extension.swift */,
 				97CF58B328CB4DF10062FEB9 /* UITableViewCell+Extension.swift */,
+				97C7CBC728CDC3D7007743FF /* Date+Extension.swift */,
 				9786305728CC595D0042C2E2 /* Scene */,
 			);
 			path = Extension;
@@ -426,6 +429,7 @@
 				97CF58B228CB4C6E0062FEB9 /* AllMemoryTableViewCell.swift in Sources */,
 				97CF58BB28CB5EBF0062FEB9 /* SearchView.swift in Sources */,
 				97CF58B828CB55EC0062FEB9 /* AllMemoryViewController+Extension.swift in Sources */,
+				97C7CBC828CDC3D7007743FF /* Date+Extension.swift in Sources */,
 				9786305628CC3B5E0042C2E2 /* WritingViewController.swift in Sources */,
 				97CF589A28CA33800062FEB9 /* UIViewController+Extension.swift in Sources */,
 				9786305F28CC5A980042C2E2 /* MyPetViewController.swift in Sources */,
