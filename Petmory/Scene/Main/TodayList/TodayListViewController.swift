@@ -32,7 +32,7 @@ final class TodayListViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        tasks = repository.fetch()
+        tasks = repository.fetchMemory()
     }
         
     override func configure() {

@@ -35,7 +35,7 @@ final class MainViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        tasks = repository.fetch()
+        tasks = repository.fetchMemory()
         
         if tasks.count == 0 {
             mainView.outerView.isHidden = true

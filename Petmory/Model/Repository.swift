@@ -10,7 +10,7 @@ import RealmSwift
 
 protocol UserMemoryRepositoryType {
     
-    func fetch() -> Results<UserMemory>
+    func fetchMemory() -> Results<UserMemory>
     
     func fetchFiltered(name: String) -> Results<UserMemory>
     
@@ -25,7 +25,7 @@ protocol UserMemoryRepositoryType {
 
 protocol UserPetRepositoryType {
     
-    func fetch() -> Results<UserPet>
+    func fetchPet() -> Results<UserPet>
     
     func addPet(item: UserPet)
     
@@ -41,13 +41,15 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType {
     //MARK: - Memory
     
     //모아보기 첫 화면에 사용
-    func fetch() -> Results<UserMemory> {
+    func fetchMemory() -> Results<UserMemory> {
         return localRealm.objects(UserMemory.self).sorted(byKeyPath: "memoryDate", ascending: false)
     }
     
     //모아보기 필터링
     func fetchFiltered(name: String) -> Results<UserMemory> {
-        return localRealm.objects(UserMemory.self).filter("petList CONTAINS[c] '\(name)'")
+        return localRealm.objects(UserMemory.self).where {
+            $0.petList.contains(name)
+        }
     }
     
     //검색화면
@@ -91,7 +93,7 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType {
     
     //MARK: - Pet
     
-    func fetch() -> Results<UserPet> {
+    func fetchPet() -> Results<UserPet> {
         return localRealm.objects(UserPet.self).sorted(byKeyPath: "registerDate", ascending: false)
     }
     
