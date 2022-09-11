@@ -39,14 +39,35 @@ extension AllMemoryViewController: UICollectionViewDelegate, UICollectionViewDat
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AllMemoryCollectionViewCell.identifier, for: indexPath) as? AllMemoryCollectionViewCell else { return UICollectionViewCell() }
+        
         cell.nameLabel.text = petList[indexPath.item].petName
         
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        guard let cell = collectionView.cellForItem(at: indexPath) else { return true }
+
+        if cell.isSelected == true {
+            collectionView.deselectItem(at: indexPath, animated: true)
+            filterPetName = petList[indexPath.item].petName
+        } else {
+            collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
+            filterPetName = ""
+            return true
+        }
+        
+        return false
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
-        let cellSize = CGSize(width: petList[indexPath.item].petName.size(withAttributes: nil).width + 20, height: 52)
-        return cellSize
+        if petList[indexPath.item].petName.count > 1 {
+            let cellSize = CGSize(width: petList[indexPath.item].petName.size(withAttributes: [.font : UIFont(name: CustomFont.medium, size: 13)!]).width + 32, height: 52)
+            return cellSize
+        } else {
+            let cellSize = CGSize(width: 52, height: 52)
+            return cellSize
+        }
     }
 }

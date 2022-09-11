@@ -25,6 +25,8 @@
 		9799F84728C7741C00E1C12C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9799F84628C7741C00E1C12C /* SceneDelegate.swift */; };
 		9799F84E28C7741D00E1C12C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9799F84D28C7741D00E1C12C /* Assets.xcassets */; };
 		9799F85128C7741D00E1C12C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9799F84F28C7741D00E1C12C /* LaunchScreen.storyboard */; };
+		97C7CBC428CD8974007743FF /* RegisterPetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C7CBC328CD8974007743FF /* RegisterPetView.swift */; };
+		97C7CBC628CD8981007743FF /* RegisterPetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C7CBC528CD8981007743FF /* RegisterPetViewController.swift */; };
 		97CF588228C8C9390062FEB9 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 97CF588128C8C9390062FEB9 /* SnapKit */; };
 		97CF588528C8C9820062FEB9 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 97CF588428C8C9820062FEB9 /* Realm */; };
 		97CF588728C8C9820062FEB9 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 97CF588628C8C9820062FEB9 /* RealmSwift */; };
@@ -75,6 +77,8 @@
 		9799F84D28C7741D00E1C12C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9799F85028C7741D00E1C12C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9799F85228C7741D00E1C12C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		97C7CBC328CD8974007743FF /* RegisterPetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPetView.swift; sourceTree = "<group>"; };
+		97C7CBC528CD8981007743FF /* RegisterPetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPetViewController.swift; sourceTree = "<group>"; };
 		97CF588828C8CB8F0062FEB9 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		97CF588D28C8CC020062FEB9 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		97CF588F28C8CC0B0062FEB9 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
@@ -244,6 +248,15 @@
 			path = Resource;
 			sourceTree = "<group>";
 		};
+		97C7CBC228CD895A007743FF /* RegisterPet */ = {
+			isa = PBXGroup;
+			children = (
+				97C7CBC328CD8974007743FF /* RegisterPetView.swift */,
+				97C7CBC528CD8981007743FF /* RegisterPetViewController.swift */,
+			);
+			path = RegisterPet;
+			sourceTree = "<group>";
+		};
 		97CF588A28C8CBBF0062FEB9 /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -267,6 +280,7 @@
 		97CF588C28C8CBDE0062FEB9 /* MyPet */ = {
 			isa = PBXGroup;
 			children = (
+				97C7CBC228CD895A007743FF /* RegisterPet */,
 				9786305C28CC5A8F0042C2E2 /* MyPetView.swift */,
 				9786305E28CC5A980042C2E2 /* MyPetViewController.swift */,
 			);
@@ -408,6 +422,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9786306928CC92E30042C2E2 /* SearchViewController+Extension.swift in Sources */,
+				97C7CBC428CD8974007743FF /* RegisterPetView.swift in Sources */,
 				97CF58B228CB4C6E0062FEB9 /* AllMemoryTableViewCell.swift in Sources */,
 				97CF58BB28CB5EBF0062FEB9 /* SearchView.swift in Sources */,
 				97CF58B828CB55EC0062FEB9 /* AllMemoryViewController+Extension.swift in Sources */,
@@ -431,6 +446,7 @@
 				97CF589028C8CC0B0062FEB9 /* BaseView.swift in Sources */,
 				9786305D28CC5A900042C2E2 /* MyPetView.swift in Sources */,
 				9786306428CC87130042C2E2 /* SearchResultViewController.swift in Sources */,
+				97C7CBC628CD8981007743FF /* RegisterPetViewController.swift in Sources */,
 				97CF58AD28CB02F60062FEB9 /* AllMemoryView.swift in Sources */,
 				9786305928CC5A260042C2E2 /* CalendarView.swift in Sources */,
 				97CF58AF28CB03010062FEB9 /* AllMemoryViewController.swift in Sources */,

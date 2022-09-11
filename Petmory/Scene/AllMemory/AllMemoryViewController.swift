@@ -26,6 +26,19 @@ final class AllMemoryViewController: BaseViewController {
         }
     }
     
+    var filterPetName: String = "" {
+        didSet {
+            print(filterPetName)
+            if filterPetName == "" {
+                tasks = repository.fetchMemory()
+                mainView.tableView.reloadData()
+            } else {
+                tasks = repository.fetchFiltered(name: filterPetName)
+                mainView.tableView.reloadData()
+            }
+        }
+    }
+        
     override func loadView() {
         self.view = mainView
     }
@@ -37,8 +50,9 @@ final class AllMemoryViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        tasks = repository.fetch()
-        petList = repository.fetch()
+        tasks = repository.fetchMemory()
+        petList = repository.fetchPet()
+                
     }
     
     override func setUpController() {

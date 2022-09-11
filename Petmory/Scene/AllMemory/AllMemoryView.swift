@@ -20,10 +20,9 @@ final class AllMemoryView: BaseView {
     
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        let spacing: CGFloat = 8
         layout.scrollDirection = .horizontal
         layout.sectionInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
-
+        layout.minimumInteritemSpacing = 8
         
         let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         view.register(AllMemoryCollectionViewCell.self, forCellWithReuseIdentifier: AllMemoryCollectionViewCell.identifier)
@@ -36,6 +35,7 @@ final class AllMemoryView: BaseView {
         let label = UILabel()
         label.text = "with"
         label.font = UIFont(name: CustomFont.bold, size: 15)
+    
         return label
     }()
     

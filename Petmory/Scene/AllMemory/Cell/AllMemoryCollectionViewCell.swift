@@ -22,7 +22,9 @@ final class AllMemoryCollectionViewCell: BaseCollectionViewCell {
     let nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: CustomFont.medium, size: 13)
-        
+        label.textColor = .diaryColor
+        label.textAlignment = .center
+        label.sizeToFit()
         return label
     }()
     
@@ -42,9 +44,25 @@ final class AllMemoryCollectionViewCell: BaseCollectionViewCell {
             make.height.equalTo(40)
             make.top.equalToSuperview().inset(4)
             make.bottom.equalToSuperview().inset(8)
+            make.horizontalEdges.equalToSuperview()
         }
         nameLabel.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(8)
+            make.verticalEdges.equalToSuperview().inset(8)
+            make.horizontalEdges.equalToSuperview().inset(12)
+            make.width.greaterThanOrEqualTo(24)
+            make.height.equalTo(40)
+        }
+    }
+
+    override var isSelected: Bool {
+        didSet {
+            if isSelected {
+                outerView.backgroundColor = .diaryColor
+                nameLabel.textColor = .stringColor
+            } else {
+                outerView.backgroundColor = .systemBackground
+                nameLabel.textColor = .diaryColor
+            }
         }
     }
 }
