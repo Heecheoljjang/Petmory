@@ -50,10 +50,10 @@ extension AllMemoryViewController: UICollectionViewDelegate, UICollectionViewDat
 
         if cell.isSelected == true {
             collectionView.deselectItem(at: indexPath, animated: true)
-            filterPetName = petList[indexPath.item].petName
+            filterPetName = ""
         } else {
             collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
-            filterPetName = ""
+            filterPetName = petList[indexPath.item].petName
             return true
         }
         
