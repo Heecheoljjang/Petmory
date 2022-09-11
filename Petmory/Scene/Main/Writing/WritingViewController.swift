@@ -49,7 +49,7 @@ final class WritingViewController: BaseViewController {
     @objc private func finishWriting() {
         //데이터 저장
         
-        let task = UserMemory(memoryTitle: "바보바보", memoryDate: Date(), petList: petList, memoryContent: "안녕 나는 윤희철 반가워 가나다라마바사아자차카타파하 오호호호호호호호호홓호호")
+        let task = UserMemory(memoryTitle: mainView.titleTextField.text!, memoryDate: Date(), petList: petList, memoryContent: mainView.contentTextView.text)
         repository.addMemory(item: task)
         
         transition(self, transitionStyle: .dismiss)
