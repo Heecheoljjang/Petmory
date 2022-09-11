@@ -49,7 +49,7 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType {
     func fetchFiltered(name: String) -> Results<UserMemory> {
         return localRealm.objects(UserMemory.self).where {
             $0.petList.contains(name)
-        }
+        }.sorted(byKeyPath: "memoryDate", ascending: false)
     }
     
     //검색화면
