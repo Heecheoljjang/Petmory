@@ -50,15 +50,14 @@ class BasePetCollectionViewCell: UICollectionViewCell {
     func setUpConstraints() {
         outerView.snp.makeConstraints { make in
             make.height.equalTo(40)
-            make.top.equalToSuperview().inset(4)
-            make.bottom.equalToSuperview().inset(8)
+            make.top.equalToSuperview().offset(4)
+            make.bottom.equalToSuperview().offset(-8)
             make.horizontalEdges.equalToSuperview()
         }
         nameLabel.snp.makeConstraints { make in
             make.verticalEdges.equalToSuperview().inset(8)
             make.horizontalEdges.equalToSuperview().inset(12)
             make.width.greaterThanOrEqualTo(24)
-            make.height.equalTo(40)
         }
     }
     

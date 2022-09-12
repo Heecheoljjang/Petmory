@@ -12,6 +12,7 @@ final class WritingPetCollectionViewCell: BasePetCollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
     }
 
 }
