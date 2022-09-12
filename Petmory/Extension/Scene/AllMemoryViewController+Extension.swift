@@ -51,13 +51,12 @@ extension AllMemoryViewController: UICollectionViewDelegate, UICollectionViewDat
         if cell.isSelected == true {
             collectionView.deselectItem(at: indexPath, animated: true)
             filterPetName = ""
+            return false
         } else {
             collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
             filterPetName = petList[indexPath.item].petName
             return true
         }
-        
-        return false
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
