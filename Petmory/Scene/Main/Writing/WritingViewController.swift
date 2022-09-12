@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import RealmSwift
 import IQKeyboardManagerSwift
+import PhotosUI
 
 final class WritingViewController: BaseViewController {
     
@@ -26,6 +27,10 @@ final class WritingViewController: BaseViewController {
         }
     }
     
+    var imageList: [Data] = []
+    
+    let placeholderText = "오늘 하루를 어떻게 보내셨나요?"
+    
     override func loadView() {
         self.view = mainView
     }
@@ -36,6 +41,7 @@ final class WritingViewController: BaseViewController {
         petList = repository.fetchPet()
         
         IQKeyboardManager.shared.enable = true
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,11 +61,43 @@ final class WritingViewController: BaseViewController {
         
         title = Date().dateToString()
         
+        //MARK: 액션 추가
+        mainView.pickButton.addTarget(self, action: #selector(presentPhotoPickerView), for: .touchUpInside)
+        
+        //MARK: 텍스트뷰
+        mainView.contentTextView.text = placeholderText
+        mainView.contentTextView.textColor = .placeholderColor
+        
+    }
+    
+    override func configure() {
+        super.configure()
+        
+        mainView.imageCollectionView.delegate = self
+        mainView.imageCollectionView.dataSource = self
+        mainView.petCollectionView.delegate = self
+        mainView.petCollectionView.dataSource = self
+        mainView.contentTextView.delegate = self
+        
+    }
+    
+    private func presentPHPickerViewController() {
+        var configuartion = PHPickerConfiguration()
+        configuartion.selectionLimit = 3
+        configuartion.filter = .images
+        
+        let picker = PHPickerViewController(configuration: configuartion)
+        picker.delegate = self
+        transition(picker, transitionStyle: .present)
     }
     
     //MARK: - @objc
     @objc private func finishWriting() {
         //데이터 저장
+        mainView.petCollectionView.indexPathsForSelectedItems?.forEach {
+            withList.append(petList[$0.item].petName)
+        }
+        print(withList)
         
         let task = UserMemory(memoryTitle: mainView.titleTextField.text!, memoryDate: Date(), petList: withList, memoryContent: mainView.contentTextView.text)
         repository.addMemory(item: task)
@@ -73,5 +111,6 @@ final class WritingViewController: BaseViewController {
     }
     @objc private func presentPhotoPickerView() {
         
+        presentPHPickerViewController()
     }
 }

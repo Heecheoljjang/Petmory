@@ -11,20 +11,30 @@ import SnapKit
 
 final class WritingView: BaseView {
     
-    let scrollView = UIScrollView()
+    let scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.backgroundColor = .systemTeal
+        return view
+    }()
     
-    let contentView = UIView()
+    let contentView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .yellow
+        return view
+    }()
     
     let imageCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        //layout.sectionInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+        layout.scrollDirection = .horizontal
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
         
         let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         view.register(WritingImageCollectionViewCell.self, forCellWithReuseIdentifier: WritingImageCollectionViewCell.identifier)
-        view.isPagingEnabled = true
         view.backgroundColor = .systemBackground
+        view.isPagingEnabled = true
+        view.layer.cornerRadius = 5
         
         return view
     }()
@@ -43,7 +53,7 @@ final class WritingView: BaseView {
     
     let titleTextField: UITextField = {
         let textField = UITextField()
-        textField.backgroundColor = .red
+        textField.backgroundColor = .systemBackground
         textField.font = UIFont(name: CustomFont.medium, size: 20)
         textField.placeholder = "제목"
         
@@ -59,9 +69,10 @@ final class WritingView: BaseView {
     
     let contentTextView: UITextView = {
         let view = UITextView()
-        view.backgroundColor = .diaryColor
+        view.backgroundColor = .systemBackground
         view.isScrollEnabled = false
         view.font = UIFont(name: CustomFont.medium, size: 15)
+        view.backgroundColor = .systemPink
         return view
     }()
     
@@ -74,6 +85,7 @@ final class WritingView: BaseView {
         let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         view.register(WritingPetCollectionViewCell.self, forCellWithReuseIdentifier: WritingPetCollectionViewCell.identifier)
         view.backgroundColor = .systemBackground
+        view.allowsMultipleSelection = true
         
         return view
     }()
@@ -100,7 +112,7 @@ final class WritingView: BaseView {
         scrollView.addSubview(contentView)
         
         self.addSubview(scrollView)
-        backgroundColor = .stringColor
+        backgroundColor = .systemBackground
     }
     
     override func setUpContraints() {
@@ -112,7 +124,8 @@ final class WritingView: BaseView {
         
         contentView.snp.makeConstraints { make in
             make.width.equalToSuperview()
-            make.centerX.top.bottom.equalToSuperview()
+            make.centerX.top.equalToSuperview()
+            make.bottom.equalTo(scrollView).offset(10)
         }
         
         withLabel.snp.makeConstraints { make in
@@ -122,7 +135,7 @@ final class WritingView: BaseView {
         }
         
         petCollectionView.snp.makeConstraints { make in
-            make.top.trailing.equalToSuperview()
+            make.top.trailing.equalTo(contentView)
             make.leading.equalTo(withLabel.snp.trailing).offset(12)
             make.height.equalTo(52)
         }
@@ -153,8 +166,9 @@ final class WritingView: BaseView {
         contentTextView.snp.makeConstraints { make in
             make.horizontalEdges.equalTo(titleTextField)
             make.top.equalTo(titleTextField.snp.bottom).offset(20)
-            make.height.greaterThanOrEqualTo(100)
+            make.height.greaterThanOrEqualTo(250)
             make.bottom.equalToSuperview()
+            
         }
         
     }
