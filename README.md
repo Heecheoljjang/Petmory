@@ -258,3 +258,34 @@
         - 컬렉션뷰에서 이미지 삭제 버튼 구현
 - 모아보기 UI 수정
 
+### 9/12
+
+#### 내용
+
+- 작성화면
+    - 펫 리스트 컬렉션뷰 UI 구현
+    - 이미지 컬렉션뷰 UI 구현
+    - PHPickerViewController적용(아직 사진 사용은 안함)
+    - 메모리에 선택한 펫 리스트 추가해서 모아보기 화면에서 필터링 구현
+    
+    
+
+#### 이슈
+
+- textView의 enableScroll을 false로 하면 길이는 자동으로 늘어나지만 IQKeyboardManager의 자동 스크롤이 적용되지않았음.
+    - 계속 고민하다가 해결 못 할 것 같아 내일 다시 하기로하고 다른 것으로 넘어가기로함.
+- 똑같은 이름의 반려동물은 등록하지않는다는 것을 전제로 깔고가기로함
+    - 등록은 가능하지만 같은 이름의 반려동물은 펫 리스트 컬렉션뷰에서 어차피 구분할 수 없음.
+        - 필터링을 이름을 기반으로하기때문에 구별이 안됨.
+- 텍스트뷰 placeholder 색이 조금 안맞는듯
+
+#### 기억할 것
+
+- shouldSelectItemAt은 didSelectItemAt이 실행되기전에 실행되는데, 반환값은 셀의 isSelected값을 반환하는거임. 즉, false를 반환하면 isSelected가 false가 되는 것.
+- realm의 Results 리스트의 인덱스는 offset으로 접근. (enumerated)
+  
+#### 내일 할 것(중요)
+
+- IQKeyboardManager 텍스트뷰 문제 해결
+- 디테일 화면 구현
+
