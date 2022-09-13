@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9716A8F828D0E4D600AC62FA /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9716A8F728D0E4D600AC62FA /* IQKeyboardManagerSwift */; };
+		974107A628D0459300617F8F /* CropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = 974107A528D0459300617F8F /* CropViewController */; };
 		9786304828CC15570042C2E2 /* TodayListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786304728CC15570042C2E2 /* TodayListView.swift */; };
 		9786304A28CC15630042C2E2 /* TodayListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786304928CC15630042C2E2 /* TodayListViewController.swift */; };
 		9786304D28CC1B3C0042C2E2 /* TodayListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786304C28CC1B3C0042C2E2 /* TodayListTableViewCell.swift */; };
@@ -29,7 +31,6 @@
 		97C7CBCE28CE3626007743FF /* WritingPetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C7CBCD28CE3626007743FF /* WritingPetCollectionViewCell.swift */; };
 		97C7CBD028CE3695007743FF /* BasePetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C7CBCF28CE3695007743FF /* BasePetCollectionViewCell.swift */; };
 		97C7CBD228CE4560007743FF /* WritingImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C7CBD128CE455F007743FF /* WritingImageCollectionViewCell.swift */; };
-		97C7CBD528CE59FF007743FF /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 97C7CBD428CE59FF007743FF /* IQKeyboardManagerSwift */; };
 		97C7CBD728CE6A17007743FF /* WritingViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C7CBD628CE6A17007743FF /* WritingViewController+Extension.swift */; };
 		97CF588228C8C9390062FEB9 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 97CF588128C8C9390062FEB9 /* SnapKit */; };
 		97CF588528C8C9820062FEB9 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 97CF588428C8C9820062FEB9 /* Realm */; };
@@ -117,9 +118,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9716A8F828D0E4D600AC62FA /* IQKeyboardManagerSwift in Frameworks */,
 				97CF588728C8C9820062FEB9 /* RealmSwift in Frameworks */,
-				97C7CBD528CE59FF007743FF /* IQKeyboardManagerSwift in Frameworks */,
 				97CF588528C8C9820062FEB9 /* Realm in Frameworks */,
+				974107A628D0459300617F8F /* CropViewController in Frameworks */,
 				97CF588228C8C9390062FEB9 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -378,7 +380,8 @@
 				97CF588128C8C9390062FEB9 /* SnapKit */,
 				97CF588428C8C9820062FEB9 /* Realm */,
 				97CF588628C8C9820062FEB9 /* RealmSwift */,
-				97C7CBD428CE59FF007743FF /* IQKeyboardManagerSwift */,
+				974107A528D0459300617F8F /* CropViewController */,
+				9716A8F728D0E4D600AC62FA /* IQKeyboardManagerSwift */,
 			);
 			productName = Petmory;
 			productReference = 9799F84128C7741C00E1C12C /* Petmory.app */;
@@ -411,7 +414,8 @@
 			packageReferences = (
 				97CF588028C8C9390062FEB9 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				97CF588328C8C9820062FEB9 /* XCRemoteSwiftPackageReference "realm-swift" */,
-				97C7CBD328CE59FF007743FF /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
+				974107A428D0459300617F8F /* XCRemoteSwiftPackageReference "TOCropViewController" */,
+				9716A8F628D0E4D600AC62FA /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 			);
 			productRefGroup = 9799F84228C7741C00E1C12C /* Products */;
 			projectDirPath = "";
@@ -697,12 +701,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		97C7CBD328CE59FF007743FF /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
+		9716A8F628D0E4D600AC62FA /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 6.5.0;
+			};
+		};
+		974107A428D0459300617F8F /* XCRemoteSwiftPackageReference "TOCropViewController" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/TimOliver/TOCropViewController.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
 			};
 		};
 		97CF588028C8C9390062FEB9 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
@@ -724,10 +736,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		97C7CBD428CE59FF007743FF /* IQKeyboardManagerSwift */ = {
+		9716A8F728D0E4D600AC62FA /* IQKeyboardManagerSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 97C7CBD328CE59FF007743FF /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
+			package = 9716A8F628D0E4D600AC62FA /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
 			productName = IQKeyboardManagerSwift;
+		};
+		974107A528D0459300617F8F /* CropViewController */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 974107A428D0459300617F8F /* XCRemoteSwiftPackageReference "TOCropViewController" */;
+			productName = CropViewController;
 		};
 		97CF588128C8C9390062FEB9 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
