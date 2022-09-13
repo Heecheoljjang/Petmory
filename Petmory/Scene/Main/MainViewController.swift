@@ -30,6 +30,7 @@ final class MainViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        createMemoryImageDirectory()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -59,6 +60,7 @@ final class MainViewController: BaseViewController {
     override func configure() {
         super.configure()
         
+        mainView.dateLabel.text = Date().dateToString()
         mainView.writingButton.addTarget(self, action: #selector(presentWritingView), for: .touchUpInside)
     }
     

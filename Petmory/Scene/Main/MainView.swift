@@ -36,7 +36,6 @@ final class MainView: BaseView {
         label.font = UIFont(name: CustomFont.light, size: 18)
         label.textColor = .stringColor
         label.textAlignment = .center
-        label.text = "2022.09.08"
         return label
     }()
     
@@ -52,7 +51,6 @@ final class MainView: BaseView {
         label.font = UIFont(name: CustomFont.medium, size: 12)
         label.textColor = .black
         label.textAlignment = .center
-        label.text = "10페이지"
 
         return label
     }()
