@@ -18,8 +18,8 @@ extension UIViewController {
         return documentDirectory
     }
     
-    //이미지 저장할 폴더 생성
-    func createImageDirectory() {
+    //메모리 이미지 저장할 폴더 생성
+    func createMemoryImageDirectory() {
         guard let documentDirectory = getDocumentDirectoryPath() else { return }
         
         let imageDirectory = documentDirectory.appendingPathComponent("images")
@@ -38,41 +38,29 @@ extension UIViewController {
         guard let documentDirectory = getDocumentDirectoryPath() else { return }
         
         let imageDirectory = documentDirectory.appendingPathComponent("images")
-        let originalImageURL = imageDirectory.appendingPathComponent("\(fileName)Original") //원본
-        let compressedImageURL = imageDirectory.appendingPathComponent("\(fileName)Compressed") //압축
+        let originalImageURL = imageDirectory.appendingPathComponent("\(fileName)") //원본
         
         guard let originalImageData = image.jpegData(compressionQuality: 1) else { return }
-        guard let compressedImageData = image.jpegData(compressionQuality: 0.4) else { return }
         
         do {
             try originalImageData.write(to: originalImageURL)
-            try compressedImageData.write(to: compressedImageURL)
         } catch {
             print("이미지 저장 오류")
         }
     }
     
     //이미지 불러오기
-    func loadImageFromDocument(fileName: String, isOriginal: Bool) -> UIImage? {
+    func loadImageFromDocument(fileName: String) -> UIImage? {
         guard let documentDirectory = getDocumentDirectoryPath() else { return nil }
         
         let imageDirectory = documentDirectory.appendingPathComponent("images")
-        if isOriginal == true {
-            let imageURL = imageDirectory.appendingPathComponent("\(fileName)Original")
-            if FileManager.default.fileExists(atPath: imageURL.path) {
-                return UIImage(contentsOfFile: imageURL.path)
-            } else {
-                //디폴트 이미지 설정
-                return nil
-            }
+        
+        let imageURL = imageDirectory.appendingPathComponent("\(fileName)")
+        if FileManager.default.fileExists(atPath: imageURL.path) {
+            return UIImage(contentsOfFile: imageURL.path)
         } else {
-            let imageURL = imageDirectory.appendingPathComponent("\(fileName)Compressed")
-            if FileManager.default.fileExists(atPath: imageURL.path) {
-                return UIImage(contentsOfFile: imageURL.path)
-            } else {
-                //디폴트 이미지 설정
-                return nil
-            }
+            //디폴트 이미지 설정
+            return nil
         }
     }
 }

@@ -59,6 +59,7 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType {
     
     //기록 추가
     func addMemory(item: UserMemory) {
+        
         do {
             try localRealm.write {
                 localRealm.add(item)

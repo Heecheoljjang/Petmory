@@ -14,15 +14,18 @@ final class UserMemory: Object {
     @Persisted var memoryDate = Date()
     @Persisted var petList: List<String>
     @Persisted var memoryContent: String
+    @Persisted var imageData: List<Data>
     
-    @Persisted(primaryKey: true) var objectId: ObjectId
+    @Persisted(primaryKey: true) var objectId: String
     
-    convenience init(memoryTitle: String, memoryDate: Date, petList: List<String>, memoryContent: String) {
+    convenience init(memoryTitle: String, memoryDate: Date, petList: List<String>, memoryContent: String, imageData: List<Data>, objectId: String) {
         self.init()
         self.memoryTitle = memoryTitle
         self.memoryDate = memoryDate
         self.memoryContent = memoryContent
         self.petList = petList
+        self.imageData = imageData
+        self.objectId = objectId
     }
 }
 

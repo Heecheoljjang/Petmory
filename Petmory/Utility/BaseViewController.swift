@@ -23,4 +23,8 @@ class BaseViewController: UIViewController {
     func setUpController() {}
     
     func setUpGesture() {}
+    
+    private func abc() {
+        self.view.backgroundColor = .white
+    }
 }

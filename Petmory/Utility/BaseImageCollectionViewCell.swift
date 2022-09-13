@@ -13,8 +13,9 @@ class BaseImageCollectionViewCell: UICollectionViewCell {
     
     let photoImageView: UIImageView = {
         let view = UIImageView()
-        view.contentMode = .scaleToFill
+        view.contentMode = .scaleAspectFill
         view.layer.cornerRadius = 5
+        view.backgroundColor = .systemGray5
         
         return view
     }()
