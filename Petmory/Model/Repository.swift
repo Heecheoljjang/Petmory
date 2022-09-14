@@ -52,6 +52,11 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType {
         }.sorted(byKeyPath: "memoryDate", ascending: false)
     }
     
+    //날짜별 데이터
+    func fetchDateFiltered(dateString: String) -> Results<UserMemory> {
+        return localRealm.objects(UserMemory.self).filter("memoryDate == '\(dateString)'")
+    }
+    
     //검색화면
     func fetchSearched(keyword: String) -> Results<UserMemory> {
         return localRealm.objects(UserMemory.self).filter("memoryTitle CONTAINS[c] '\(keyword)' OR memoryContent CONTAINS[c] '\(keyword)'")

@@ -11,14 +11,14 @@ import RealmSwift
 final class UserMemory: Object {
     
     @Persisted var memoryTitle: String
-    @Persisted var memoryDate = Date()
+    @Persisted var memoryDate: String
     @Persisted var petList: List<String>
     @Persisted var memoryContent: String
     @Persisted var imageData: List<Data>
     
     @Persisted(primaryKey: true) var objectId: String
     
-    convenience init(memoryTitle: String, memoryDate: Date, petList: List<String>, memoryContent: String, imageData: List<Data>, objectId: String) {
+    convenience init(memoryTitle: String, memoryDate: String, petList: List<String>, memoryContent: String, imageData: List<Data>, objectId: String) {
         self.init()
         self.memoryTitle = memoryTitle
         self.memoryDate = memoryDate
