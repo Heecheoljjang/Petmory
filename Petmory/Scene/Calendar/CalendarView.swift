@@ -78,5 +78,10 @@ final class CalendarView: BaseView {
             make.top.horizontalEdges.equalToSuperview()
             make.bottom.equalTo(diaryButton.snp.top)
         }
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(calendarView.snp.bottom)
+            make.horizontalEdges.equalToSuperview()
+            make.bottom.equalTo(self.safeAreaLayoutGuide)
+        }
     }
 }

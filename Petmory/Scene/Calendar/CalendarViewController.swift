@@ -76,7 +76,14 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CalendarTableViewCell.identifier) as? CalendarTableViewCell else { return UITableViewCell() }
+        cell.colorView.backgroundColor = .red
+        cell.titleLabel.text = "하위"
+        cell.dateLabel.text = Date().dateToString()
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 64
     }
 }
