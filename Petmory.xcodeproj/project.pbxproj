@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		9716A8F828D0E4D600AC62FA /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9716A8F728D0E4D600AC62FA /* IQKeyboardManagerSwift */; };
 		974107A628D0459300617F8F /* CropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = 974107A528D0459300617F8F /* CropViewController */; };
+		9781F0A128D16016008E6DBB /* MemoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9781F0A028D16016008E6DBB /* MemoryDetailView.swift */; };
+		9781F0A328D16029008E6DBB /* MemoryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9781F0A228D16029008E6DBB /* MemoryDetailViewController.swift */; };
+		9781F0A728D186EF008E6DBB /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 9781F0A628D186EF008E6DBB /* FSCalendar */; };
+		9781F0AF28D1A0C5008E6DBB /* CalendarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9781F0AE28D1A0C5008E6DBB /* CalendarTableViewCell.swift */; };
 		9786304828CC15570042C2E2 /* TodayListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786304728CC15570042C2E2 /* TodayListView.swift */; };
 		9786304A28CC15630042C2E2 /* TodayListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786304928CC15630042C2E2 /* TodayListViewController.swift */; };
 		9786304D28CC1B3C0042C2E2 /* TodayListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786304C28CC1B3C0042C2E2 /* TodayListTableViewCell.swift */; };
@@ -62,6 +66,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9781F0A028D16016008E6DBB /* MemoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryDetailView.swift; sourceTree = "<group>"; };
+		9781F0A228D16029008E6DBB /* MemoryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryDetailViewController.swift; sourceTree = "<group>"; };
+		9781F0AE28D1A0C5008E6DBB /* CalendarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTableViewCell.swift; sourceTree = "<group>"; };
 		9786304728CC15570042C2E2 /* TodayListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayListView.swift; sourceTree = "<group>"; };
 		9786304928CC15630042C2E2 /* TodayListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayListViewController.swift; sourceTree = "<group>"; };
 		9786304C28CC1B3C0042C2E2 /* TodayListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayListTableViewCell.swift; sourceTree = "<group>"; };
@@ -119,6 +126,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9716A8F828D0E4D600AC62FA /* IQKeyboardManagerSwift in Frameworks */,
+				9781F0A728D186EF008E6DBB /* FSCalendar in Frameworks */,
 				97CF588728C8C9820062FEB9 /* RealmSwift in Frameworks */,
 				97CF588528C8C9820062FEB9 /* Realm in Frameworks */,
 				974107A628D0459300617F8F /* CropViewController in Frameworks */,
@@ -129,6 +137,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9781F09F28D15FBD008E6DBB /* MemoryDetail */ = {
+			isa = PBXGroup;
+			children = (
+				9781F0A428D17515008E6DBB /* Cell */,
+				9781F0A028D16016008E6DBB /* MemoryDetailView.swift */,
+				9781F0A228D16029008E6DBB /* MemoryDetailViewController.swift */,
+			);
+			path = MemoryDetail;
+			sourceTree = "<group>";
+		};
+		9781F0A428D17515008E6DBB /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		9781F0A928D1A07C008E6DBB /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				9781F0AE28D1A0C5008E6DBB /* CalendarTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		9786304628CC153E0042C2E2 /* TodayList */ = {
 			isa = PBXGroup;
 			children = (
@@ -280,6 +313,7 @@
 		97CF588A28C8CBBF0062FEB9 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				9781F09F28D15FBD008E6DBB /* MemoryDetail */,
 				9786305228CC3B4D0042C2E2 /* Writing */,
 				9786304628CC153E0042C2E2 /* TodayList */,
 				97CF58A228CAC6D70062FEB9 /* MainView.swift */,
@@ -291,6 +325,7 @@
 		97CF588B28C8CBD50062FEB9 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				9781F0A928D1A07C008E6DBB /* Cell */,
 				9786305828CC5A260042C2E2 /* CalendarView.swift */,
 				9786305A28CC5A2F0042C2E2 /* CalendarViewController.swift */,
 			);
@@ -382,6 +417,7 @@
 				97CF588628C8C9820062FEB9 /* RealmSwift */,
 				974107A528D0459300617F8F /* CropViewController */,
 				9716A8F728D0E4D600AC62FA /* IQKeyboardManagerSwift */,
+				9781F0A628D186EF008E6DBB /* FSCalendar */,
 			);
 			productName = Petmory;
 			productReference = 9799F84128C7741C00E1C12C /* Petmory.app */;
@@ -416,6 +452,7 @@
 				97CF588328C8C9820062FEB9 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				974107A428D0459300617F8F /* XCRemoteSwiftPackageReference "TOCropViewController" */,
 				9716A8F628D0E4D600AC62FA /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
+				9781F0A528D186EF008E6DBB /* XCRemoteSwiftPackageReference "FSCalendar" */,
 			);
 			productRefGroup = 9799F84228C7741C00E1C12C /* Products */;
 			projectDirPath = "";
@@ -446,6 +483,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9781F0A328D16029008E6DBB /* MemoryDetailViewController.swift in Sources */,
 				9786306928CC92E30042C2E2 /* SearchViewController+Extension.swift in Sources */,
 				97C7CBC428CD8974007743FF /* RegisterPetView.swift in Sources */,
 				97CF58B228CB4C6E0062FEB9 /* AllMemoryTableViewCell.swift in Sources */,
@@ -453,6 +491,7 @@
 				97CF58B828CB55EC0062FEB9 /* AllMemoryViewController+Extension.swift in Sources */,
 				97C7CBC828CDC3D7007743FF /* Date+Extension.swift in Sources */,
 				9786305628CC3B5E0042C2E2 /* WritingViewController.swift in Sources */,
+				9781F0AF28D1A0C5008E6DBB /* CalendarTableViewCell.swift in Sources */,
 				97CF589A28CA33800062FEB9 /* UIViewController+Extension.swift in Sources */,
 				9786305F28CC5A980042C2E2 /* MyPetViewController.swift in Sources */,
 				97C7CBD728CE6A17007743FF /* WritingViewController+Extension.swift in Sources */,
@@ -463,6 +502,7 @@
 				97CF58CF28CBA31F0062FEB9 /* UICollectionViewCell+Extension.swift in Sources */,
 				97CF589428C9058E0062FEB9 /* Repository.swift in Sources */,
 				97CF58A728CAE2A60062FEB9 /* UIColor+Extension.swift in Sources */,
+				9781F0A128D16016008E6DBB /* MemoryDetailView.swift in Sources */,
 				9786305B28CC5A2F0042C2E2 /* CalendarViewController.swift in Sources */,
 				97CF588928C8CB8F0062FEB9 /* TabBarController.swift in Sources */,
 				97CF58CD28CBA2C70062FEB9 /* BaseImageCollectionViewCell.swift in Sources */,
@@ -717,6 +757,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		9781F0A528D186EF008E6DBB /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		97CF588028C8C9390062FEB9 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -745,6 +793,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 974107A428D0459300617F8F /* XCRemoteSwiftPackageReference "TOCropViewController" */;
 			productName = CropViewController;
+		};
+		9781F0A628D186EF008E6DBB /* FSCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9781F0A528D186EF008E6DBB /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
 		};
 		97CF588128C8C9390062FEB9 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
