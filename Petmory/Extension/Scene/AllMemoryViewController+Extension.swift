@@ -19,8 +19,7 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AllMemoryTableViewCell.identifier, for: indexPath) as? AllMemoryTableViewCell else { return UITableViewCell() }
         
         cell.memoryTitle.text = tasks[indexPath.row].memoryTitle
-        //cell.memoryDate.text = "\(tasks[indexPath.row].memoryDate)"
-        cell.memoryDate.text = tasks[indexPath.row].memoryDate.dateToString()
+        cell.memoryDate.text = tasks[indexPath.row].memoryDate
         return cell
     }
     

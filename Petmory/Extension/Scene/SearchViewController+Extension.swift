@@ -17,7 +17,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UISe
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.identifier) as? SearchResultTableViewCell else { return UITableViewCell() }
         cell.memoryTitle.text = tasks[indexPath.row].memoryTitle
-        cell.memoryDate.text = "\(tasks[indexPath.row].memoryDate.dateToString())"
+        cell.memoryDate.text = "\(tasks[indexPath.row].memoryDate)"
         
         return cell
     }
