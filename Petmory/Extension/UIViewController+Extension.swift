@@ -72,6 +72,7 @@ extension UIViewController {
         case present
         case presentOver
         case presentNavigation
+        case presentNavigationModally
         case push
         case pop
         case dismiss
@@ -88,6 +89,9 @@ extension UIViewController {
         case .presentNavigation:
             let navi = UINavigationController(rootViewController: viewController)
             navi.modalPresentationStyle = .fullScreen
+            self.present(navi, animated: true)
+        case .presentNavigationModally:
+            let navi = UINavigationController(rootViewController: viewController)
             self.present(navi, animated: true)
         case .push:
             self.navigationController?.pushViewController(viewController, animated: true)
