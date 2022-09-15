@@ -66,7 +66,7 @@ final class CalendarView: BaseView {
         
         calendarView.snp.makeConstraints { make in
             make.top.horizontalEdges.equalTo(self.safeAreaLayoutGuide)
-            make.height.equalToSuperview().multipliedBy(0.3)
+            make.height.equalToSuperview().multipliedBy(0.5)
         }
         diaryButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview()

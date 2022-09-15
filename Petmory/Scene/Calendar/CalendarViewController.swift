@@ -20,7 +20,14 @@ final class CalendarViewController: BaseViewController {
         }
     }
     
-    var selectDate = ""
+    var calendarTask: Results<UserCalendar>! {
+        didSet {
+            print(calendarTask)
+            mainView.tableView.reloadData()
+        }
+    }
+    
+    var selectDate = Date()
     
     let repository = UserRepository()
     
@@ -31,11 +38,21 @@ final class CalendarViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        calendarTask = repository.fetchCalendar(date: Date())
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadTableView), name: NSNotification.Name("reloadTableView"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        mainView.tableView.reloadData()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         
+//        NotificationCenter.default.removeObserver(NSNotification(name: NSNotification.Name("reloadTableView"), object: nil))
     }
     
     override func setUpController() {
@@ -52,33 +69,41 @@ final class CalendarViewController: BaseViewController {
         mainView.calendar.dataSource = self
     }
     
+    //MARK: - @objc
+    
     @objc private func presentAddCalendarView() {
-        
+        let vc = AddCalendarViewController()
+        //vc.selectedDate = selectDate
+        transition(AddCalendarViewController(), transitionStyle: .presentNavigationModally)
+    }
+    
+    @objc private func reloadTableView(_ notification: NSNotification) {
+        mainView.tableView.reloadData()
     }
 }
 
 extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        selectDate = date.dateToString()
+        selectDate = date
         print(selectDate)
-        print(monthPosition)
-        memories = repository.fetchDateFiltered(dateString: selectDate)
-        print(memories.count)
+        
+//        memories = repository.fetchDateFiltered(dateString: selectDate)
+        calendarTask = repository.fetchCalendar(date: date)
     }
 }
 
 extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return calendarTask.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CalendarTableViewCell.identifier) as? CalendarTableViewCell else { return UITableViewCell() }
-        cell.colorView.backgroundColor = .red
-        cell.titleLabel.text = "하위"
-        cell.dateLabel.text = Date().dateToString()
+        cell.colorView.backgroundColor = .getCustomColor(calendarTask[indexPath.row].color)
+        cell.titleLabel.text = calendarTask[indexPath.row].title
+        cell.dateLabel.text = calendarTask[indexPath.row].date.dateToString(type: .onlyTime)
         
         return cell
     }
