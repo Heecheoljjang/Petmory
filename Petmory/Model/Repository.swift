@@ -34,7 +34,18 @@ protocol UserPetRepositoryType {
     func deletePet(item: UserPet)
 }
 
-final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType {
+protocol UserCalendarRepositoryType {
+    
+    func fetchCalendar(date: Date) -> Results<UserCalendar>
+    
+    func addCalendar(item: UserCalendar)
+    
+    func updateCalendar(item: UserCalendar, title: String, date: Date, color: String, comment: String)
+    
+    func deleteCalendar(item: UserCalendar)
+}
+
+final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType, UserCalendarRepositoryType {
     
     let localRealm = try! Realm()
     
@@ -135,4 +146,31 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType {
             print("펫 삭제 오류")
         }
     }
+    
+    //MARK: - Calendar
+    
+    func fetchCalendar(date: Date) -> Results<UserCalendar> {
+        
+        return localRealm.objects(UserCalendar.self).filter("dateString == '\(date.dateToString(type: .simple))'").sorted(byKeyPath: "date", ascending: true)
+    }
+    
+    func addCalendar(item: UserCalendar) {
+        do {
+            try localRealm.write {
+                localRealm.add(item)
+                print(localRealm.configuration.fileURL!)
+            }
+        }catch {
+            print("일정 저장 오류")
+        }
+    }
+    
+    func updateCalendar(item: UserCalendar, title: String, date: Date, color: String, comment: String) {
+        
+    }
+    
+    func deleteCalendar(item: UserCalendar) {
+        
+    }
+    
 }
