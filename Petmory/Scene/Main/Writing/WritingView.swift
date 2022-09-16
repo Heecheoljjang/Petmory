@@ -30,7 +30,7 @@ final class WritingView: BaseView {
         
         let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         view.register(WritingImageCollectionViewCell.self, forCellWithReuseIdentifier: WritingImageCollectionViewCell.identifier)
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .systemGray6
         view.isPagingEnabled = true
         view.layer.cornerRadius = 5
         

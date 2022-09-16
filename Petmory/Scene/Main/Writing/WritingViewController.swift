@@ -86,7 +86,7 @@ final class WritingViewController: BaseViewController {
         mainView.petCollectionView.delegate = self
         mainView.petCollectionView.dataSource = self
         mainView.contentTextView.delegate = self
-        mainView.titleTextField.delegate = self
+        //mainView.titleTextField.delegate = self
         
     }
     
