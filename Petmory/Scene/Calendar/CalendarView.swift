@@ -42,7 +42,17 @@ final class CalendarView: BaseView {
     let tableView: UITableView = {
         let view = UITableView()
         view.register(CalendarTableViewCell.self, forCellReuseIdentifier: CalendarTableViewCell.identifier)
+        view.separatorStyle = .none
         return view
+    }()
+    
+    let noTaskLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: CustomFont.medium, size: 22)
+        label.text = "일정 없음"
+        label.textColor = .lightGray
+        
+        return label
     }()
     
     override init(frame: CGRect) {
@@ -55,7 +65,7 @@ final class CalendarView: BaseView {
         [calendar, diaryButton].forEach {
             calendarView.addSubview($0)
         }
-        [calendarView, tableView].forEach {
+        [calendarView, noTaskLabel, tableView].forEach {
             self.addSubview($0)
         }
         backgroundColor = .white
@@ -82,6 +92,9 @@ final class CalendarView: BaseView {
             make.top.equalTo(calendarView.snp.bottom)
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalTo(self.safeAreaLayoutGuide)
+        }
+        noTaskLabel.snp.makeConstraints { make in
+            make.center.equalTo(tableView)
         }
     }
 }

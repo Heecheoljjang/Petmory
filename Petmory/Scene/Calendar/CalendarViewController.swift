@@ -23,6 +23,13 @@ final class CalendarViewController: BaseViewController {
     var calendarTask: Results<UserCalendar>! {
         didSet {
             //print(calendarTask)
+            if calendarTask.count == 0 {
+                mainView.tableView.isHidden = true
+                mainView.noTaskLabel.isHidden = false
+            } else {
+                mainView.tableView.isHidden = false
+                mainView.noTaskLabel.isHidden = true
+            }
             mainView.tableView.reloadData()
         }
     }
@@ -40,7 +47,8 @@ final class CalendarViewController: BaseViewController {
         
         calendarTask = repository.fetchCalendar(date: Date())
         
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadTableView), name: NSNotification.Name("reloadTableView"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadTableView(_ :)), name: NSNotification.Name.doneButton, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadTableView(_ :)), name: NSNotification.Name.deleteButton, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -48,13 +56,7 @@ final class CalendarViewController: BaseViewController {
 
         mainView.tableView.reloadData()
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-//        NotificationCenter.default.removeObserver(NSNotification(name: NSNotification.Name("reloadTableView"), object: nil))
-    }
-    
+
     override func setUpController() {
         super.setUpController()
         
@@ -73,11 +75,14 @@ final class CalendarViewController: BaseViewController {
     
     @objc private func presentAddCalendarView() {
         let vc = AddCalendarViewController()
+        vc.currentStatus = CurrentStatus.new
         vc.selectedDate = selectDate.nearestHour()
         transition(vc, transitionStyle: .presentNavigationModally)
     }
     
     @objc private func reloadTableView(_ notification: NSNotification) {
+        print("123")
+        calendarTask = repository.fetchCalendar(date: selectDate)
         mainView.tableView.reloadData()
     }
 }
@@ -90,6 +95,14 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
         
 //        memories = repository.fetchDateFiltered(dateString: selectDate)
         calendarTask = repository.fetchCalendar(date: date)
+        
+        if calendarTask.count == 0 {
+            mainView.tableView.isHidden = true
+            mainView.noTaskLabel.isHidden = false
+        } else {
+            mainView.tableView.isHidden = false
+            mainView.noTaskLabel.isHidden = true
+        }
     }
 }
 
@@ -99,13 +112,24 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         return calendarTask.count
     }
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return selectDate.dateToString(type: .simple)
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CalendarTableViewCell.identifier) as? CalendarTableViewCell else { return UITableViewCell() }
-        cell.colorView.backgroundColor = .getCustomColor(calendarTask[indexPath.row].color)
+        cell.colorView.backgroundColor = .setCustomColor(calendarTask[indexPath.row].color)
         cell.titleLabel.text = calendarTask[indexPath.row].title
         cell.dateLabel.text = calendarTask[indexPath.row].date.dateToString(type: .onlyTime)
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let editCalendarViewController = AddCalendarViewController()
+        editCalendarViewController.task = calendarTask[indexPath.row]
+        editCalendarViewController.currentStatus = CurrentStatus.edit
+        transition(editCalendarViewController, transitionStyle: .presentNavigationModally)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
