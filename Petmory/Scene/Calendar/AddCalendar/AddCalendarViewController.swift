@@ -58,7 +58,6 @@ final class AddCalendarViewController: BaseViewController {
     override func configure() {
         super.configure()
         
-        
         //날짜 텍스트필드
         if selectedDate == nil {
             selectedDate = Date().nearestHour()
@@ -67,6 +66,7 @@ final class AddCalendarViewController: BaseViewController {
         mainView.dateTextField.inputView = mainView.datePicker
         mainView.dateTextField.delegate = self
         mainView.datePicker.addTarget(self, action: #selector(selectDate), for: .valueChanged)
+        mainView.datePicker.date = selectedDate!
         
         
         //색 버튼 액션 -> 제목 옆의 colorView 색 바꿔주기 + 현재 색 저장
