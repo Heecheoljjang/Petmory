@@ -26,7 +26,7 @@ extension UIColor {
     static let customYellow = UIColor(red: 0xEA/0xFF, green: 0xEE/0xFF, blue: 0x80/0xFF, alpha: 1)
     static let customBlue = UIColor(red: 0x5C/0xFF, green: 0x9A/0xFF, blue: 0xD1/0xFF, alpha: 1)
     
-    static func getCustomColor(_ color: String) -> UIColor {
+    static func setCustomColor(_ color: String) -> UIColor {
         switch color {
         case CustomColor.customRed.rawValue:
             return UIColor.customRed
