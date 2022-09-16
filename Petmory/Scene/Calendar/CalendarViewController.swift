@@ -16,13 +16,13 @@ final class CalendarViewController: BaseViewController {
     
     var memories: Results<UserMemory>! {
         didSet {
-            print("memories: \(memories)")
+            //print("memories: \(memories)")
         }
     }
     
     var calendarTask: Results<UserCalendar>! {
         didSet {
-            print(calendarTask)
+            //print(calendarTask)
             mainView.tableView.reloadData()
         }
     }
@@ -73,8 +73,8 @@ final class CalendarViewController: BaseViewController {
     
     @objc private func presentAddCalendarView() {
         let vc = AddCalendarViewController()
-        //vc.selectedDate = selectDate
-        transition(AddCalendarViewController(), transitionStyle: .presentNavigationModally)
+        vc.selectedDate = selectDate.nearestHour()
+        transition(vc, transitionStyle: .presentNavigationModally)
     }
     
     @objc private func reloadTableView(_ notification: NSNotification) {
@@ -85,8 +85,8 @@ final class CalendarViewController: BaseViewController {
 extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        selectDate = date
-        print(selectDate)
+        selectDate = date.nearestHour()
+        print("calendarDate: \(selectDate)")
         
 //        memories = repository.fetchDateFiltered(dateString: selectDate)
         calendarTask = repository.fetchCalendar(date: date)

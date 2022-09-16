@@ -16,7 +16,10 @@ final class AddCalendarViewController: BaseViewController {
     
     private var currentColor = CustomColor.customDefault.rawValue
     
-    private var selectedDate = Date().nearestHour()
+    //private var selectedDate = Date().nearestHour()
+    var selectedDate: Date?
+    
+    private var placeholderText = "메모"
     
     override func loadView() {
         self.view = mainView
@@ -24,11 +27,13 @@ final class AddCalendarViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
+        print(selectedDate)
     }
     
     override func setUpController() {
@@ -53,8 +58,12 @@ final class AddCalendarViewController: BaseViewController {
     override func configure() {
         super.configure()
         
+        
         //날짜 텍스트필드
-        mainView.dateTextField.text = selectedDate.nearestHour().dateToString(type: .full)
+        if selectedDate == nil {
+            selectedDate = Date().nearestHour()
+        }
+        mainView.dateTextField.text = selectedDate!.dateToString(type: .full)
         mainView.dateTextField.inputView = mainView.datePicker
         mainView.dateTextField.delegate = self
         mainView.datePicker.addTarget(self, action: #selector(selectDate), for: .valueChanged)
@@ -69,6 +78,11 @@ final class AddCalendarViewController: BaseViewController {
         mainView.sixthButton.addTarget(self, action: #selector(changeColorView(_ :)), for: .touchUpInside)
         mainView.seventhButton.addTarget(self, action: #selector(changeColorView(_ :)), for: .touchUpInside)
         
+        //메모 텍스트뷰
+        mainView.memoTextView.delegate = self
+        mainView.memoTextView.text = placeholderText
+        mainView.memoTextView.textColor = .placeholderColor
+        
     }
     
     //MARK: - @objc
@@ -81,7 +95,7 @@ final class AddCalendarViewController: BaseViewController {
     @objc private func doneAddingCalendar() {
         //데이터 추가
         if mainView.titleTextField.text != nil {
-            repository.addCalendar(item: UserCalendar(title: mainView.titleTextField.text!, date: selectedDate, dateString: selectedDate.dateToString(type: .simple), color: currentColor, comment: mainView.memoTextView.text, registerDate: Date()))
+            repository.addCalendar(item: UserCalendar(title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple), color: currentColor, comment: mainView.memoTextView.text, registerDate: Date()))
         } else {
             //제목 작성하라고 alert
         }
@@ -120,7 +134,7 @@ final class AddCalendarViewController: BaseViewController {
         
         mainView.dateTextField.text = sender.date.dateToString(type: .full)
         selectedDate = sender.date
-        print(selectedDate)
+        print("datePickerDate: \(selectedDate)")
     }
 }
 
@@ -136,3 +150,19 @@ extension AddCalendarViewController: UITextFieldDelegate {
     }
 }
 
+extension AddCalendarViewController: UITextViewDelegate {
+
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == .placeholderColor {
+            textView.textColor = .black
+            textView.text = ""
+        }
+    }
+
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text == "" {
+            textView.text = placeholderText
+            textView.textColor = .placeholderColor
+        }
+    }
+}
