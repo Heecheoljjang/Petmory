@@ -103,10 +103,11 @@ final class AddCalendarViewController: BaseViewController {
             mainView.memoTextView.textColor = .placeholderColor
         } else {
             if let task = task {
+                currentColor = task.color
                 mainView.titleTextField.text = task.title
                 mainView.titleColorView.backgroundColor = .setCustomColor(task.color)
                 mainView.dateTextField.text = task.date.dateToString(type: .full)
-                if mainView.memoTextView.text == "" {
+                if task.comment == "" {
                     mainView.memoTextView.text = placeholderText
                     mainView.memoTextView.textColor = .placeholderColor
                 } else {
@@ -126,17 +127,39 @@ final class AddCalendarViewController: BaseViewController {
         transition(self, transitionStyle: .dismiss)
     }
     @objc private func doneAddingCalendar() {
-        //데이터 추가
-        if mainView.titleTextField.text != nil {
-            if mainView.memoTextView.textColor == .placeholderColor {
-                repository.addCalendar(item: UserCalendar(title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple), color: currentColor, comment: "", registerDate: Date()))
+        print(mainView.memoTextView.textColor)
+        if currentStatus == CurrentStatus.new {
+            //데이터 추가
+            if mainView.titleTextField.text != "" {
+                if mainView.memoTextView.textColor == .placeholderColor {
+                    repository.addCalendar(item: UserCalendar(title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple), color: currentColor, comment: "", registerDate: Date()))
+                } else {
+                    repository.addCalendar(item: UserCalendar(title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple), color: currentColor, comment: mainView.memoTextView.text, registerDate: Date()))
+                }
             } else {
-                repository.addCalendar(item: UserCalendar(title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple), color: currentColor, comment: mainView.memoTextView.text, registerDate: Date()))
+                //제목 작성하라고 alert
             }
         } else {
-            //제목 작성하라고 alert
+            //데이터 수정
+            if let task = task {
+                if task.title != mainView.titleTextField.text! || task.color != currentColor || task.date != selectedDate! || task.comment != mainView.memoTextView.text {
+                    if mainView.titleTextField.text! == "" {
+                        //제목 입력하라고 alert
+                        
+                        
+                        
+                    } else {
+                        if mainView.memoTextView.textColor == .placeholderColor {
+                            repository.updateCalendar(item: task, title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple),color: currentColor, comment: "")
+                        } else {
+                            repository.updateCalendar(item: task, title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple),color: currentColor, comment: mainView.memoTextView.text)
+                        }
+                        
+                    }
+                }
+            }
+                
         }
-        
         NotificationCenter.default.post(name: NSNotification.Name.doneButton, object: nil)
         transition(self, transitionStyle: .dismiss)
     }

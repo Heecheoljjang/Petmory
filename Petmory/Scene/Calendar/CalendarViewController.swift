@@ -81,7 +81,6 @@ final class CalendarViewController: BaseViewController {
     }
     
     @objc private func reloadTableView(_ notification: NSNotification) {
-        print("123")
         calendarTask = repository.fetchCalendar(date: selectDate)
         mainView.tableView.reloadData()
     }
@@ -128,6 +127,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let editCalendarViewController = AddCalendarViewController()
         editCalendarViewController.task = calendarTask[indexPath.row]
+        editCalendarViewController.selectedDate = calendarTask[indexPath.row].date
         editCalendarViewController.currentStatus = CurrentStatus.edit
         transition(editCalendarViewController, transitionStyle: .presentNavigationModally)
     }
