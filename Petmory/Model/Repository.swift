@@ -40,7 +40,7 @@ protocol UserCalendarRepositoryType {
     
     func addCalendar(item: UserCalendar)
     
-    func updateCalendar(item: UserCalendar, title: String, date: Date, color: String, comment: String)
+    func updateCalendar(item: UserCalendar, title: String, date: Date, dateString: String, color: String, comment: String)
     
     func deleteCalendar(item: UserCalendar)
 }
@@ -165,12 +165,28 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType, Use
         }
     }
     
-    func updateCalendar(item: UserCalendar, title: String, date: Date, color: String, comment: String) {
-        
+    func updateCalendar(item: UserCalendar, title: String, date: Date, dateString: String, color: String, comment: String) {
+        do {
+            try localRealm.write {
+                item.title = title
+                item.date = date
+                item.color = color
+                item.comment = comment
+                item.dateString = dateString
+            }
+        } catch {
+            print("펫 수정 오류")
+        }
     }
     
     func deleteCalendar(item: UserCalendar) {
-        
+        do {
+            try localRealm.write {
+                localRealm.delete(item)
+            }
+        } catch {
+            print("일정 삭제 오류")
+        }
     }
     
 }
