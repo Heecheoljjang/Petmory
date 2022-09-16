@@ -10,16 +10,14 @@ import UIKit
 import SnapKit
 
 final class WritingView: BaseView {
-    
+
     let scrollView: UIScrollView = {
         let view = UIScrollView()
-        view.backgroundColor = .systemTeal
         return view
     }()
-    
+
     let contentView: UIView = {
         let view = UIView()
-        view.backgroundColor = .yellow
         return view
     }()
     
@@ -72,7 +70,6 @@ final class WritingView: BaseView {
         view.backgroundColor = .systemBackground
         view.isScrollEnabled = false
         view.font = UIFont(name: CustomFont.medium, size: 15)
-        view.backgroundColor = .systemPink
         return view
     }()
     
@@ -108,10 +105,11 @@ final class WritingView: BaseView {
         [imageCollectionView, pickButton, titleTextFieldLineView, titleTextField, contentTextView, petCollectionView, withLabel].forEach {
             contentView.addSubview($0)
         }
-    
+
         scrollView.addSubview(contentView)
-        
+
         self.addSubview(scrollView)
+
         backgroundColor = .systemBackground
     }
     
@@ -121,7 +119,7 @@ final class WritingView: BaseView {
         scrollView.snp.makeConstraints { make in
             make.edges.equalTo(self.safeAreaLayoutGuide)
         }
-        
+
         contentView.snp.makeConstraints { make in
             make.width.equalToSuperview()
             make.centerX.top.equalToSuperview()
@@ -129,13 +127,16 @@ final class WritingView: BaseView {
         }
         
         withLabel.snp.makeConstraints { make in
-            make.leading.equalTo(self).offset(20)
+//            make.leading.equalTo(self).offset(20)
+//            make.top.equalTo(self.safeAreaLayoutGuide)
+            make.leading.equalToSuperview().offset(20)
             make.top.equalToSuperview()
             make.height.equalTo(52)
         }
         
         petCollectionView.snp.makeConstraints { make in
             make.top.trailing.equalTo(contentView)
+            //make.top.trailing.equalTo(self.safeAreaLayoutGuide)
             make.leading.equalTo(withLabel.snp.trailing).offset(12)
             make.height.equalTo(52)
         }
@@ -166,7 +167,7 @@ final class WritingView: BaseView {
         contentTextView.snp.makeConstraints { make in
             make.horizontalEdges.equalTo(titleTextField)
             make.top.equalTo(titleTextField.snp.bottom).offset(20)
-            make.height.greaterThanOrEqualTo(250)
+            make.height.greaterThanOrEqualTo(200)
             make.bottom.equalToSuperview()
             
         }

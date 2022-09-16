@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import PhotosUI
+import CropViewController
 
 //MARK: - CollectionView
 extension WritingViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -16,7 +17,7 @@ extension WritingViewController: UICollectionViewDelegate, UICollectionViewDataS
         if collectionView == mainView.petCollectionView {
             return petList.count
         } else {
-            return 10
+            return imageList.count
         }
     }
     
@@ -37,35 +38,10 @@ extension WritingViewController: UICollectionViewDelegate, UICollectionViewDataS
             return cell
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WritingImageCollectionViewCell.identifier, for: indexPath) as? WritingImageCollectionViewCell else { return UICollectionViewCell() }
-            cell.photoImageView.backgroundColor = .systemTeal
-            
+            cell.photoImageView.image = UIImage(data: imageList[indexPath.item])
             return cell
         }
     }
-    
-    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        if collectionView == mainView.petCollectionView {
-            guard let cell = collectionView.cellForItem(at: indexPath) else { return true }
-            if cell.isSelected == true {
-                collectionView.deselectItem(at: indexPath, animated: true)
-                petIsSelected[indexPath.item].toggle()
-            
-                return false
-            } else {
-                collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
-                petIsSelected[indexPath.item].toggle()
-
-                return true
-            }
-        }
-        else {
-            //이미지 편집 등 띄우기
-            guard let cell = collectionView.cellForItem(at: indexPath) else { return true }
-            
-            return true
-        }
-    }
-    
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -95,7 +71,41 @@ extension WritingViewController: UICollectionViewDelegate, UICollectionViewDataS
 extension WritingViewController: PHPickerViewControllerDelegate {
     
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        print(results)
+
+        transition(self, transitionStyle: .dismiss)
+        
+        //편집 띄우기
+        let itemProvider = results.first?.itemProvider
+        
+        itemProvider?.loadObject(ofClass: UIImage.self) { image, error in
+            DispatchQueue.main.async {
+                guard let selectedImage = image as? UIImage else { return }
+                let cropViewController = CropViewController(image: selectedImage)
+                cropViewController.delegate = self
+                cropViewController.doneButtonColor = .stringColor
+                cropViewController.cancelButtonColor = .stringColor
+                cropViewController.doneButtonTitle = "완료"
+                cropViewController.cancelButtonTitle = "취소"
+                self.transition(cropViewController, transitionStyle: .present)
+
+            }
+        }
+    }
+}
+
+//MARK: - CropViewController
+extension WritingViewController: CropViewControllerDelegate {
+    func cropViewController(_ cropViewController: CropViewController, didCropToImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
+//        guard let imageData = image.jpegData(compressionQuality: 0.2) else { return }
+//        if let compressedImage = UIImage(data: imageData) {
+//            imageArray.append(compressedImage)
+//        }
+//        transition(self, transitionStyle: .dismiss)
+        guard let imageData = image.jpegData(compressionQuality: 0.2) else { return }
+        
+        imageList.append(imageData)
+        print(imageList)
+        mainView.imageCollectionView.reloadData()
         transition(self, transitionStyle: .dismiss)
     }
 }
@@ -103,18 +113,26 @@ extension WritingViewController: PHPickerViewControllerDelegate {
 //MARK: - TextView
 extension WritingViewController: UITextViewDelegate {
 
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == .placeholderColor {
-            textView.textColor = .black
-            textView.text = ""
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+
+        let writingContentVC = WritingContentViewController()
+        
+        writingContentVC.sendContentText = { text in
+            if text == "" {
+                self.mainView.contentTextView.text = "오늘 하루를 어떻게 보내셨나요?"
+                self.mainView.contentTextView.textColor = .placeholderColor
+            } else {
+                self.mainView.contentTextView.text = text
+                self.mainView.contentTextView.textColor = .black
+            }
         }
-    }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text == "" {
-            textView.text = placeholderText
-            textView.textColor = .placeholderColor
+        if mainView.contentTextView.textColor == .placeholderColor {
+            writingContentVC.mainView.textView.text = ""
+        } else {
+            writingContentVC.mainView.textView.text = mainView.contentTextView.text
         }
+        
+        transition(writingContentVC, transitionStyle: .presentNavigationModally)
+        return false
     }
-    
 }
