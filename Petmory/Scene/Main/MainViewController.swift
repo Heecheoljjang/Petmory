@@ -60,7 +60,7 @@ final class MainViewController: BaseViewController {
     override func configure() {
         super.configure()
         
-        mainView.dateLabel.text = Date().dateToString()
+        mainView.dateLabel.text = Date().dateToString(type: .simple)
         mainView.writingButton.addTarget(self, action: #selector(presentWritingView), for: .touchUpInside)
     }
     
