@@ -13,6 +13,8 @@ final class MemoryDetailViewController: BaseViewController {
     
     var memoryTask: UserMemory?
     
+    let repository = UserRepository()
+    
     override func loadView() {
         self.view = mainView
     }
@@ -38,6 +40,24 @@ final class MemoryDetailViewController: BaseViewController {
         mainView.petCollectionView.dataSource = self
         mainView.imageCollectionView.delegate = self
         mainView.imageCollectionView.dataSource = self
+        
+        navigationController?.navigationBar.tintColor = .diaryColor
+        
+        //바버튼
+        let editButton = UIBarButtonItem(title: "편집", style: .plain, target: self, action: #selector(presentEditView))
+        let deleteButton = UIBarButtonItem(title: "삭제", style: .plain, target: self, action: #selector(deleteMemory))
+        navigationItem.leftBarButtonItem = deleteButton
+        navigationItem.rightBarButtonItem = editButton
+    }
+    
+    @objc private func presentEditView() {
+        let editViewController = WritingViewController()
+        
+    }
+    @objc private func deleteMemory() {
+        guard let memoryTask = memoryTask else { return }
+        repository.deleteMemory(item: memoryTask)
+        transition(self, transitionStyle: .dismiss)
     }
 }
 
@@ -77,7 +97,6 @@ extension MemoryDetailViewController: UICollectionViewDelegate, UICollectionView
         guard let memoryTask = memoryTask else { return CGSize(width: 0, height: 0) }
         
         if collectionView == mainView.petCollectionView {
-            
             if memoryTask.petList[indexPath.item].count > 1 {
                 let cellSize = CGSize(width: memoryTask.petList[indexPath.item].size(withAttributes: [.font : UIFont(name: CustomFont.medium, size: 13)!]).width + 32, height: 52)
                 return cellSize
