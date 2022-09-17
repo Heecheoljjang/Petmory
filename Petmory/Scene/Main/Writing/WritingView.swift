@@ -33,6 +33,7 @@ final class WritingView: BaseView {
         view.backgroundColor = .systemGray6
         view.isPagingEnabled = true
         view.layer.cornerRadius = 5
+        view.showsHorizontalScrollIndicator = false
         
         return view
     }()
@@ -83,6 +84,7 @@ final class WritingView: BaseView {
         view.register(WritingPetCollectionViewCell.self, forCellWithReuseIdentifier: WritingPetCollectionViewCell.identifier)
         view.backgroundColor = .systemBackground
         view.allowsMultipleSelection = true
+        view.showsHorizontalScrollIndicator = false
         
         return view
     }()

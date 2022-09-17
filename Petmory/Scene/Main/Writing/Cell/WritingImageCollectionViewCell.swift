@@ -26,11 +26,12 @@ final class WritingImageCollectionViewCell: BaseImageCollectionViewCell {
         
     }
     
-//    override func configure() {
-//        super.configure()
-//        
-//        self.addSubview(deleteButton)
-//    }
+    override func configure() {
+        super.configure()
+        
+        self.layer.cornerRadius = 5
+        //self.addSubview(deleteButton)
+    }
 //    
 //    override func setUpConstraints() {
 //        super.setUpConstraints()
