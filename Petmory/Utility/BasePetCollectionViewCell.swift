@@ -60,16 +60,4 @@ class BasePetCollectionViewCell: UICollectionViewCell {
             make.width.greaterThanOrEqualTo(24)
         }
     }
-    
-    override var isSelected: Bool {
-        didSet {
-            if isSelected {
-                outerView.backgroundColor = .diaryColor
-                nameLabel.textColor = .stringColor
-            } else {
-                outerView.backgroundColor = .systemBackground
-                nameLabel.textColor = .diaryColor
-            }
-        }
-    }
 }
