@@ -14,4 +14,16 @@ final class AllMemoryCollectionViewCell: BasePetCollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
+    
+    override var isSelected: Bool {
+        didSet {
+            if isSelected {
+                outerView.backgroundColor = .diaryColor
+                nameLabel.textColor = .stringColor
+            } else {
+                outerView.backgroundColor = .systemBackground
+                nameLabel.textColor = .diaryColor
+            }
+        }
+    }
 }
