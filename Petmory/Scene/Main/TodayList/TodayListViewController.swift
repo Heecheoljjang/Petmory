@@ -33,6 +33,7 @@ final class TodayListViewController: BaseViewController {
         super.viewWillAppear(animated)
         
         tasks = repository.fetchMemory()
+        print(tasks)
     }
         
     override func configure() {
@@ -52,11 +53,18 @@ extension TodayListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TodayListTableViewCell.identifier) as? TodayListTableViewCell else { return UITableViewCell() }
         
-//        cell.mainImageView.image = tasks[indexPath.row].imageData == nil ? UIImage(systemName: "heart.fill") : UIImage(data: )
+        cell.mainImageView.image = tasks[indexPath.row].imageData.count == 0 ? UIImage(systemName: "heart.fill") : UIImage(data: tasks[indexPath.row].imageData.first!)
         cell.titleLabel.text = tasks[indexPath.row].memoryTitle
         cell.contentLabel.text = tasks[indexPath.row].memoryContent
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let memoryDetailViewController = MemoryDetailViewController()
+        memoryDetailViewController.memoryTask = tasks[indexPath.row]
+        
+        transition(memoryDetailViewController, transitionStyle: .presentNavigation)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
