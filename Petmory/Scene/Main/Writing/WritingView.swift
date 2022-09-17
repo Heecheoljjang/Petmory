@@ -104,7 +104,7 @@ final class WritingView: BaseView {
     override func configure() {
         super.configure()
                 
-        [imageCollectionView, pickButton, titleTextFieldLineView, titleTextField, contentTextView, petCollectionView, withLabel].forEach {
+        [imageCollectionView, pickButton,titleTextFieldLineView, titleTextField, contentTextView, petCollectionView, withLabel].forEach {
             contentView.addSubview($0)
         }
 

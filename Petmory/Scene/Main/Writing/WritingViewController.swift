@@ -175,13 +175,15 @@ extension WritingViewController: UICollectionViewDelegate, UICollectionViewDataS
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WritingImageCollectionViewCell.identifier, for: indexPath) as? WritingImageCollectionViewCell else { return UICollectionViewCell() }
             cell.photoImageView.image = UIImage(data: imageList[indexPath.item])
+            cell.deleteButton.tag = indexPath.item
+            cell.deleteButton.addTarget(self, action: #selector(deleteImage(_ :)), for: .touchUpInside)
             return cell
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        print(mainView.petCollectionView.indexPathsForSelectedItems)
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -199,6 +201,13 @@ extension WritingViewController: UICollectionViewDelegate, UICollectionViewDataS
             
             return cellSize
         }
+    }
+    @objc private func deleteImage(_ sender: UIButton) {
+        //MARK: 지울건지 alert띄우기
+        
+        //테스트
+        imageList.remove(at: sender.tag)
+        mainView.imageCollectionView.reloadData()
     }
 }
 
