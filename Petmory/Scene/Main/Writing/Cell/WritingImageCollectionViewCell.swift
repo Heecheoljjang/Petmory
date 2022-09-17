@@ -10,9 +10,7 @@ import UIKit
 import SnapKit
 
 final class WritingImageCollectionViewCell: BaseImageCollectionViewCell {
-    
-    var indexPathForCell: IndexPath?
-    
+        
     let deleteButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.plain()
@@ -28,12 +26,17 @@ final class WritingImageCollectionViewCell: BaseImageCollectionViewCell {
         
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        deleteButton.removeTarget(nil, action: nil, for: .touchUpInside)
+    }
+    
     override func configure() {
         super.configure()
         
         self.layer.cornerRadius = 5
         self.addSubview(deleteButton)
-       // deleteButton.addTarget(self, action: #selector(foo), for: .touchUpInside)
     }
     
     override func setUpConstraints() {
@@ -44,15 +47,5 @@ final class WritingImageCollectionViewCell: BaseImageCollectionViewCell {
             make.size.equalTo(44)
         }
     }
-    
-//    @objc private func foo() {
-//
-//        let writingViewController = WritingViewController()
-//
-//        if let indexPathForCell = indexPathForCell {
-//            writingViewController.imageList.remove(at: indexPathForCell.item)
-//            print("123")
-//        }
-//        writingViewController.mainView.imageCollectionView.reloadData()
-//    }
+
 }
