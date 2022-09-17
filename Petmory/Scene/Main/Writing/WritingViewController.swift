@@ -64,6 +64,7 @@ final class WritingViewController: BaseViewController {
         appearance.backgroundColor = .white
         appearance.shadowColor = .clear
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.standardAppearance = appearance
         
         title = Date().dateToString(type: .simple)
         
@@ -157,6 +158,8 @@ extension WritingViewController: UICollectionViewDelegate, UICollectionViewDataS
         }
     }
     
+    
+    
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if collectionView == mainView.petCollectionView {
             
@@ -180,7 +183,8 @@ extension WritingViewController: UICollectionViewDelegate, UICollectionViewDataS
             return cell
         }
     }
-
+    
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         
