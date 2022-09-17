@@ -27,6 +27,7 @@ final class AllMemoryView: BaseView {
         let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         view.register(AllMemoryCollectionViewCell.self, forCellWithReuseIdentifier: AllMemoryCollectionViewCell.identifier)
         view.backgroundColor = .systemBackground
+        view.showsHorizontalScrollIndicator = false
         
         return view
     }()

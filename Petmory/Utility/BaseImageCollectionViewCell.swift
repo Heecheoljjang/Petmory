@@ -15,7 +15,8 @@ class BaseImageCollectionViewCell: UICollectionViewCell {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
         view.layer.cornerRadius = 5
-        view.backgroundColor = .systemGray5
+        //view.backgroundColor = .systemGray5
+        view.clipsToBounds = true
         
         return view
     }()
