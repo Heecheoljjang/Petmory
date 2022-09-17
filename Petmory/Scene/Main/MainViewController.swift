@@ -23,6 +23,8 @@ final class MainViewController: BaseViewController {
         }
     }
     
+    var petList: Results<UserPet>!
+    
     override func loadView() {
         self.view = mainView
     }
@@ -31,12 +33,16 @@ final class MainViewController: BaseViewController {
         super.viewDidLoad()
         
         createMemoryImageDirectory()
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         tasks = repository.fetchMemory()
+        
+        petList = repository.fetchPet()
         
         if tasks.count == 0 {
             mainView.outerView.isHidden = true
@@ -83,6 +89,12 @@ final class MainViewController: BaseViewController {
     }
     
     @objc private func presentWritingView() {
-        transition(WritingViewController(), transitionStyle: .presentNavigation)
+        let writingViewController = WritingViewController()
+        if petList.count == 0 {
+            //MARK: 펫부터 등록하라고 alert띄우고 펫 등록화면 띄우는 방식으로
+            print("펫부터 등록하셈")
+        } else {
+            transition(writingViewController, transitionStyle: .presentNavigation)
+        }
     }
 }
