@@ -126,13 +126,12 @@ final class WritingViewController: BaseViewController {
         titleViewDatePicker.addTarget(self, action: #selector(selectDate), for: .valueChanged)
         
         //툴바
-        let toolBar = UIToolbar()
-        //toolBar.sizeToFit()
+        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: mainView.bounds.size.width, height: 40))
         let toolBarDoneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(doneSelectDate))
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let toolBarCancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(dismissPicker))
         toolBar.setItems([toolBarCancelButton, flexibleSpace, toolBarDoneButton], animated: true)
-        //titleViewTextField.inputAccessoryView = toolBar
+        titleViewTextField.inputAccessoryView = toolBar
         
         navigationItem.titleView = titleViewTextField
     }
