@@ -21,23 +21,47 @@ final class WritingViewController: BaseViewController {
     var petList: Results<UserPet>!
     
     var withList = List<String>()
+
+    var currentStatus = CurrentStatus.new
     
-//    var imageList = List<String>()
-    
-//    var imageArray: [UIImage] = [] {
-//        didSet {
-//            mainView.imageCollectionView.reloadData()
-//        }
-//    }
     var imageList = List<Data>() {
         didSet {
-            print(imageList)
             mainView.imageCollectionView.reloadData()
-            print("123")
         }
     }
     
     let placeholderText = "오늘 하루를 어떻게 보내셨나요?"
+    
+    var currentTask: UserMemory?
+    
+    var memoryDate = Date() {
+        didSet {
+            //titleViewTextField.text = memoryDate.dateToString(type: .simple)
+            titleViewDatePicker.date = memoryDate
+        }
+    }
+    
+    let titleViewTextField: UITextField = {
+        let textField = UITextField()
+        textField.font = UIFont(name: CustomFont.medium, size: 17)
+        textField.textAlignment = .center
+        textField.tintColor = .clear
+        
+        return textField
+    }()
+    
+    let titleViewDatePicker: UIDatePicker = {
+        let datePicker = UIDatePicker()
+        //datePicker.sizeToFit()
+        datePicker.backgroundColor = .white
+        datePicker.preferredDatePickerStyle = .wheels
+        //datePicker.date = memoryDate
+        datePicker.datePickerMode = .date
+        datePicker.locale = Locale(identifier: "ko-KR")
+        datePicker.maximumDate = Date()
+        
+        return datePicker
+    }()
     
     override func loadView() {
         self.view = mainView
@@ -48,14 +72,31 @@ final class WritingViewController: BaseViewController {
         
         petList = repository.fetchPet()
         
-        print(withList, imageList)
+        if currentStatus == CurrentStatus.edit {
+            if let currentTask = currentTask {
+                mainView.titleTextField.text = currentTask.memoryTitle
+                mainView.contentTextView.text = currentTask.memoryContent
+                currentTask.imageData.forEach {
+                    imageList.append($0)
+                }
+                memoryDate = currentTask.memoryDate
+            }
+            if mainView.contentTextView.text != "" {
+                mainView.contentTextView.textColor = .black
+            } else {
+                mainView.contentTextView.text = placeholderText
+                mainView.contentTextView.textColor = .placeholderColor
+            }
+        } else {
+            memoryDate = Date()
+        }
     }
     
     override func setUpController() {
         super.setUpController()
         
         let doneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(finishWriting))
-        let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancelWriting))
+        let cancelButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(cancelWriting))
         navigationController?.navigationBar.tintColor = .diaryColor
         navigationItem.rightBarButtonItem = doneButton
         navigationItem.leftBarButtonItem = cancelButton
@@ -66,7 +107,7 @@ final class WritingViewController: BaseViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.standardAppearance = appearance
         
-        title = Date().dateToString(type: .simple)
+//        title = Date().dateToString(type: .simple)
         
         //MARK: 액션 추가
         mainView.pickButton.addTarget(self, action: #selector(presentPhotoPickerView), for: .touchUpInside)
@@ -75,9 +116,25 @@ final class WritingViewController: BaseViewController {
         mainView.contentTextView.text = placeholderText
         mainView.contentTextView.textColor = .placeholderColor
         
+//        mainView.titleTextField.inputAccessoryView = UIView()
         
-        mainView.titleTextField.inputAccessoryView = UIView()
+        //MARK: 네비게이션 타이틀 뷰
+        titleViewDatePicker.date = memoryDate
+        titleViewTextField.inputView = titleViewDatePicker
+        titleViewTextField.text = memoryDate.dateToString(type: .simple)
+        titleViewTextField.delegate = self
+        titleViewDatePicker.addTarget(self, action: #selector(selectDate), for: .valueChanged)
         
+        //툴바
+        let toolBar = UIToolbar()
+        //toolBar.sizeToFit()
+        let toolBarDoneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(doneSelectDate))
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let toolBarCancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(dismissPicker))
+        toolBar.setItems([toolBarCancelButton, flexibleSpace, toolBarDoneButton], animated: true)
+        //titleViewTextField.inputAccessoryView = toolBar
+        
+        navigationItem.titleView = titleViewTextField
     }
     
     override func configure() {
@@ -88,7 +145,6 @@ final class WritingViewController: BaseViewController {
         mainView.petCollectionView.delegate = self
         mainView.petCollectionView.dataSource = self
         mainView.contentTextView.delegate = self
-        //mainView.titleTextField.delegate = self
         
     }
     
@@ -103,13 +159,11 @@ final class WritingViewController: BaseViewController {
     
     //MARK: - @objc
     @objc private func finishWriting() {
-        
-        print(withList.count, imageList.count, mainView.titleTextField.text, mainView.contentTextView.text)
         withList.removeAll()
         mainView.petCollectionView.indexPathsForSelectedItems?.forEach {
             withList.append(petList[$0.item].petName)
         }
-        let currentDate = Date()
+        //let currentDate = Date()
         
         //MARK: 선택된 펫이 없는 경우, 제목이 없는 경우에 alert
         if withList.count == 0 && mainView.titleTextField.text! == "" {
@@ -120,14 +174,32 @@ final class WritingViewController: BaseViewController {
         } else if withList.count == 0 && mainView.titleTextField.text! != "" {
             print("함께한 반려동물을 선택해주세요")
         } else {
-            if mainView.contentTextView.textColor == .placeholderColor {
-                let task = UserMemory(memoryTitle: mainView.titleTextField.text!, memoryDate: Date().dateToString(type: .simple), petList: withList, memoryContent: "", imageData: imageList, objectId: "\(currentDate)")
-                repository.addMemory(item: task)
-                transition(self, transitionStyle: .dismiss)
+            //MARK: 새로 작성
+            if currentStatus == CurrentStatus.new {
+                if mainView.contentTextView.textColor == .placeholderColor {
+                    let task = UserMemory(memoryTitle: mainView.titleTextField.text!, memoryDateString: memoryDate.dateToString(type: .simple), petList: withList, memoryContent: "", imageData: imageList, memoryDate: memoryDate, objectId: "\(Date())")
+                    
+                    repository.addMemory(item: task)
+                    transition(self, transitionStyle: .dismiss)
+                } else {
+                    let task = UserMemory(memoryTitle: mainView.titleTextField.text!, memoryDateString: memoryDate.dateToString(type: .simple), petList: withList, memoryContent: mainView.contentTextView.text, imageData: imageList, memoryDate: memoryDate, objectId: "\(Date())")
+                    repository.addMemory(item: task)
+                    transition(self, transitionStyle: .dismiss)
+                }
             } else {
-                let task = UserMemory(memoryTitle: mainView.titleTextField.text!, memoryDate: Date().dateToString(type: .simple), petList: withList, memoryContent: mainView.contentTextView.text, imageData: imageList, objectId: "\(currentDate)")
-                repository.addMemory(item: task)
-                transition(self, transitionStyle: .dismiss)
+                //MARK: 편집
+                if mainView.contentTextView.textColor == .placeholderColor {
+                    if let task = currentTask {
+                        repository.updateMemory(item: task, title: mainView.titleTextField.text!, memoryDateString: memoryDate.dateToString(type: .simple), content: "", petList: withList, imageData: imageList, memoryDate: memoryDate)
+                    }
+                    transition(self, transitionStyle: .dismiss)
+                } else {
+                    if let task = currentTask {
+                        repository.updateMemory(item: task, title: mainView.titleTextField.text!, memoryDateString: memoryDate.dateToString(type: .simple), content: mainView.contentTextView.text, petList: withList, imageData: imageList, memoryDate: memoryDate)
+                    }
+                    
+                    transition(self, transitionStyle: .dismiss)
+                }
             }
         }
     }
@@ -138,12 +210,23 @@ final class WritingViewController: BaseViewController {
         transition(self, transitionStyle: .dismiss)
     }
     @objc private func presentPhotoPickerView() {
-        print(imageList.count)
         if imageList.count <= 2 {
             presentPHPickerViewController()
         } else {
             print("No")
         }
+    }
+    @objc private func selectDate(_ sender: UIDatePicker) {
+        
+        memoryDate = sender.date
+        
+    }
+    @objc private func doneSelectDate() {
+        titleViewTextField.text = memoryDate.dateToString(type: .simple)
+        titleViewTextField.endEditing(true)
+    }
+    @objc private func dismissPicker() {
+        titleViewTextField.endEditing(true)
     }
 }
 
@@ -160,14 +243,14 @@ extension WritingViewController: UICollectionViewDelegate, UICollectionViewDataS
     
     
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if collectionView == mainView.petCollectionView {
-            
-        } else {
-            let cell = collectionView.cellForItem(at: indexPath)
-            cell?.isSelected = true
-        }
-    }
+//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        if collectionView == mainView.petCollectionView {
+//
+//        } else {
+//            let cell = collectionView.cellForItem(at: indexPath)
+//            cell?.isSelected = true
+//        }
+//    }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == mainView.petCollectionView {
@@ -183,13 +266,7 @@ extension WritingViewController: UICollectionViewDelegate, UICollectionViewDataS
             return cell
         }
     }
-    
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        
-    }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == mainView.petCollectionView {
             if petList[indexPath.item].petName.count > 1 {
@@ -208,10 +285,11 @@ extension WritingViewController: UICollectionViewDelegate, UICollectionViewDataS
     }
     @objc private func deleteImage(_ sender: UIButton) {
         //MARK: 지울건지 alert띄우기
-        
         //테스트
-        imageList.remove(at: sender.tag)
-        mainView.imageCollectionView.reloadData()
+        print(sender.tag)
+        print(imageList[sender.tag])
+        //imageList.remove(at: sender.tag)
+        //mainView.imageCollectionView.reloadData()
     }
 }
 
@@ -246,7 +324,7 @@ extension WritingViewController: PHPickerViewControllerDelegate {
 extension WritingViewController: CropViewControllerDelegate {
     func cropViewController(_ cropViewController: CropViewController, didCropToImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
 
-        guard let imageData = image.jpegData(compressionQuality: 0.5) else { return }
+        guard let imageData = image.jpegData(compressionQuality: 0.4) else { return }
         
         imageList.insert(imageData, at: 0)
         
@@ -279,5 +357,17 @@ extension WritingViewController: UITextViewDelegate {
         
         transition(writingContentVC, transitionStyle: .presentNavigationModally)
         return false
+    }
+}
+
+extension WritingViewController: UITextFieldDelegate {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        titleViewTextField.isUserInteractionEnabled = false
+        
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        titleViewTextField.isUserInteractionEnabled = true
     }
 }

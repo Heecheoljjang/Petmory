@@ -31,7 +31,6 @@ final class MemoryDetailView: BaseView {
         view.register(MemoryDetailImageCollectionViewCell.self, forCellWithReuseIdentifier: MemoryDetailImageCollectionViewCell.identifier)
         view.backgroundColor = .systemGray6
         view.isPagingEnabled = true
-        view.layer.cornerRadius = 5
         view.showsHorizontalScrollIndicator = false
         
         return view
@@ -58,6 +57,7 @@ final class MemoryDetailView: BaseView {
         view.backgroundColor = .systemBackground
         view.isScrollEnabled = false
         view.font = UIFont(name: CustomFont.medium, size: 15)
+        view.isUserInteractionEnabled = false
         return view
     }()
     

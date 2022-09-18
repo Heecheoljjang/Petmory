@@ -13,6 +13,8 @@ final class MemoryDetailViewController: BaseViewController {
     
     var memoryTask: UserMemory?
     
+    var objectId: String = ""
+    
     let repository = UserRepository()
     
     override func loadView() {
@@ -22,11 +24,21 @@ final class MemoryDetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
                 
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        memoryTask = repository.fetchWithObjectId(objectId: objectId).first
+        
         if let memoryTask = memoryTask {
+            
             mainView.titleLabel.text = memoryTask.memoryTitle
-            mainView.dateLabel.text = memoryTask.memoryDate
+            mainView.dateLabel.text = memoryTask.memoryDateString
             mainView.contentTextView.text = memoryTask.memoryContent
         }
+        mainView.imageCollectionView.reloadData()
     }
     
     override func configure() {
@@ -44,19 +56,32 @@ final class MemoryDetailViewController: BaseViewController {
         navigationController?.navigationBar.tintColor = .diaryColor
         
         //바버튼
+        let dismissButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(dismissView))
         let editButton = UIBarButtonItem(title: "편집", style: .plain, target: self, action: #selector(presentEditView))
         let deleteButton = UIBarButtonItem(title: "삭제", style: .plain, target: self, action: #selector(deleteMemory))
-        navigationItem.leftBarButtonItem = deleteButton
+        navigationItem.leftBarButtonItem = dismissButton
         navigationItem.rightBarButtonItem = editButton
     }
     
     @objc private func presentEditView() {
         let editViewController = WritingViewController()
+        editViewController.currentStatus = CurrentStatus.edit
+        editViewController.currentTask = memoryTask
+        
+        transition(editViewController, transitionStyle: .presentNavigation)
         
     }
     @objc private func deleteMemory() {
         guard let memoryTask = memoryTask else { return }
+        
+        //MARK: 진짜 지울건지 확인하는 alert띄우기
+        
+        
+        
         repository.deleteMemory(item: memoryTask)
+        transition(self, transitionStyle: .dismiss)
+    }
+    @objc private func dismissView() {
         transition(self, transitionStyle: .dismiss)
     }
 }
