@@ -10,7 +10,11 @@ import RealmSwift
 
 protocol UserMemoryRepositoryType {
     
-    func fetchMemory() -> Results<UserMemory>
+    func fetchAllMemory() -> Results<UserMemory>
+    
+    func fetchTodayMemory() -> Results<UserMemory>
+
+    func fetchWithObjectId(objectId: String) -> Results<UserMemory>
     
     func fetchFiltered(name: String) -> Results<UserMemory>
     
@@ -18,7 +22,7 @@ protocol UserMemoryRepositoryType {
     
     func addMemory(item: UserMemory)
     
-    func updateMemory(item: UserMemory, title: String, content: String, petList: List<String>)
+    func updateMemory(item: UserMemory, title: String, memoryDateString: String, content: String, petList: List<String>, imageData: List<Data>, memoryDate: Date)
     
     func deleteMemory(item: UserMemory)
 }
@@ -52,8 +56,17 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType, Use
     //MARK: - Memory
     
     //모아보기 첫 화면에 사용
-    func fetchMemory() -> Results<UserMemory> {
+    func fetchTodayMemory() -> Results<UserMemory> {
+//        return localRealm.objects(UserMemory.self).sorted(byKeyPath: "memoryDate", ascending: false)
+        return localRealm.objects(UserMemory.self).filter("memoryDateString == '\(Date().dateToString(type: .simple))'").sorted(byKeyPath: "memoryTitle", ascending: true)
+    }
+    
+    func fetchAllMemory() -> Results<UserMemory> {
         return localRealm.objects(UserMemory.self).sorted(byKeyPath: "memoryDate", ascending: false)
+    }
+    
+    func fetchWithObjectId(objectId: String) -> Results<UserMemory> {
+        return localRealm.objects(UserMemory.self).filter("objectId == '\(objectId)'")
     }
     
     //모아보기 필터링
@@ -86,12 +99,15 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType, Use
         }
     }
     
-    func updateMemory(item: UserMemory, title: String, content: String, petList: List<String>) {
+    func updateMemory(item: UserMemory, title: String, memoryDateString: String, content: String, petList: List<String>, imageData: List<Data>, memoryDate: Date) {
         do {
             try localRealm.write {
                 item.memoryTitle = title
+                item.memoryDateString = memoryDateString
                 item.memoryContent = content
                 item.petList = petList
+                item.imageData = imageData
+                item.memoryDate = memoryDate
             }
         } catch {
             print("기록 수정 오류")
