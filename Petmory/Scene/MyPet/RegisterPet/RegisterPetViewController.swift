@@ -26,8 +26,12 @@ final class RegisterPetViewController: BaseViewController {
     override func setUpController() {
         super.setUpController()
         
-        let doneButton = UIBarButtonItem(image: UIImage(systemName: "checkmark"), style: .plain, target: self, action: #selector(finishWriting))
+        let doneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(finishWriting))
+        let cancelButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(dismissView))
         navigationItem.rightBarButtonItem = doneButton
+        navigationItem.leftBarButtonItem = cancelButton
+        navigationController?.navigationBar.tintColor = .diaryColor
+        title = "펫 등록"
 
     }
     
@@ -38,6 +42,10 @@ final class RegisterPetViewController: BaseViewController {
         let pet = UserPet(petName: mainView.nameTextField.text!, birthday: Date(), gender: true, comment: "123", registerDate: Date())
         repository.addPet(item: pet)
         
+        transition(self, transitionStyle: .dismiss)
+    }
+    
+    @objc private func dismissView() {
         transition(self, transitionStyle: .dismiss)
     }
 }
