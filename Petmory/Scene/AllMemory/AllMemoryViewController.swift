@@ -30,7 +30,7 @@ final class AllMemoryViewController: BaseViewController {
         didSet {
             print(filterPetName)
             if filterPetName == "" {
-                tasks = repository.fetchMemory()
+                tasks = repository.fetchAllMemory()
                 mainView.tableView.reloadData()
             } else {
                 tasks = repository.fetchFiltered(name: filterPetName)
@@ -50,7 +50,7 @@ final class AllMemoryViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        tasks = repository.fetchMemory()
+        tasks = repository.fetchAllMemory()
         petList = repository.fetchPet()
                 
     }
@@ -99,7 +99,7 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AllMemoryTableViewCell.identifier, for: indexPath) as? AllMemoryTableViewCell else { return UITableViewCell() }
         
         cell.memoryTitle.text = tasks[indexPath.row].memoryTitle
-        cell.memoryDate.text = tasks[indexPath.row].memoryDate
+        cell.memoryDate.text = tasks[indexPath.row].memoryDateString
         return cell
     }
     

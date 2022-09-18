@@ -40,7 +40,7 @@ final class MainViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        tasks = repository.fetchMemory()
+        tasks = repository.fetchTodayMemory()
         
         petList = repository.fetchPet()
         

@@ -32,8 +32,8 @@ final class TodayListViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        tasks = repository.fetchMemory()
-        print(tasks)
+        tasks = repository.fetchTodayMemory()
+        
     }
         
     override func configure() {
@@ -62,7 +62,8 @@ extension TodayListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let memoryDetailViewController = MemoryDetailViewController()
-        memoryDetailViewController.memoryTask = tasks[indexPath.row]
+        //memoryDetailViewController.memoryTask = tasks[indexPath.row]
+        memoryDetailViewController.objectId = tasks[indexPath.row].objectId
         
         transition(memoryDetailViewController, transitionStyle: .presentNavigation)
     }
