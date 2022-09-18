@@ -52,7 +52,7 @@ final class AllMemoryViewController: BaseViewController {
         
         tasks = repository.fetchAllMemory()
         petList = repository.fetchPet()
-                
+        
     }
     
     override func setUpController() {
@@ -101,6 +101,13 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
         cell.memoryTitle.text = tasks[indexPath.row].memoryTitle
         cell.memoryDate.text = tasks[indexPath.row].memoryDateString
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let memoryDetailViewController = MemoryDetailViewController()
+        memoryDetailViewController.objectId = tasks[indexPath.row].objectId
+        
+        transition(memoryDetailViewController, transitionStyle: .presentNavigation)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
