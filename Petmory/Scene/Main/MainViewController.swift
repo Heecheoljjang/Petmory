@@ -43,6 +43,7 @@ final class MainViewController: BaseViewController {
         tasks = repository.fetchTodayMemory()
         
         petList = repository.fetchPet()
+        print(petList)
         
         if tasks.count == 0 {
             mainView.outerView.isHidden = true
@@ -77,7 +78,10 @@ final class MainViewController: BaseViewController {
     
     //MARK: - @objc
     @objc private func presentAllMemory() {
-        if tasks.count == 0 {
+        
+        let allMemory = repository.fetchAllMemory()
+        
+        if allMemory.count == 0 {
             print("no")
         } else {
             transition(AllMemoryViewController(), transitionStyle: .presentNavigation)
