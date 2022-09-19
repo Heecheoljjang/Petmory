@@ -10,7 +10,9 @@
 		970826A528D5E1E0000C530E /* MemoryDetailImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970826A428D5E1E0000C530E /* MemoryDetailImageCollectionViewCell.swift */; };
 		970826A728D5E876000C530E /* MemoryDetailPetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970826A628D5E876000C530E /* MemoryDetailPetCollectionViewCell.swift */; };
 		9716A8F828D0E4D600AC62FA /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9716A8F728D0E4D600AC62FA /* IQKeyboardManagerSwift */; };
+		9736007728D8463300FD9285 /* MyPetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9736007628D8463300FD9285 /* MyPetTableViewCell.swift */; };
 		974107A628D0459300617F8F /* CropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = 974107A528D0459300617F8F /* CropViewController */; };
+		9767A58B28D8DBF400304F6C /* AddPetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767A58A28D8DBF400304F6C /* AddPetTableViewCell.swift */; };
 		977CB68E28D4540D001342E9 /* WritingContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977CB68D28D4540D001342E9 /* WritingContentView.swift */; };
 		977CB69028D45418001342E9 /* WritingContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977CB68F28D45418001342E9 /* WritingContentViewController.swift */; };
 		977CB69328D47222001342E9 /* enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977CB69228D47222001342E9 /* enum.swift */; };
@@ -74,6 +76,8 @@
 /* Begin PBXFileReference section */
 		970826A428D5E1E0000C530E /* MemoryDetailImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryDetailImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		970826A628D5E876000C530E /* MemoryDetailPetCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryDetailPetCollectionViewCell.swift; sourceTree = "<group>"; };
+		9736007628D8463300FD9285 /* MyPetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPetTableViewCell.swift; sourceTree = "<group>"; };
+		9767A58A28D8DBF400304F6C /* AddPetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetTableViewCell.swift; sourceTree = "<group>"; };
 		977CB68D28D4540D001342E9 /* WritingContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingContentView.swift; sourceTree = "<group>"; };
 		977CB68F28D45418001342E9 /* WritingContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingContentViewController.swift; sourceTree = "<group>"; };
 		977CB69228D47222001342E9 /* enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = enum.swift; sourceTree = "<group>"; };
@@ -149,6 +153,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9767A58928D8DBCB00304F6C /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				9736007628D8463300FD9285 /* MyPetTableViewCell.swift */,
+				9767A58A28D8DBF400304F6C /* AddPetTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		977CB68C28D453FB001342E9 /* WritingContent */ = {
 			isa = PBXGroup;
 			children = (
@@ -355,6 +368,7 @@
 				97C7CBC228CD895A007743FF /* RegisterPet */,
 				9786305C28CC5A8F0042C2E2 /* MyPetView.swift */,
 				9786305E28CC5A980042C2E2 /* MyPetViewController.swift */,
+				9767A58928D8DBCB00304F6C /* Cell */,
 			);
 			path = MyPet;
 			sourceTree = "<group>";
@@ -542,8 +556,10 @@
 				97C7CBD228CE4560007743FF /* WritingImageCollectionViewCell.swift in Sources */,
 				977CB69028D45418001342E9 /* WritingContentViewController.swift in Sources */,
 				97D19CD828D1FB560074226C /* AddCalendarView.swift in Sources */,
+				9736007728D8463300FD9285 /* MyPetTableViewCell.swift in Sources */,
 				97CF589028C8CC0B0062FEB9 /* BaseView.swift in Sources */,
 				977CB68E28D4540D001342E9 /* WritingContentView.swift in Sources */,
+				9767A58B28D8DBF400304F6C /* AddPetTableViewCell.swift in Sources */,
 				9786305D28CC5A900042C2E2 /* MyPetView.swift in Sources */,
 				97C7CBC628CD8981007743FF /* RegisterPetViewController.swift in Sources */,
 				97CF58AD28CB02F60062FEB9 /* AllMemoryView.swift in Sources */,
@@ -714,9 +730,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hee.Petmory;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -743,9 +762,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hee.Petmory;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
