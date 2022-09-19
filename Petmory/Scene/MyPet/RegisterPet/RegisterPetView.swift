@@ -13,8 +13,10 @@ final class RegisterPetView: BaseView {
     
     lazy var profileImageView: UIImageView = {
         let view = UIImageView()
-        view.backgroundColor = .systemPink
+        view.backgroundColor = .systemGray6
         view.clipsToBounds = true
+        view.layer.cornerRadius = 80
+        view.contentMode = .scaleAspectFill
         
         return view
     }()
@@ -24,10 +26,13 @@ final class RegisterPetView: BaseView {
         var configuration = UIButton.Configuration.filled()
         configuration.cornerStyle = .capsule
         configuration.image = UIImage(systemName: "camera")
-        configuration.baseBackgroundColor = .stringColor
+        configuration.baseBackgroundColor = .white
         configuration.baseForegroundColor = .diaryColor
         
         button.configuration = configuration
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.diaryColor.cgColor
+        button.layer.cornerRadius = 24
         
         return button
     }()
@@ -141,12 +146,13 @@ final class RegisterPetView: BaseView {
         
         profileImageView.snp.makeConstraints { make in
             make.top.equalTo(self.safeAreaLayoutGuide).offset(40)
-            make.size.equalTo(self.snp.width).multipliedBy(0.4)
+            make.size.equalTo(160)
             make.centerX.equalToSuperview()
         }
         photoButton.snp.makeConstraints { make in
-            make.size.equalTo(profileImageView.snp.width).multipliedBy(0.2)
+            make.size.equalTo(profileImageView.snp.width).multipliedBy(0.3)
             make.bottom.trailing.equalTo(profileImageView)
+//            make.center.equalTo(profileImageView)
         }
         boyButton.snp.makeConstraints { make in
             make.height.equalTo(48)
