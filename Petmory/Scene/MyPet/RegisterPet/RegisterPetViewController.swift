@@ -130,11 +130,16 @@ final class RegisterPetViewController: BaseViewController {
             print("이름을 입력해주세요.")
         } else {
             if mainView.birthdayTextField.text! == "" {
+                //MARK: alert띄워서 확인 누르면 오늘 날짜로 텍스트필드 채우기
                 print("생일을 작성하지 않으시면 오늘 날짜로 작성됩니다!")
             } else {
-                let pet = UserPet(profileImage: profileImage, petName: mainView.nameTextField.text!, birthday: birthdatDate, gender: gender, comment: mainView.memoTextView.text, registerDate: Date())
-                repository.addPet(item: pet)
-                transition(self, transitionStyle: .dismiss)
+                if profileImage == nil {
+                    print("사진을 등록해주세요")
+                } else {
+                    let pet = UserPet(profileImage: profileImage, petName: mainView.nameTextField.text!, birthday: birthdatDate, gender: gender, comment: mainView.memoTextView.text, registerDate: Date())
+                    repository.addPet(item: pet)
+                    transition(self, transitionStyle: .dismiss)
+                }
             }
             
         }
