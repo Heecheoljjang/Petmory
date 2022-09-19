@@ -33,7 +33,7 @@ protocol UserPetRepositoryType {
     
     func addPet(item: UserPet)
     
-    func updatePet(item: UserPet, name: String, birthday: Date, gender: Bool, comment: String)
+    func updatePet(item: UserPet, profileImage: Data?, name: String, birthday: Date, gender: String, comment: String)
     
     func deletePet(item: UserPet)
 }
@@ -127,6 +127,7 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType, Use
     //MARK: - Pet
     
     func fetchPet() -> Results<UserPet> {
+        print("123")
         return localRealm.objects(UserPet.self).sorted(byKeyPath: "registerDate", ascending: false)
     }
     
@@ -134,15 +135,17 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType, Use
         do {
             try localRealm.write {
                 localRealm.add(item)
+                print(localRealm.configuration.fileURL!)
             }
         } catch {
             print("펫 추가 오류")
         }
     }
     
-    func updatePet(item: UserPet, name: String, birthday: Date, gender: Bool, comment: String) {
+    func updatePet(item: UserPet, profileImage: Data?, name: String, birthday: Date, gender: String, comment: String) {
         do {
             try localRealm.write {
+                item.profileImage = profileImage
                 item.petName = name
                 item.birthday = birthday
                 item.gender = gender
