@@ -78,6 +78,13 @@ final class RegisterPetViewController: BaseViewController {
         navigationItem.rightBarButtonItem = doneButton
         navigationItem.leftBarButtonItem = cancelButton
         navigationController?.navigationBar.tintColor = .diaryColor
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .white
+        appearance.shadowColor = .clear
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.standardAppearance = appearance
+        
         title = "펫 등록"
 
         //MARK: - 텍스트필드

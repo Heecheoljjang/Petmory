@@ -101,7 +101,8 @@ final class RegisterPetView: BaseView {
         let textField = UITextField()
         textField.font = UIFont(name: CustomFont.medium, size: 15)
         textField.textAlignment = .center
-
+        textField.tintColor = .clear
+        
         return textField
     }()
     
