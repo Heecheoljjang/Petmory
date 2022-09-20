@@ -36,7 +36,7 @@ final class WritingViewController: BaseViewController {
     
     var memoryDate = Date() {
         didSet {
-            //titleViewTextField.text = memoryDate.dateToString(type: .simple)
+//            titleViewTextField.text = memoryDate.dateToString(type: .simple)
             titleViewDatePicker.date = memoryDate
         }
     }
@@ -72,6 +72,14 @@ final class WritingViewController: BaseViewController {
         
         petList = repository.fetchPet()
         
+        print(#function)
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print(#function)
+
         if currentStatus == CurrentStatus.edit {
             if let currentTask = currentTask {
                 mainView.titleTextField.text = currentTask.memoryTitle
@@ -90,11 +98,17 @@ final class WritingViewController: BaseViewController {
         } else {
             memoryDate = Date()
         }
+        titleViewDatePicker.date = memoryDate
+        titleViewTextField.inputView = titleViewDatePicker
+        titleViewTextField.text = memoryDate.dateToString(type: .simple)
+        navigationItem.titleView = titleViewTextField
     }
     
     override func setUpController() {
         super.setUpController()
         
+        print(#function)
+
         let doneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(finishWriting))
         let cancelButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(cancelWriting))
         navigationController?.navigationBar.tintColor = .diaryColor
@@ -119,9 +133,9 @@ final class WritingViewController: BaseViewController {
 //        mainView.titleTextField.inputAccessoryView = UIView()
         
         //MARK: 네비게이션 타이틀 뷰
-        titleViewDatePicker.date = memoryDate
-        titleViewTextField.inputView = titleViewDatePicker
-        titleViewTextField.text = memoryDate.dateToString(type: .simple)
+//        titleViewDatePicker.date = memoryDate
+//        titleViewTextField.inputView = titleViewDatePicker
+//        titleViewTextField.text = memoryDate.dateToString(type: .simple)
         titleViewTextField.delegate = self
         titleViewDatePicker.addTarget(self, action: #selector(selectDate), for: .valueChanged)
         
@@ -133,7 +147,7 @@ final class WritingViewController: BaseViewController {
         toolBar.setItems([toolBarCancelButton, flexibleSpace, toolBarDoneButton], animated: true)
         titleViewTextField.inputAccessoryView = toolBar
         
-        navigationItem.titleView = titleViewTextField
+        //navigationItem.titleView = titleViewTextField
     }
     
     override func configure() {
@@ -285,10 +299,9 @@ extension WritingViewController: UICollectionViewDelegate, UICollectionViewDataS
     @objc private func deleteImage(_ sender: UIButton) {
         //MARK: 지울건지 alert띄우기
         //테스트
-        print(sender.tag)
-        print(imageList[sender.tag])
-        //imageList.remove(at: sender.tag)
-        //mainView.imageCollectionView.reloadData()
+        
+        imageList.remove(at: sender.tag)
+        mainView.imageCollectionView.reloadData()
     }
 }
 
