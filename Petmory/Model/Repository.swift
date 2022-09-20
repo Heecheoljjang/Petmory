@@ -127,7 +127,6 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType, Use
     //MARK: - Pet
     
     func fetchPet() -> Results<UserPet> {
-        print("123")
         return localRealm.objects(UserPet.self).sorted(byKeyPath: "registerDate", ascending: false)
     }
     
