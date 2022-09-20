@@ -9,5 +9,10 @@ import Foundation
 import UIKit
 
 extension UITableViewCell {
-    static let identifier = String(describing: self)
+    
+    static var identifier: String {
+        get {
+            return String(describing: self)
+        }
+    }
 }

@@ -9,5 +9,11 @@ import Foundation
 import UIKit
 
 extension UICollectionViewCell {
-    static let identifier = String(describing: self)
+    static var identifier: String {
+        get {
+            return String(describing: self)
+        }
+    }
+
 }
+
