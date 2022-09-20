@@ -54,6 +54,8 @@ final class RegisterPetViewController: BaseViewController {
         return datePicker
     }()
     
+    var currentStatus = CurrentStatus.new
+    
     override func loadView() {
         self.view = mainView
     }
@@ -74,9 +76,11 @@ final class RegisterPetViewController: BaseViewController {
         super.setUpController()
         
         let doneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(finishWriting))
-        let cancelButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(dismissView))
+//        let editButton = UIBarButtonItem(title: "수정", style: <#T##UIBarButtonItem.Style#>, target: <#T##Any?#>, action: <#T##Selector?#>)
+        let dismissButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(dismissView))
+//        let deleteButton
         navigationItem.rightBarButtonItem = doneButton
-        navigationItem.leftBarButtonItem = cancelButton
+        navigationItem.leftBarButtonItem = dismissButton
         navigationController?.navigationBar.tintColor = .diaryColor
         
         let appearance = UINavigationBarAppearance()
@@ -85,7 +89,7 @@ final class RegisterPetViewController: BaseViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.standardAppearance = appearance
         
-        title = "펫 등록"
+        title = "반려동물 등록"
 
         //MARK: - 텍스트필드
         mainView.birthdayTextField.delegate = self
@@ -144,11 +148,6 @@ final class RegisterPetViewController: BaseViewController {
             
         }
     }
-    
-    @objc private func dismissView() {
-        transition(self, transitionStyle: .dismiss)
-    }
-    
     //MARK: 성별 버튼
     @objc private func tapBoyButton() {
         gender = "남아"
@@ -173,12 +172,14 @@ final class RegisterPetViewController: BaseViewController {
         print("real: \(birthdatDate)")
         mainView.birthdayTextField.text = birthdatDate.dateToString(type: .simple)
         
-        
         mainView.birthdayTextField.endEditing(true)
     }
     @objc private func dismissPicker() {
         mainView.birthdayTextField.endEditing(true)
-
+        
+    }
+    @objc private func dismissView() {
+        transition(self, transitionStyle: .dismiss)
     }
 }
 

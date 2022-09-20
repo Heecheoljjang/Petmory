@@ -11,7 +11,55 @@ import SnapKit
 
 final class RegisterPetView: BaseView {
     
-    lazy var profileImageView: UIImageView = {
+    let scrollView: UIScrollView = {
+        let view = UIScrollView()
+        return view
+    }()
+    
+    let contentView: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
+    let stackView: UIStackView = {
+        let view = UIStackView()
+        view.axis = .horizontal
+        view.spacing = 8
+        view.distribution = .fillEqually
+        return view
+    }()
+    
+    let deleteButton: UIButton = {
+        let button = UIButton()
+        var configuration = UIButton.Configuration.filled()
+        configuration.title = "삭제"
+        configuration.baseForegroundColor = .diaryColor
+        configuration.baseBackgroundColor = .white
+        
+        button.configuration = configuration
+        button.layer.cornerRadius = 10
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.diaryColor.cgColor
+        button.clipsToBounds = true
+        
+        return button
+    }()
+    let addButton: UIButton = {
+        let button = UIButton()
+        var configuration = UIButton.Configuration.filled()
+        configuration.title = "등록"
+        configuration.baseForegroundColor = .white
+        configuration.baseBackgroundColor = .diaryColor
+        
+        button.configuration = configuration
+        button.layer.cornerRadius = 10
+        button.clipsToBounds = true
+        
+        return button
+    }()
+    
+    
+    let profileImageView: UIImageView = {
         let view = UIImageView()
         view.backgroundColor = .systemGray6
         view.clipsToBounds = true
@@ -138,24 +186,42 @@ final class RegisterPetView: BaseView {
     override func configure() {
         super.configure()
         
-        [profileImageView, photoButton, nameLabel, nameLineView, nameTextField, birthdayLabel, birthdayLineView, birthdayTextField, memoLabel, memoTextView, boyButton, girlButton].forEach {
-            self.addSubview($0)
+        scrollView.addSubview(contentView)
+        
+        [deleteButton, addButton].forEach {
+            stackView.addArrangedSubview($0)
         }
+        
+        [profileImageView, photoButton, nameLabel, nameLineView, nameTextField, birthdayLabel, birthdayLineView, birthdayTextField, memoLabel, memoTextView, boyButton, girlButton, stackView].forEach {
+            contentView.addSubview($0)
+        }
+        
+        self.addSubview(scrollView)
         backgroundColor = .white
     }
     
     override func setUpContraints() {
         super.setUpContraints()
         
+        scrollView.snp.makeConstraints { make in
+            make.horizontalEdges.top.equalTo(self.safeAreaLayoutGuide)
+            make.bottom.equalToSuperview()
+        }
+        
+        contentView.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.centerX.top.equalToSuperview()
+            make.bottom.equalTo(scrollView).offset(20)
+        }
+        
         profileImageView.snp.makeConstraints { make in
-            make.top.equalTo(self.safeAreaLayoutGuide).offset(40)
+            make.top.equalToSuperview().offset(40)
             make.size.equalTo(160)
             make.centerX.equalToSuperview()
         }
         photoButton.snp.makeConstraints { make in
             make.size.equalTo(profileImageView.snp.width).multipliedBy(0.3)
             make.bottom.trailing.equalTo(profileImageView)
-//            make.center.equalTo(profileImageView)
         }
         boyButton.snp.makeConstraints { make in
             make.height.equalTo(48)
@@ -206,7 +272,13 @@ final class RegisterPetView: BaseView {
         memoTextView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(20)
             make.top.equalTo(memoLabel.snp.bottom).offset(12)
-            make.bottom.equalTo(self.safeAreaLayoutGuide).offset(-20)
+            make.height.equalTo(140)
+        }
+        stackView.snp.makeConstraints { make in
+            make.height.equalTo(44)
+            make.horizontalEdges.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview().offset(-40)
+            make.top.equalTo(memoTextView.snp.bottom).offset(36)
         }
     }
 }
