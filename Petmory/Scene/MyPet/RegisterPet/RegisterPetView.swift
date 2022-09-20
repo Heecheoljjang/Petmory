@@ -85,6 +85,13 @@ final class RegisterPetView: BaseView {
         return button
     }()
     
+    let memoLabel: UILabel = {
+        let label = UILabel()
+        label.text = "메모"
+        label.font = UIFont(name: CustomFont.medium, size: 14)
+        return label
+    }()
+    
     let boyButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.plain()
@@ -161,9 +168,9 @@ final class RegisterPetView: BaseView {
         return view
     }()
     
-    let memoLabel: UILabel = {
+    let genderLabel: UILabel = {
         let label = UILabel()
-        label.text = "메모"
+        label.text = "성별"
         label.font = UIFont(name: CustomFont.medium, size: 14)
         return label
     }()

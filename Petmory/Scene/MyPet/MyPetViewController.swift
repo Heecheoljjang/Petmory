@@ -65,37 +65,67 @@ final class MyPetViewController: BaseViewController {
         
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.standardAppearance = appearance
-        title = "나의 반려동물"
+        navigationItem.title = "나의 반려동물"
+        navigationItem.backButtonTitle = ""
     }
     
     //MARK: - @objc
     @objc private func presentRegisterPetView() {
-//        let task = UserPet(petName: "윤희철", birthday: Date(), gender: true, comment: "좋아요", registerDate: Date())
-//        repository.addPet(item: task)
-//
-//        tasks = repository.fetch()
-        transition(RegisterPetViewController(), transitionStyle: .presentNavigation)
+
+        transition(RegisterPetViewController(), transitionStyle: .push)
     }
 }
 
 extension MyPetViewController: UITableViewDelegate, UITableViewDataSource {
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tasks.count
+        if section == 0 {
+            return tasks.count
+        } else {
+            return 1
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: MyPetTableViewCell.identifier) as? MyPetTableViewCell else { return UITableViewCell() }
-        if let imageData = tasks[indexPath.row].profileImage {
-            cell.profileImageView.image = UIImage(data: imageData)
-        }
-        cell.nameLabel.text = tasks[indexPath.row].petName
         
-        return cell
+        if indexPath.section == 1 {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: AddPetTableViewCell.identifier) as? AddPetTableViewCell else { return UITableViewCell() }
+            
+            
+            return cell
+        } else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: MyPetTableViewCell.identifier) as? MyPetTableViewCell else { return UITableViewCell() }
+            if let imageData = tasks[indexPath.row].profileImage {
+                cell.profileImageView.image = UIImage(data: imageData)
+            }
+            cell.nameLabel.text = tasks[indexPath.row].petName
+            
+            return cell
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 1 {
+            
+        } else {
+            //데이터 전달해서 작성 화면 채우기.(push)
+            let registerPetVC = RegisterPetViewController()
+            registerPetVC.currentStatus = CurrentStatus.edit
+            registerPetVC.task = tasks[indexPath.row]
+            transition(registerPetVC, transitionStyle: .push)
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 140
+        if indexPath.section == 1 {
+            return 80
+        } else {
+            return 120
+        }
     }
     
 }

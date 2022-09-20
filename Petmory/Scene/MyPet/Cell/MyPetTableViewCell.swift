@@ -25,11 +25,11 @@ final class MyPetTableViewCell: BaseTableViewCell {
         return label
     }()
     
-//    let separatorView: UIView = {
-//        let view = UIView()
-//        view.backgroundColor = .diaryColor
-//        return view
-//    }()
+    let deleteView: UIView = {
+        let view = UIView()
+        
+        return view
+    }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: MyPetTableViewCell.identifier)

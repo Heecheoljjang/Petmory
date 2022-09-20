@@ -12,6 +12,7 @@ final class MyPetView: BaseView {
     let tableView: UITableView = {
         let view = UITableView()
         view.separatorStyle = .none
+        view.register(AddPetTableViewCell.self, forCellReuseIdentifier: AddPetTableViewCell.identifier)
         view.register(MyPetTableViewCell.self, forCellReuseIdentifier: MyPetTableViewCell.identifier)
         view.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
         return view

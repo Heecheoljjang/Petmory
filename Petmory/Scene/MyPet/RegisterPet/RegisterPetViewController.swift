@@ -40,7 +40,7 @@ final class RegisterPetViewController: BaseViewController {
         }
     }
     
-    var birthdatDate = Date()
+    var birthdayDate = Date()
     
     let birthdayDatePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
@@ -56,6 +56,8 @@ final class RegisterPetViewController: BaseViewController {
     
     var currentStatus = CurrentStatus.new
     
+    var task: UserPet?
+    
     override func loadView() {
         self.view = mainView
     }
@@ -63,24 +65,60 @@ final class RegisterPetViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if currentStatus == CurrentStatus.edit {
+            mainView.addButton.configuration?.title = "수정"
+            if let task = task {
+                //프로필 이미지 설정
+                if let imageData = task.profileImage {
+//                    mainView.profileImageView.image = UIImage(data: imageData)
+                    profileImage = imageData
+                }
+                //성별 설정
+                if task.gender == "남아" {
+                    gender = task.gender
+                    mainView.boyButton.configuration?.baseForegroundColor = .diaryColor
+                    mainView.boyButton.layer.borderColor = UIColor.diaryColor.cgColor
+                } else {
+                    gender = task.gender
+                    mainView.girlButton.configuration?.baseForegroundColor = .diaryColor
+                    mainView.girlButton.layer.borderColor = UIColor.diaryColor.cgColor
+                }
+                //이름
+                mainView.nameTextField.text = task.petName
+                //생일
+                if let birthdayDate = task.birthday {
+                    self.birthdayDate = birthdayDate
+                    mainView.birthdayTextField.text = birthdayDate.dateToString(type: .simple)
+                    birthdayDatePicker.date = birthdayDate
+                }
+                //메모
+                mainView.memoTextView.text = task.comment
+            }
+            mainView.deleteButton.isHidden = false
+        } else {
+            mainView.addButton.configuration?.title = "등록"
+            mainView.deleteButton.isHidden = true
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if let imageData = profileImage {
+            mainView.profileImageView.image = UIImage(data: imageData)
+        }
     }
     
     override func configure() {
         super.configure()
         
         mainView.birthdayTextField.inputView = birthdayDatePicker
-
+        
     }
     
     override func setUpController() {
         super.setUpController()
         
-        let doneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(finishWriting))
-//        let editButton = UIBarButtonItem(title: "수정", style: <#T##UIBarButtonItem.Style#>, target: <#T##Any?#>, action: <#T##Selector?#>)
-        let dismissButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(dismissView))
-//        let deleteButton
-        navigationItem.rightBarButtonItem = doneButton
-        navigationItem.leftBarButtonItem = dismissButton
         navigationController?.navigationBar.tintColor = .diaryColor
         
         let appearance = UINavigationBarAppearance()
@@ -110,6 +148,10 @@ final class RegisterPetViewController: BaseViewController {
         
         //사진 버튼
         mainView.photoButton.addTarget(self, action: #selector(presentPhotoPickerView), for: .touchUpInside)
+        
+        //등록, 삭제 버튼
+        mainView.deleteButton.addTarget(self, action: #selector(deletePet), for: .touchUpInside)
+        mainView.addButton.addTarget(self, action: #selector(addPet), for: .touchUpInside)
     }
     
     private func presentPHPickerViewController() {
@@ -140,7 +182,7 @@ final class RegisterPetViewController: BaseViewController {
                 if profileImage == nil {
                     print("사진을 등록해주세요")
                 } else {
-                    let pet = UserPet(profileImage: profileImage, petName: mainView.nameTextField.text!, birthday: birthdatDate, gender: gender, comment: mainView.memoTextView.text, registerDate: Date())
+                    let pet = UserPet(profileImage: profileImage, petName: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text, registerDate: Date())
                     repository.addPet(item: pet)
                     transition(self, transitionStyle: .dismiss)
                 }
@@ -164,13 +206,13 @@ final class RegisterPetViewController: BaseViewController {
     
     //MARK: 날짜 선택
     @objc private func selectDate(_ sender: UIDatePicker) {
-        birthdatDate = sender.date
-        print(birthdatDate)
+        birthdayDate = sender.date
+        print(birthdayDate)
     }
     @objc private func doneSelectDate() {
         
-        print("real: \(birthdatDate)")
-        mainView.birthdayTextField.text = birthdatDate.dateToString(type: .simple)
+        print("real: \(birthdayDate)")
+        mainView.birthdayTextField.text = birthdayDate.dateToString(type: .simple)
         
         mainView.birthdayTextField.endEditing(true)
     }
@@ -178,8 +220,56 @@ final class RegisterPetViewController: BaseViewController {
         mainView.birthdayTextField.endEditing(true)
         
     }
-    @objc private func dismissView() {
-        transition(self, transitionStyle: .dismiss)
+    @objc private func deletePet() {
+        //지울건지 alert띄우고
+        
+        //일단 기능만
+        if let task = task {
+            repository.deletePet(item: task)
+        }
+        transition(self, transitionStyle: .pop)
+    }
+    @objc private func addPet() {
+        if currentStatus == CurrentStatus.edit {
+            print("edit")
+            //MARK: alert띄우기
+            if mainView.nameTextField.text! == "" {
+                print("이름은 필수입니다!!")
+            } else {
+                if profileImage == nil {
+                    print("사진을 등록해주세요")
+                } else {
+                    if let task = task {
+                        repository.updatePet(item: task, profileImage: profileImage, name: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text)
+                        transition(self, transitionStyle: .pop)
+                    }
+                }
+            }
+        } else {
+            print("new")
+            //MARK: alert띄우기
+            if gender == "" && mainView.nameTextField.text! == "" {
+                print("이름과 성별은 필수입니다!!")
+            } else if gender == "" && mainView.nameTextField.text! != "" {
+                print("성별을 선택해주세요")
+            } else if gender != "" && mainView.nameTextField.text! == "" {
+                print("이름을 입력해주세요.")
+            } else {
+                if mainView.birthdayTextField.text! == "" {
+                    //MARK: alert띄워서 확인 누르면 오늘 날짜로 텍스트필드 채우기
+                    print("생일을 작성하지 않으시면 오늘 날짜로 작성됩니다!")
+                } else {
+                    if profileImage == nil {
+                        print("사진을 등록해주세요")
+                    } else {
+                        let pet = UserPet(profileImage: profileImage, petName: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text, registerDate: Date())
+                        repository.addPet(item: pet)
+                        transition(self, transitionStyle: .pop)
+                    }
+                }
+                
+            }
+        }
     }
 }
 
