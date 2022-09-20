@@ -50,13 +50,13 @@ final class MyPetViewController: BaseViewController {
         
         mainView.tableView.delegate = self
         mainView.tableView.dataSource = self
+        
+        
     }
     
     override func setUpController() {
         super.setUpController()
         
-        let tempAddButton = UIBarButtonItem(title: "추가", style: .done, target: self, action: #selector(presentRegisterPetView))
-        navigationItem.rightBarButtonItem = tempAddButton
         navigationController?.navigationBar.tintColor = .diaryColor
         
         let appearance = UINavigationBarAppearance()
@@ -67,12 +67,7 @@ final class MyPetViewController: BaseViewController {
         navigationController?.navigationBar.standardAppearance = appearance
         navigationItem.title = "나의 반려동물"
         navigationItem.backButtonTitle = ""
-    }
-    
-    //MARK: - @objc
-    @objc private func presentRegisterPetView() {
 
-        transition(RegisterPetViewController(), transitionStyle: .push)
     }
 }
 
@@ -94,8 +89,8 @@ extension MyPetViewController: UITableViewDelegate, UITableViewDataSource {
         
         if indexPath.section == 1 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: AddPetTableViewCell.identifier) as? AddPetTableViewCell else { return UITableViewCell() }
-            
-            
+            cell.addButton.addTarget(self, action: #selector(presentRegister(_ :)), for: .touchUpInside)
+
             return cell
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MyPetTableViewCell.identifier) as? MyPetTableViewCell else { return UITableViewCell() }
@@ -109,23 +104,27 @@ extension MyPetViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 1 {
-            
-        } else {
+        if indexPath.section == 0 {
             //데이터 전달해서 작성 화면 채우기.(push)
             let registerPetVC = RegisterPetViewController()
             registerPetVC.currentStatus = CurrentStatus.edit
             registerPetVC.task = tasks[indexPath.row]
-            transition(registerPetVC, transitionStyle: .push)
+            registerPetVC.navTitle = "반려동물 정보"
+            transition(registerPetVC, transitionStyle: .presentNavigation)
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 1 {
-            return 80
+            return 84
         } else {
             return 120
         }
     }
-    
+    //MARK: - @objc
+    @objc private func presentRegister(_ sender: UIButton) {
+        let registerPetViewController = RegisterPetViewController()
+        
+        transition(registerPetViewController, transitionStyle: .presentNavigation)
+    }
 }
