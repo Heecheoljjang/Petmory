@@ -58,6 +58,8 @@ final class RegisterPetViewController: BaseViewController {
     
     var task: UserPet?
     
+    var navTitle = "반려동물 등록"
+    
     override func loadView() {
         self.view = mainView
     }
@@ -121,13 +123,16 @@ final class RegisterPetViewController: BaseViewController {
         
         navigationController?.navigationBar.tintColor = .diaryColor
         
+        tabBarController?.tabBar.isHidden = true
+        
+        let dismissButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(dismissView))
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .white
         appearance.shadowColor = .clear
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.standardAppearance = appearance
-        
-        title = "반려동물 등록"
+        navigationItem.leftBarButtonItem = dismissButton
+        navigationItem.title = navTitle
 
         //MARK: - 텍스트필드
         mainView.birthdayTextField.delegate = self
@@ -211,14 +216,12 @@ final class RegisterPetViewController: BaseViewController {
     }
     @objc private func doneSelectDate() {
         
-        print("real: \(birthdayDate)")
         mainView.birthdayTextField.text = birthdayDate.dateToString(type: .simple)
         
         mainView.birthdayTextField.endEditing(true)
     }
     @objc private func dismissPicker() {
         mainView.birthdayTextField.endEditing(true)
-        
     }
     @objc private func deletePet() {
         //지울건지 alert띄우고
@@ -227,7 +230,7 @@ final class RegisterPetViewController: BaseViewController {
         if let task = task {
             repository.deletePet(item: task)
         }
-        transition(self, transitionStyle: .pop)
+        transition(self, transitionStyle: .dismiss)
     }
     @objc private func addPet() {
         if currentStatus == CurrentStatus.edit {
@@ -241,7 +244,7 @@ final class RegisterPetViewController: BaseViewController {
                 } else {
                     if let task = task {
                         repository.updatePet(item: task, profileImage: profileImage, name: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text)
-                        transition(self, transitionStyle: .pop)
+                        transition(self, transitionStyle: .dismiss)
                     }
                 }
             }
@@ -264,12 +267,15 @@ final class RegisterPetViewController: BaseViewController {
                     } else {
                         let pet = UserPet(profileImage: profileImage, petName: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text, registerDate: Date())
                         repository.addPet(item: pet)
-                        transition(self, transitionStyle: .pop)
+                        transition(self, transitionStyle: .dismiss)
                     }
                 }
                 
             }
         }
+    }
+    @objc private func dismissView() {
+        transition(self, transitionStyle: .dismiss)
     }
 }
 

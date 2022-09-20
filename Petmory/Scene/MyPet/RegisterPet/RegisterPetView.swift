@@ -284,7 +284,7 @@ final class RegisterPetView: BaseView {
         stackView.snp.makeConstraints { make in
             make.height.equalTo(44)
             make.horizontalEdges.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview().offset(-40)
+            make.bottom.equalToSuperview().offset(-80)
             make.top.equalTo(memoTextView.snp.bottom).offset(36)
         }
     }
