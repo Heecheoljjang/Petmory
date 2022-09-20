@@ -10,6 +10,8 @@
 		970826A528D5E1E0000C530E /* MemoryDetailImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970826A428D5E1E0000C530E /* MemoryDetailImageCollectionViewCell.swift */; };
 		970826A728D5E876000C530E /* MemoryDetailPetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970826A628D5E876000C530E /* MemoryDetailPetCollectionViewCell.swift */; };
 		9716A8F828D0E4D600AC62FA /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9716A8F728D0E4D600AC62FA /* IQKeyboardManagerSwift */; };
+		97332AA128D95D220015ECE8 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97332AA028D95D220015ECE8 /* SettingView.swift */; };
+		97332AA328D95D2D0015ECE8 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97332AA228D95D2D0015ECE8 /* SettingViewController.swift */; };
 		9736007728D8463300FD9285 /* MyPetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9736007628D8463300FD9285 /* MyPetTableViewCell.swift */; };
 		974107A628D0459300617F8F /* CropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = 974107A528D0459300617F8F /* CropViewController */; };
 		9767A58B28D8DBF400304F6C /* AddPetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767A58A28D8DBF400304F6C /* AddPetTableViewCell.swift */; };
@@ -76,6 +78,8 @@
 /* Begin PBXFileReference section */
 		970826A428D5E1E0000C530E /* MemoryDetailImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryDetailImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		970826A628D5E876000C530E /* MemoryDetailPetCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryDetailPetCollectionViewCell.swift; sourceTree = "<group>"; };
+		97332AA028D95D220015ECE8 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		97332AA228D95D2D0015ECE8 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		9736007628D8463300FD9285 /* MyPetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPetTableViewCell.swift; sourceTree = "<group>"; };
 		9767A58A28D8DBF400304F6C /* AddPetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetTableViewCell.swift; sourceTree = "<group>"; };
 		977CB68D28D4540D001342E9 /* WritingContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingContentView.swift; sourceTree = "<group>"; };
@@ -153,6 +157,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		97332A9F28D95D160015ECE8 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				97332AA028D95D220015ECE8 /* SettingView.swift */,
+				97332AA228D95D2D0015ECE8 /* SettingViewController.swift */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
 		9767A58928D8DBCB00304F6C /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -285,6 +298,7 @@
 				97CF588B28C8CBD50062FEB9 /* Calendar */,
 				97CF588C28C8CBDE0062FEB9 /* MyPet */,
 				97CF58B928CB5EA30062FEB9 /* Search */,
+				97332A9F28D95D160015ECE8 /* Setting */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -544,6 +558,7 @@
 				97CF589428C9058E0062FEB9 /* Repository.swift in Sources */,
 				97CF58A728CAE2A60062FEB9 /* UIColor+Extension.swift in Sources */,
 				9781F0A128D16016008E6DBB /* MemoryDetailView.swift in Sources */,
+				97332AA128D95D220015ECE8 /* SettingView.swift in Sources */,
 				9786305B28CC5A2F0042C2E2 /* CalendarViewController.swift in Sources */,
 				97CF588928C8CB8F0062FEB9 /* TabBarController.swift in Sources */,
 				97CF58CD28CBA2C70062FEB9 /* BaseImageCollectionViewCell.swift in Sources */,
@@ -567,6 +582,7 @@
 				97CF58AF28CB03010062FEB9 /* AllMemoryViewController.swift in Sources */,
 				9786306728CC87200042C2E2 /* SearchResultTableViewCell.swift in Sources */,
 				97CF58B628CB4E830062FEB9 /* BaseTableViewCell.swift in Sources */,
+				97332AA328D95D2D0015ECE8 /* SettingViewController.swift in Sources */,
 				97C7CBCE28CE3626007743FF /* WritingPetCollectionViewCell.swift in Sources */,
 				9799F84528C7741C00E1C12C /* AppDelegate.swift in Sources */,
 				97CF58A928CAE4420062FEB9 /* CustomFont.swift in Sources */,
