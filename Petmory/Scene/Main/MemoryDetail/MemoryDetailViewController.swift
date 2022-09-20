@@ -37,8 +37,15 @@ final class MemoryDetailViewController: BaseViewController {
             mainView.titleLabel.text = memoryTask.memoryTitle
             mainView.dateLabel.text = memoryTask.memoryDateString
             mainView.contentTextView.text = memoryTask.memoryContent
+            if memoryTask.imageData.count == 0 {
+                mainView.imageCollectionView.isHidden = true
+            } else {
+                mainView.imageCollectionView.isHidden = false
+                mainView.imageCollectionView.reloadData()
+            }
+            print(memoryTask.imageData)
         }
-        mainView.imageCollectionView.reloadData()
+        
     }
     
     override func configure() {
@@ -136,4 +143,5 @@ extension MemoryDetailViewController: UICollectionViewDelegate, UICollectionView
             return cellSize
         }
     }
+    
 }

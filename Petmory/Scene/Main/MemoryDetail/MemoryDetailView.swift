@@ -20,6 +20,12 @@ final class MemoryDetailView: BaseView {
         return view
     }()
     
+    let stackView: UIStackView = {
+        let view = UIStackView()
+        view.axis = .vertical
+        return view
+    }()
+    
     let imageCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -91,7 +97,12 @@ final class MemoryDetailView: BaseView {
     override func configure() {
         super.configure()
         
-        [imageCollectionView, titleLabel, dateLabel, contentTextView, petCollectionView, withLabel].forEach {
+        stackView.addArrangedSubview(imageCollectionView)
+        
+//        [imageCollectionView, titleLabel, dateLabel, contentTextView, petCollectionView, withLabel].forEach {
+//            contentView.addSubview($0)
+//        }
+        [stackView, titleLabel, dateLabel, contentTextView, petCollectionView, withLabel].forEach {
             contentView.addSubview($0)
         }
         
@@ -115,11 +126,17 @@ final class MemoryDetailView: BaseView {
             make.bottom.equalTo(scrollView).offset(10)
         }
         
-        imageCollectionView.snp.makeConstraints { make in
+        stackView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
             make.height.equalTo(imageCollectionView.snp.width).multipliedBy(0.8)
             make.top.equalToSuperview().offset(20)
         }
+        
+//        imageCollectionView.snp.makeConstraints { make in
+//            make.horizontalEdges.equalToSuperview()
+//            make.height.equalTo(imageCollectionView.snp.width).multipliedBy(0.8)
+//            make.top.equalToSuperview().offset(20)
+//        }
         
         titleLabel.snp.makeConstraints { make in
             make.centerX.equalTo(imageCollectionView)
