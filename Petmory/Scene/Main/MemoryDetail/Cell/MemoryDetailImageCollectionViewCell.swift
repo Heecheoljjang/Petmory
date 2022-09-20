@@ -12,5 +12,4 @@ final class MemoryDetailImageCollectionViewCell: BaseImageCollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-    
 }

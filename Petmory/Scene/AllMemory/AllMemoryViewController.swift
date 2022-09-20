@@ -28,7 +28,6 @@ final class AllMemoryViewController: BaseViewController {
     
     var filterPetName: String = "" {
         didSet {
-            print(filterPetName)
             if filterPetName == "" {
                 tasks = repository.fetchAllMemory()
                 mainView.tableView.reloadData()
