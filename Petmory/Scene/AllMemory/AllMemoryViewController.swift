@@ -63,12 +63,16 @@ final class AllMemoryViewController: BaseViewController {
         
         navigationController?.navigationBar.tintColor = .diaryColor
         navigationItem.backButtonTitle = ""
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(popView))
+        //navigationItem.hidesBackButton = true
         
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .white
         appearance.shadowColor = .clear
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.standardAppearance = appearance
+    
+        
     }
     
     override func configure() {
@@ -84,6 +88,9 @@ final class AllMemoryViewController: BaseViewController {
     }
     @objc private func pushSearchView() {
         transition(SearchViewController(), transitionStyle: .push)
+    }
+    @objc private func popView() {
+        transition(self, transitionStyle: .pop)
     }
 }
 
@@ -105,8 +112,8 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let memoryDetailViewController = MemoryDetailViewController()
         memoryDetailViewController.objectId = tasks[indexPath.row].objectId
-        
-        transition(memoryDetailViewController, transitionStyle: .presentNavigation)
+        memoryDetailViewController.imageList = tasks[indexPath.row].imageData
+        transition(memoryDetailViewController, transitionStyle: .push)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

@@ -41,6 +41,9 @@ final class SearchViewController: BaseViewController {
         searchBar.placeholder = "제목, 내용 검색"
         searchBar.delegate = self
         self.navigationItem.titleView = searchBar
+        
+        let popButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(cancelSearch))
+        navigationItem.leftBarButtonItem = popButton
 
     }
     
