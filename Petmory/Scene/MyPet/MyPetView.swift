@@ -18,14 +18,14 @@ final class MyPetView: BaseView {
         return view
     }()
     
-    let noPetLabel: UILabel = {
-        let label = UILabel()
-        label.text = "반려동물을 등록해주세요 :)"
-        label.textAlignment = .center
-        label.font = UIFont(name: CustomFont.medium, size: 12)
-        label.textColor = .lightGray
-        return label
-    }()
+//    let noPetLabel: UILabel = {
+//        let label = UILabel()
+//        label.text = "반려동물을 등록해주세요 :)"
+//        label.textAlignment = .center
+//        label.font = UIFont(name: CustomFont.medium, size: 12)
+//        label.textColor = .lightGray
+//        return label
+//    }()
 
     
     override init(frame: CGRect) {
@@ -34,11 +34,8 @@ final class MyPetView: BaseView {
     
     override func configure() {
         super.configure()
-            
-        [tableView, noPetLabel].forEach {
-            self.addSubview($0)
-        }
-        
+
+        self.addSubview(tableView)
         backgroundColor = .white
     }
     
@@ -48,10 +45,10 @@ final class MyPetView: BaseView {
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
-        noPetLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(200)
-        }
+//        
+//        noPetLabel.snp.makeConstraints { make in
+//            make.centerX.equalToSuperview()
+//            make.top.equalToSuperview().offset(200)
+//        }
     }
 }

@@ -35,13 +35,13 @@ final class MyPetViewController: BaseViewController {
         
         tasks = repository.fetchPet()
         
-        if tasks.count == 0 {
-            mainView.noPetLabel.isHidden = false
-            mainView.tableView.isHidden = true
-        } else {
-            mainView.noPetLabel.isHidden = true
-            mainView.tableView.isHidden = false
-        }
+//        if tasks.count == 0 {
+//            mainView.noPetLabel.isHidden = false
+//            mainView.tableView.isHidden = true
+//        } else {
+//            mainView.noPetLabel.isHidden = true
+//            mainView.tableView.isHidden = false
+//        }
         mainView.tableView.reloadData()
     }
     
