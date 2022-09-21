@@ -4,8 +4,6 @@
 //
 //  Created by HeecheolYoon on 2022/09/09.
 //
-
-import Foundation
 import UIKit
 import RealmSwift
 
@@ -18,7 +16,6 @@ final class MainViewController: BaseViewController {
     var tasks: Results<UserMemory>! {
         didSet {
             //페이지 바꾸기
-            print("\(tasks.count)")
             mainView.pageLabel.text = "\(tasks.count)페이지"
         }
     }
@@ -34,7 +31,6 @@ final class MainViewController: BaseViewController {
         
         createMemoryImageDirectory()
         
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,7 +39,6 @@ final class MainViewController: BaseViewController {
         tasks = repository.fetchTodayMemory()
         
         petList = repository.fetchPet()
-        print(petList)
         
         if tasks.count == 0 {
             mainView.outerView.isHidden = true
@@ -59,8 +54,11 @@ final class MainViewController: BaseViewController {
     override func setUpController() {
         
         let menuButton = UIBarButtonItem(image: UIImage(systemName: "line.horizontal.3"), style: .plain, target: self, action: #selector(presentAllMemory))
+        let settingButton = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(presentSetting))
         navigationItem.leftBarButtonItem = menuButton
+        navigationItem.rightBarButtonItem = settingButton
         navigationController?.navigationBar.tintColor = .diaryColor
+        navigationItem.backButtonTitle = ""
         
     }
     
@@ -100,5 +98,9 @@ final class MainViewController: BaseViewController {
         } else {
             transition(writingViewController, transitionStyle: .presentNavigation)
         }
+    }
+    @objc private func presentSetting() {
+        let settingViewController = SettingViewController()
+        transition(settingViewController, transitionStyle: .push)
     }
 }
