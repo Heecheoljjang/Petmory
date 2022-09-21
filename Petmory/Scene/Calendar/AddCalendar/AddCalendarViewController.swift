@@ -25,6 +25,8 @@ final class AddCalendarViewController: BaseViewController {
     
     private var placeholderText = "메모"
     
+    let notificationCenter = UNUserNotificationCenter.current()
+    
     override func loadView() {
         self.view = mainView
     }
@@ -32,20 +34,10 @@ final class AddCalendarViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        print(selectedDate)
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        
+        requestAuthorization()
         
     }
-    
+
     override func setUpController() {
         super.setUpController()
         
@@ -119,6 +111,21 @@ final class AddCalendarViewController: BaseViewController {
         }
     }
     
+    private func requestAuthorization() {
+        let authorizationOptions = UNAuthorizationOptions(arrayLiteral: .alert, .sound)
+        notificationCenter.requestAuthorization(options: authorizationOptions) { success, error in
+            if let error {
+                print("알림 권한을 요청하는데에서 오류가 발생하였습니다. \(error)")
+            }
+            if success == true {
+                print("허용")
+            } else {
+                print("허요안함")
+            }
+        }
+    }
+    
+    
     //MARK: - @objc
     @objc private func cancelAddingCalendar() {
         //작성한게 있다면 지울건지 alert
@@ -127,7 +134,6 @@ final class AddCalendarViewController: BaseViewController {
         transition(self, transitionStyle: .dismiss)
     }
     @objc private func doneAddingCalendar() {
-        print(mainView.memoTextView.textColor)
         if currentStatus == CurrentStatus.new {
             //데이터 추가
             if mainView.titleTextField.text != "" {

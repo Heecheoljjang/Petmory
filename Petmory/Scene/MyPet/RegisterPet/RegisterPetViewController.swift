@@ -60,12 +60,16 @@ final class RegisterPetViewController: BaseViewController {
     
     var navTitle = "반려동물 등록"
     
+    let notificationCenter = UNUserNotificationCenter.current()
+    
     override func loadView() {
         self.view = mainView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        requestAuthorization() //알림 권한 요청
         
         if currentStatus == CurrentStatus.edit {
             mainView.addButton.configuration?.title = "수정"
@@ -166,6 +170,20 @@ final class RegisterPetViewController: BaseViewController {
         let picker = PHPickerViewController(configuration: configuartion)
         picker.delegate = self
         transition(picker, transitionStyle: .present)
+    }
+    
+    private func requestAuthorization() {
+        let authorizationOptions = UNAuthorizationOptions(arrayLiteral: .alert, .sound)
+        notificationCenter.requestAuthorization(options: authorizationOptions) { success, error in
+            if let error {
+                print("알림 권한을 요청하는데에서 오류가 발생하였습니다. \(error)")
+            }
+            if success == true {
+                print("허용")
+            } else {
+                print("허요안함")
+            }
+        }
     }
     
     //MARK: - @objc
