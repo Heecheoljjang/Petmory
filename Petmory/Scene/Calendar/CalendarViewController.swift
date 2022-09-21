@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import FSCalendar
 import RealmSwift
+import SnapKit
 
 final class CalendarViewController: BaseViewController {
     
@@ -38,6 +39,43 @@ final class CalendarViewController: BaseViewController {
     
     let repository = UserRepository()
     
+    //헤더뷰
+    let customTitleView: UIView = {
+        let view = UIView()
+        
+        return view
+    }()
+    
+    let titleViewLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: CustomFont.medium, size: 18)
+        label.textAlignment = .center
+        label.tintColor = .clear
+        label.sizeToFit()
+        label.text = "123123123"
+        
+        return label
+    }()
+    
+    let titleViewRightButton: UIButton = {
+        let button = UIButton()
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = UIImage(systemName: "chevron.right")
+        configuration.baseForegroundColor = .diaryColor
+        
+        button.configuration = configuration
+        return button
+    }()
+    let titleViewLeftButton: UIButton = {
+        let button = UIButton()
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = UIImage(systemName: "chevron.left")
+        configuration.baseForegroundColor = .diaryColor
+        
+        button.configuration = configuration
+        return button
+    }()
+    
     override func loadView() {
         self.view = mainView
     }
@@ -56,19 +94,46 @@ final class CalendarViewController: BaseViewController {
 
         mainView.tableView.reloadData()
     }
-
+    
+    override func configure() {
+        super.configure()
+        
+        [titleViewLeftButton, titleViewRightButton, titleViewLabel].forEach {
+            customTitleView.addSubview($0)
+        }
+        
+        titleViewLabel.snp.makeConstraints { make in
+            make.verticalEdges.equalToSuperview()
+            make.centerX.equalToSuperview()
+        }
+        titleViewLeftButton.snp.makeConstraints { make in
+            make.centerY.equalTo(titleViewLabel)
+            make.leading.equalToSuperview()
+            make.trailing.equalTo(titleViewLabel.snp.left).offset(-8)
+        }
+        titleViewRightButton.snp.makeConstraints { make in
+            make.centerY.equalTo(titleViewLabel)
+            make.trailing.equalToSuperview()
+            make.leading.equalTo(titleViewLabel.snp.left).offset(-8)
+        }
+    }
+    
     override func setUpController() {
         super.setUpController()
         
         let addButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(presentAddCalendarView))
         navigationItem.rightBarButtonItem = addButton
         
+        navigationController?.navigationBar.tintColor = .diaryColor
         
         mainView.tableView.delegate = self
         mainView.tableView.dataSource = self
         //FSCalendar
         mainView.calendar.delegate = self
         mainView.calendar.dataSource = self
+        
+        //타이틀뷰
+        navigationItem.titleView = customTitleView
     }
     
     //MARK: - @objc
@@ -83,10 +148,11 @@ final class CalendarViewController: BaseViewController {
     @objc private func reloadTableView(_ notification: NSNotification) {
         calendarTask = repository.fetchCalendar(date: selectDate)
         mainView.tableView.reloadData()
+        mainView.calendar.reloadData()
     }
 }
 
-extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
+extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         selectDate = date.nearestHour()
@@ -102,6 +168,21 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
             mainView.tableView.isHidden = false
             mainView.noTaskLabel.isHidden = true
         }
+    }
+    
+    func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
+        if repository.fetchCalendar(date: date).count > 0 {
+            return 1
+        } else {
+             return 0
+        }
+    }
+    
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventDefaultColorsFor date: Date) -> [UIColor]? {
+        return [UIColor.diaryColor]
+    }
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventSelectionColorsFor date: Date) -> [UIColor]? {
+        return [UIColor.diaryColor]
     }
 }
 

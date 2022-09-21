@@ -12,13 +12,7 @@ final class CalendarView: BaseView {
     
     let calendarView: UIView = {
         let view = UIView()
-        view.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        view.layer.cornerRadius = 20
-        view.layer.shadowOpacity = 0.5
-        view.layer.shadowOffset = CGSize.zero
-        view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.shadowRadius = 12
-        view.backgroundColor = .yellow
+        
         return view
     }()
     
@@ -26,6 +20,26 @@ final class CalendarView: BaseView {
         let calendar = FSCalendar()
         calendar.locale = Locale(identifier: "ko-KR")
         
+        //헤더 숨기기
+        calendar.headerHeight = 0
+        
+        //폰트
+        calendar.appearance.titleFont = UIFont(name: CustomFont.medium, size: 12)
+        calendar.appearance.weekdayFont = UIFont(name: CustomFont.medium, size: 14)
+        calendar.appearance.headerTitleFont = UIFont(name: CustomFont.medium, size: 20)
+        
+        //컬러
+        calendar.appearance.headerTitleColor = .diaryColor
+        calendar.appearance.todayColor = .diaryColor
+        calendar.appearance.selectionColor = .lightDiaryColor
+        calendar.appearance.weekdayTextColor = .diaryColor
+        calendar.appearance.titleSelectionColor = .black
+        calendar.appearance.titleTodayColor = .white
+        
+        //날짜
+        calendar.appearance.headerDateFormat = "yyyy. MM"
+        calendar.appearance.headerMinimumDissolvedAlpha = 0.0
+
         return calendar
     }()
     
@@ -35,6 +49,7 @@ final class CalendarView: BaseView {
         configuration.image = UIImage(systemName: "chevron.right")
         configuration.title = "작성한 기록 보러가기"
         configuration.imagePlacement = .trailing
+        
         button.configuration = configuration
         return button
     }()
@@ -61,7 +76,7 @@ final class CalendarView: BaseView {
     
     override func configure() {
         super.configure()
-        
+    
         [calendar, diaryButton].forEach {
             calendarView.addSubview($0)
         }
