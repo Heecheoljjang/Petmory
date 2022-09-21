@@ -50,4 +50,31 @@ extension Date {
             return calendar.date(byAdding: .minute, value: roundedMinute, to: self)!
         }
     }
+    func dateComponentFromDate(component: String) -> Int? {
+        
+        let dateFormatter = DateFormatter()
+        
+        switch component {
+        case DateComponent.year.rawValue:
+            dateFormatter.dateFormat = "yyyy"
+            return Int(dateFormatter.string(from: self))
+        case DateComponent.month.rawValue:
+            dateFormatter.dateFormat = "MM"
+            return Int(dateFormatter.string(from: self))
+        case DateComponent.day.rawValue:
+            dateFormatter.dateFormat = "dd"
+            return Int(dateFormatter.string(from: self))
+        case DateComponent.hour.rawValue:
+            dateFormatter.dateFormat = "HH"
+            return Int(dateFormatter.string(from: self))
+        case DateComponent.minute.rawValue:
+            dateFormatter.dateFormat = "mm"
+            return Int(dateFormatter.string(from: self))
+        case DateComponent.second.rawValue:
+            dateFormatter.dateFormat = "ss"
+            return Int(dateFormatter.string(from: self))
+        default :
+            return 0
+        }
+    }
 }

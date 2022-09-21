@@ -84,9 +84,9 @@ final class AddCalendarViewController: BaseViewController {
         
         if currentStatus == CurrentStatus.new {
             //날짜 텍스트필드
-            if selectedDate == nil {
-                selectedDate = Date().nearestHour()
-            }
+
+            selectedDate = selectedDate?.nearestHour()
+
             mainView.dateTextField.text = selectedDate!.dateToString(type: .full)
             mainView.datePicker.date = selectedDate!
             
@@ -111,6 +111,7 @@ final class AddCalendarViewController: BaseViewController {
         }
     }
     
+    //MARK: - 알림
     private func requestAuthorization() {
         let authorizationOptions = UNAuthorizationOptions(arrayLiteral: .alert, .sound)
         notificationCenter.requestAuthorization(options: authorizationOptions) { success, error in
@@ -125,6 +126,26 @@ final class AddCalendarViewController: BaseViewController {
         }
     }
     
+    private func sendNotification(body: String, date: Date, identifier: String) {
+ 
+        let notificationContent = UNMutableNotificationContent()
+        notificationContent.sound = .default
+        notificationContent.title = "오늘의 일정"
+        notificationContent.body = body
+
+        var dateComponents = DateComponents()
+        dateComponents.year = date.dateComponentFromDate(component: DateComponent.year.rawValue)
+        dateComponents.month = date.dateComponentFromDate(component: DateComponent.month.rawValue)
+        dateComponents.day = date.dateComponentFromDate(component: DateComponent.day.rawValue)
+        dateComponents.hour = 0
+        dateComponents.minute = 0
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+        
+        let request = UNNotificationRequest(identifier: identifier, content: notificationContent, trigger: trigger)
+        
+        notificationCenter.add(request)
+    }
     
     //MARK: - @objc
     @objc private func cancelAddingCalendar() {
@@ -134,13 +155,18 @@ final class AddCalendarViewController: BaseViewController {
         transition(self, transitionStyle: .dismiss)
     }
     @objc private func doneAddingCalendar() {
+        
+        let currentDate = Date()
+        
         if currentStatus == CurrentStatus.new {
             //데이터 추가
             if mainView.titleTextField.text != "" {
                 if mainView.memoTextView.textColor == .placeholderColor {
-                    repository.addCalendar(item: UserCalendar(title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple), color: currentColor, comment: "", registerDate: Date()))
+                    repository.addCalendar(item: UserCalendar(title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple), color: currentColor, comment: "", registerDate: currentDate))
+                    sendNotification(body: mainView.titleTextField.text!, date: selectedDate!, identifier: "\(currentDate)")
                 } else {
-                    repository.addCalendar(item: UserCalendar(title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple), color: currentColor, comment: mainView.memoTextView.text, registerDate: Date()))
+                    repository.addCalendar(item: UserCalendar(title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple), color: currentColor, comment: mainView.memoTextView.text, registerDate: currentDate))
+                    sendNotification(body: mainView.titleTextField.text!, date: selectedDate!, identifier: "\(currentDate)")
                 }
             } else {
                 //제목 작성하라고 alert
@@ -157,8 +183,14 @@ final class AddCalendarViewController: BaseViewController {
                     } else {
                         if mainView.memoTextView.textColor == .placeholderColor {
                             repository.updateCalendar(item: task, title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple),color: currentColor, comment: "")
+                            //알림 지우고 다시 등록
+                            notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(task.registerDate)"])
+                            sendNotification(body: mainView.titleTextField.text!, date: selectedDate!, identifier: "\(task.registerDate)")
                         } else {
                             repository.updateCalendar(item: task, title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple),color: currentColor, comment: mainView.memoTextView.text)
+                            //알림 지우고 다시 등록
+                            notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(task.registerDate)"])
+                            sendNotification(body: mainView.titleTextField.text!, date: selectedDate!, identifier: "\(task.registerDate)")
                         }
                         
                     }
@@ -200,7 +232,7 @@ final class AddCalendarViewController: BaseViewController {
         
         mainView.dateTextField.text = sender.date.dateToString(type: .full)
         selectedDate = sender.date
-        print("datePickerDate: \(selectedDate)")
+        print(selectedDate)
     }
     @objc private func deleteCalendar() {
         if let task = task {

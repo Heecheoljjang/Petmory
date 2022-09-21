@@ -13,3 +13,6 @@ enum CurrentStatus {
     static let new = true
 }
 
+enum DateComponent: String {
+    case year, month, day, hour, minute, second
+}

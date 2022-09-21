@@ -186,9 +186,30 @@ final class RegisterPetViewController: BaseViewController {
         }
     }
     
+    private func sendNotification(name: String, date: Date, identifier: String) {
+
+        let notificationContent = UNMutableNotificationContent()
+        notificationContent.sound = .default
+        notificationContent.title = "\(name) 생일"
+        notificationContent.body = "소중한 하루를 선물해주세요 :)"
+
+        var dateComponents = DateComponents()
+        dateComponents.month = date.dateComponentFromDate(component: DateComponent.month.rawValue)
+        dateComponents.day = date.dateComponentFromDate(component: DateComponent.day.rawValue)
+        dateComponents.hour = 0
+        dateComponents.minute = 0
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        
+        let request = UNNotificationRequest(identifier: identifier, content: notificationContent, trigger: trigger)
+        notificationCenter.add(request)
+    }
+    
     //MARK: - @objc
     @objc private func finishWriting() {
         //데이터 저장
+        
+        let currentDate = Date()
         
         //MARK: alert띄우기
         if gender == "" && mainView.nameTextField.text! == "" {
@@ -205,8 +226,9 @@ final class RegisterPetViewController: BaseViewController {
                 if profileImage == nil {
                     print("사진을 등록해주세요")
                 } else {
-                    let pet = UserPet(profileImage: profileImage, petName: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text, registerDate: Date())
+                    let pet = UserPet(profileImage: profileImage, petName: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text, registerDate: currentDate)
                     repository.addPet(item: pet)
+                    sendNotification(name: mainView.nameTextField.text!, date: birthdayDate, identifier: "\(currentDate)")
                     transition(self, transitionStyle: .dismiss)
                 }
             }
@@ -251,6 +273,9 @@ final class RegisterPetViewController: BaseViewController {
         transition(self, transitionStyle: .dismiss)
     }
     @objc private func addPet() {
+        
+        let currentDate = Date()
+        
         if currentStatus == CurrentStatus.edit {
             print("edit")
             //MARK: alert띄우기
@@ -262,6 +287,8 @@ final class RegisterPetViewController: BaseViewController {
                 } else {
                     if let task = task {
                         repository.updatePet(item: task, profileImage: profileImage, name: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text)
+                        notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(task.registerDate)"])
+                        sendNotification(name: mainView.nameTextField.text!, date: birthdayDate, identifier: "\(task.registerDate)")
                         transition(self, transitionStyle: .dismiss)
                     }
                 }
@@ -283,8 +310,9 @@ final class RegisterPetViewController: BaseViewController {
                     if profileImage == nil {
                         print("사진을 등록해주세요")
                     } else {
-                        let pet = UserPet(profileImage: profileImage, petName: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text, registerDate: Date())
+                        let pet = UserPet(profileImage: profileImage, petName: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text, registerDate: currentDate)
                         repository.addPet(item: pet)
+                        sendNotification(name: mainView.nameTextField.text!, date: birthdayDate, identifier: "\(currentDate)")
                         transition(self, transitionStyle: .dismiss)
                     }
                 }
