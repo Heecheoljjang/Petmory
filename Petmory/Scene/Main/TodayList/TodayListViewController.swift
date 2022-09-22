@@ -21,6 +21,20 @@ final class TodayListViewController: BaseViewController {
         }
     }
     
+    var navigationTitle = "" {
+        didSet {
+            titleLabel.text = navigationTitle
+            navigationItem.titleView = titleLabel
+        }
+    }
+    
+    var titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: CustomFont.medium, size: 18)
+        label.textAlignment = .center
+        return label
+    }()
+    
     override func loadView() {
         self.view = mainView
     }
@@ -41,6 +55,17 @@ final class TodayListViewController: BaseViewController {
         
         mainView.tableView.delegate = self
         mainView.tableView.dataSource = self
+    }
+    
+    override func setUpController() {
+        super.setUpController()
+        
+        var appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .white
+        appearance.shadowColor = .clear
+        
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.standardAppearance = appearance
     }
 }
 

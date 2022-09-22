@@ -24,7 +24,7 @@ final class SearchView: BaseView {
         let view = UITableView()
         view.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         view.register(SearchResultTableViewCell.self, forCellReuseIdentifier: SearchResultTableViewCell.identifier)
-        view.backgroundColor = .stringColor
+        view.backgroundColor = .white
         return view
     }()
     
@@ -38,7 +38,7 @@ final class SearchView: BaseView {
         [label, tableView].forEach {
             self.addSubview($0)
         }
-        backgroundColor = .stringColor
+        backgroundColor = .white
     }
     
     override func setUpContraints() {
