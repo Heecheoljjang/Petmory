@@ -52,6 +52,14 @@ final class AllMemoryViewController: BaseViewController {
         tasks = repository.fetchAllMemory()
         petList = repository.fetchPet()
         
+        if tasks.count == 0 {
+            mainView.tableView.isHidden = true
+            mainView.noMemoryLabel.isHidden = false
+        } else {
+            mainView.tableView.isHidden = false
+            mainView.noMemoryLabel.isHidden = true
+        }
+        
     }
     
     override func setUpController() {

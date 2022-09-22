@@ -32,6 +32,17 @@ final class AllMemoryView: BaseView {
         return view
     }()
     
+    let noMemoryLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.text = "작성한 기록이 없습니다!"
+        label.font = UIFont(name: CustomFont.medium, size: 12)
+        label.textColor = .lightGray
+        
+        return label
+    }()
+    
     let withLabel: UILabel = {
         let label = UILabel()
         label.text = "with"
@@ -47,7 +58,7 @@ final class AllMemoryView: BaseView {
     override func configure() {
         super.configure()
         
-        [tableView, collectionView, withLabel].forEach {
+        [tableView, collectionView, withLabel, noMemoryLabel].forEach {
             self.addSubview($0)
         }
         backgroundColor = .systemBackground
@@ -55,6 +66,11 @@ final class AllMemoryView: BaseView {
     
     override func setUpContraints() {
         super.setUpContraints()
+        
+        noMemoryLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().offset(200)
+        }
         
         withLabel.snp.makeConstraints { make in
             make.leading.equalTo(self).offset(20)

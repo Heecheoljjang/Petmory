@@ -77,17 +77,19 @@ final class MainViewController: BaseViewController {
     //MARK: - @objc
     @objc private func presentAllMemory() {
         
-        let allMemory = repository.fetchAllMemory()
+        let petList = repository.fetchPet()
         
-        if allMemory.count == 0 {
+        if petList.count == 0 {
             print("no")
         } else {
-            transition(AllMemoryViewController(), transitionStyle: .presentNavigation)
+            let allMemoryViewController = AllMemoryViewController()
+            transition(allMemoryViewController, transitionStyle: .presentNavigation)
         }
     }
     
     @objc private func pushTodayList() {
-        transition(TodayListViewController(), transitionStyle: .push)
+        let todayListViewController = TodayListViewController()
+        transition(todayListViewController, transitionStyle: .push)
     }
     
     @objc private func presentWritingView() {
