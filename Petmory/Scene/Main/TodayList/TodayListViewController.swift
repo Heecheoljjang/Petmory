@@ -62,10 +62,9 @@ extension TodayListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let memoryDetailViewController = MemoryDetailViewController()
-        //memoryDetailViewController.memoryTask = tasks[indexPath.row]
         memoryDetailViewController.objectId = tasks[indexPath.row].objectId
-        
-        transition(memoryDetailViewController, transitionStyle: .presentNavigation)
+        memoryDetailViewController.imageList = tasks[indexPath.row].imageData
+        transition(memoryDetailViewController, transitionStyle: .push)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
