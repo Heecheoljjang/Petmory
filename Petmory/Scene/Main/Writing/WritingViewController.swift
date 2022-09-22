@@ -85,7 +85,6 @@ final class WritingViewController: BaseViewController {
             if let currentTask = currentTask {
                 mainView.titleTextField.text = currentTask.memoryTitle
                 mainView.contentTextView.text = currentTask.memoryContent
-                memoryDate = currentTask.memoryDate
             }
             if mainView.contentTextView.text != "" {
                 mainView.contentTextView.textColor = .black
@@ -93,8 +92,6 @@ final class WritingViewController: BaseViewController {
                 mainView.contentTextView.text = placeholderText
                 mainView.contentTextView.textColor = .placeholderColor
             }
-        } else {
-            memoryDate = Date()
         }
         titleViewDatePicker.date = memoryDate
         titleViewTextField.inputView = titleViewDatePicker
@@ -169,7 +166,7 @@ final class WritingViewController: BaseViewController {
         
         let picker = PHPickerViewController(configuration: configuartion)
         picker.delegate = self
-        transition(picker, transitionStyle: .present)
+        transition(picker, transitionStyle: .presentModally)
     }
     
     //MARK: - @objc
@@ -318,6 +315,7 @@ extension WritingViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
 
         transition(self, transitionStyle: .dismiss)
+        isSelectingPhoto = true
         //편집 띄우기
         let itemProvider = results.first?.itemProvider
         
@@ -340,11 +338,10 @@ extension WritingViewController: PHPickerViewControllerDelegate {
 //MARK: - CropViewController
 extension WritingViewController: CropViewControllerDelegate {
     func cropViewController(_ cropViewController: CropViewController, didCropToImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
-
+        
         guard let imageData = image.jpegData(compressionQuality: 0.4) else { return }
         print(imageData)
         imageList.insert(imageData, at: 0)
-
         transition(self, transitionStyle: .dismiss)
     }
     

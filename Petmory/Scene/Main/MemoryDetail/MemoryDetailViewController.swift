@@ -109,6 +109,12 @@ final class MemoryDetailViewController: BaseViewController {
         let editViewController = WritingViewController()
         editViewController.currentStatus = CurrentStatus.edit
         editViewController.currentTask = memoryTask
+        
+        //memoryDate가 초기화되는 것을 막기위해 전달
+        if let memoryTask = memoryTask {
+            editViewController.memoryDate = memoryTask.memoryDate
+        }
+        
         memoryTask?.imageData.forEach {
             editViewController.imageList.append($0)
         }
