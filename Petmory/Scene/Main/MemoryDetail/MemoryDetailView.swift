@@ -35,7 +35,7 @@ final class MemoryDetailView: BaseView {
         
         let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         view.register(MemoryDetailImageCollectionViewCell.self, forCellWithReuseIdentifier: MemoryDetailImageCollectionViewCell.identifier)
-        view.backgroundColor = .systemGray6
+        view.backgroundColor = .white
         view.isPagingEnabled = true
         view.showsHorizontalScrollIndicator = false
         
@@ -129,7 +129,7 @@ final class MemoryDetailView: BaseView {
         stackView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
             make.height.equalTo(imageCollectionView.snp.width).multipliedBy(0.8)
-            make.top.equalToSuperview().offset(20)
+            make.top.equalToSuperview()
         }
         
 //        imageCollectionView.snp.makeConstraints { make in

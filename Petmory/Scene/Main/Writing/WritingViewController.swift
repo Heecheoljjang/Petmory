@@ -106,6 +106,12 @@ final class WritingViewController: BaseViewController {
         print(imageList)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NotificationCenter.default.post(name: NSNotification.Name.reloadCollectionView, object: nil)
+    }
+    
     override func setUpController() {
         super.setUpController()
         
@@ -201,14 +207,16 @@ final class WritingViewController: BaseViewController {
                     if let task = currentTask {
                         repository.updateMemory(item: task, title: mainView.titleTextField.text!, memoryDateString: memoryDate.dateToString(type: .simple), content: "", petList: withList, imageData: imageList, memoryDate: memoryDate)
                     }
-                    NotificationCenter.default.post(name: NSNotification.Name.editWriting, object: imageList)
-                    transition(self, transitionStyle: .dismiss)
+                    NotificationCenter.default.post(name: NSNotification.Name.editWriting, object: nil)
+//                    transition(self, transitionStyle: .dismiss)
+                    showAlert(title: "수정 완료!")
                 } else {
                     if let task = currentTask {
                         repository.updateMemory(item: task, title: mainView.titleTextField.text!, memoryDateString: memoryDate.dateToString(type: .simple), content: mainView.contentTextView.text, petList: withList, imageData: imageList, memoryDate: memoryDate)
                     }
-                    NotificationCenter.default.post(name: NSNotification.Name.editWriting, object: imageList)
-                    transition(self, transitionStyle: .dismiss)
+                    NotificationCenter.default.post(name: NSNotification.Name.editWriting, object: nil)
+//                    transition(self, transitionStyle: .dismiss)
+                    showAlert(title: "수정 완료!")
                 }
             }
         }
@@ -220,7 +228,7 @@ final class WritingViewController: BaseViewController {
         transition(self, transitionStyle: .dismiss)
     }
     @objc private func presentPhotoPickerView() {
-        if imageList.count <= 2 {
+        if imageList.count <= 1 {
             presentPHPickerViewController()
         } else {
             print("No")
@@ -334,7 +342,7 @@ extension WritingViewController: CropViewControllerDelegate {
     func cropViewController(_ cropViewController: CropViewController, didCropToImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
 
         guard let imageData = image.jpegData(compressionQuality: 0.4) else { return }
-        
+        print(imageData)
         imageList.insert(imageData, at: 0)
 
         transition(self, transitionStyle: .dismiss)
@@ -378,5 +386,17 @@ extension WritingViewController: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         titleViewTextField.isUserInteractionEnabled = true
+    }
+}
+
+//MARK: - Alert
+extension WritingViewController {
+    private func showAlert(title: String) {
+        let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "확인", style: .cancel) { _ in
+            self.transition(self, transitionStyle: .dismiss)
+        }
+        alert.addAction(ok)
+        present(alert, animated: true)
     }
 }

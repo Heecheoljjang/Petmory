@@ -20,6 +20,8 @@ final class MemoryDetailViewController: BaseViewController {
     
     var imageList: List<Data>?
     
+    var isEditStatus = false
+    
     override func loadView() {
         self.view = mainView
     }
@@ -27,39 +29,45 @@ final class MemoryDetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
                 
-        //NotificationCenter.default.addObserver(self, selector: #selector(reloadCollectionView(_ :)), name: NSNotification.Name.editWriting, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(settingTask(_ :)), name: NSNotification.Name.editWriting, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadCollectionView(_ :)), name: NSNotification.Name.reloadCollectionView, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        memoryTask = repository.fetchWithObjectId(objectId: objectId).first
-        
-        if let memoryTask = memoryTask {
+    
+        //편집 상태에서 돌아올때는 노티피케이션으로 memoryTasks를 주기 위해
+        if isEditStatus == false {
+            memoryTask = repository.fetchWithObjectId(objectId: objectId).first
             
-            mainView.titleLabel.text = memoryTask.memoryTitle
-            mainView.dateLabel.text = memoryTask.memoryDateString
-            mainView.contentTextView.text = memoryTask.memoryContent
-            //imageList = memoryTask.imageData
-            print(memoryTask.imageData.count)
-           
-        }
-        if let imageList = imageList {
-            if imageList.count == 0 {
-                mainView.imageCollectionView.isHidden = true
-//                mainView.imageCollectionView.reloadData()
-            } else {
-                mainView.imageCollectionView.isHidden = false
-//                mainView.imageCollectionView.reloadData()
+            if let memoryTask = memoryTask {
+                
+                mainView.titleLabel.text = memoryTask.memoryTitle
+                mainView.dateLabel.text = memoryTask.memoryDateString
+                mainView.contentTextView.text = memoryTask.memoryContent
+                //imageList = memoryTask.imageData
+                print(memoryTask.imageData.count)
+               
             }
-            //mainView.imageCollectionView.reloadData()
+            if let imageList = imageList {
+                if imageList.count == 0 {
+                    mainView.imageCollectionView.isHidden = true
+    //                mainView.imageCollectionView.reloadData()
+                } else {
+                    mainView.imageCollectionView.isHidden = false
+    //                mainView.imageCollectionView.reloadData()
+                }
+                //mainView.imageCollectionView.reloadData()
+            }
         }
+        mainView.imageCollectionView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        //mainView.imageCollectionView.reloadData()
+        print("뷰나왔ㅆ따")
+        mainView.imageCollectionView.reloadData()
+        print("뷰나온뒤에 리로드했다")
     }
     override func configure() {
         super.configure()
@@ -102,34 +110,57 @@ final class MemoryDetailViewController: BaseViewController {
         editViewController.currentStatus = CurrentStatus.edit
         editViewController.currentTask = memoryTask
         memoryTask?.imageData.forEach {
-            editViewController.imageList.insert($0, at: 0)
+            editViewController.imageList.append($0)
         }
-        
+        isEditStatus = true
         transition(editViewController, transitionStyle: .presentNavigation)
         
     }
     @objc private func deleteMemory() {
-        guard let memoryTask = memoryTask else { return }
+       // guard let memoryTask = memoryTask else { return }
         
         //MARK: 진짜 지울건지 확인하는 alert띄우기
         
-        
-        
-        repository.deleteMemory(item: memoryTask)
-        mainView.imageCollectionView.reloadData()
-        transition(self, transitionStyle: .pop)
+        if let memoryTask = memoryTask {
+            repository.deleteMemory(item: memoryTask)
+            transition(self, transitionStyle: .pop)
+        }
     }
     @objc private func popView() {
         transition(self, transitionStyle: .pop)
     }
-//    @objc private func reloadCollectionView(_ notification: NSNotification) {
-//        imageList = notification.object as? List<Data>
-//
-//        print("imageList: \(imageList)")
-//        mainView.imageCollectionView.reloadData()
-//    }
-    @objc private func presentMenu() {
+    
+    @objc private func settingTask(_ notification: NSNotification) {
         
+        print("노티피케이션 실행됨")
+        memoryTask = repository.fetchWithObjectId(objectId: objectId).first
+        
+        if let memoryTask = memoryTask {
+            
+            mainView.titleLabel.text = memoryTask.memoryTitle
+            mainView.dateLabel.text = memoryTask.memoryDateString
+            mainView.contentTextView.text = memoryTask.memoryContent
+           
+        }
+        if let imageList = imageList {
+            if imageList.count == 0 {
+                print("곧 히든")
+                mainView.imageCollectionView.isHidden = true
+                print("히든되었다")
+//                mainView.imageCollectionView.reloadData()
+            } else {
+                print("곧 히든 풀림")
+                mainView.imageCollectionView.isHidden = false
+                print("히든 풀림 완료")
+//                mainView.imageCollectionView.reloadData()
+            }
+            //mainView.imageCollectionView.reloadData()
+        }
+    }
+    @objc private func reloadCollectionView(_ notification: NSNotification) {
+        print("리로드 노티임")
+        mainView.imageCollectionView.reloadData()
+        print("리로드 노티임에서 리로드 끝")
     }
 }
 
