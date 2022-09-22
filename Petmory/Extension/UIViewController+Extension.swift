@@ -63,6 +63,26 @@ extension UIViewController {
             return nil
         }
     }
+    
+    //이미지 삭제
+    func deleteImageFromDocument(fileName: String) {
+        guard let documentDirectory = getDocumentDirectoryPath() else { return }
+        
+        let imageDirectory = documentDirectory.appendingPathComponent("images")
+        
+        let imageURL = imageDirectory.appendingPathComponent("\(fileName)")
+        print("삭제할 url: \(imageURL)")
+        if FileManager.default.fileExists(atPath: imageURL.path) {
+            do {
+                try FileManager.default.removeItem(at: imageURL)
+                print("삭제 성공")
+            } catch {
+                print("파일 삭제 실패")
+            }
+        } else {
+            print("지울 파일이 없습니다.")
+        }
+    }
 }
 
 //MARK: - Transition
@@ -100,5 +120,15 @@ extension UIViewController {
         case .dismiss:
             self.dismiss(animated: true)
         }
+    }
+}
+//MARK: - Alert
+
+extension UIViewController {
+    func noHandlerAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "확인", style: .cancel)
+        alert.addAction(ok)
+        present(alert, animated: true)
     }
 }
