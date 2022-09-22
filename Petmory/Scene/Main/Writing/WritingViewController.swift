@@ -41,9 +41,12 @@ final class WritingViewController: BaseViewController {
         }
     }
     
+    //사진 고를때 잠깐 보이는 시점인지 확인하는 프로퍼티
+    var isSelectingPhoto = false
+    
     let titleViewTextField: UITextField = {
         let textField = UITextField()
-        textField.font = UIFont(name: CustomFont.medium, size: 17)
+        textField.font = UIFont(name: CustomFont.medium, size: 18)
         textField.textAlignment = .center
         textField.tintColor = .clear
         
@@ -72,21 +75,16 @@ final class WritingViewController: BaseViewController {
         
         petList = repository.fetchPet()
         
-        print(#function)
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print(#function)
 
         if currentStatus == CurrentStatus.edit {
             if let currentTask = currentTask {
                 mainView.titleTextField.text = currentTask.memoryTitle
                 mainView.contentTextView.text = currentTask.memoryContent
-                currentTask.imageData.forEach {
-                    imageList.append($0)
-                }
                 memoryDate = currentTask.memoryDate
             }
             if mainView.contentTextView.text != "" {
@@ -102,13 +100,15 @@ final class WritingViewController: BaseViewController {
         titleViewTextField.inputView = titleViewDatePicker
         titleViewTextField.text = memoryDate.dateToString(type: .simple)
         navigationItem.titleView = titleViewTextField
+    
+        mainView.imageCollectionView.reloadData()
+        
+        print(imageList)
     }
     
     override func setUpController() {
         super.setUpController()
         
-        print(#function)
-
         let doneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(finishWriting))
         let cancelButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(cancelWriting))
         navigationController?.navigationBar.tintColor = .diaryColor
@@ -120,18 +120,14 @@ final class WritingViewController: BaseViewController {
         appearance.shadowColor = .clear
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.standardAppearance = appearance
-        
-//        title = Date().dateToString(type: .simple)
-        
+                
         //MARK: 액션 추가
         mainView.pickButton.addTarget(self, action: #selector(presentPhotoPickerView), for: .touchUpInside)
         
         //MARK: 텍스트뷰
         mainView.contentTextView.text = placeholderText
         mainView.contentTextView.textColor = .placeholderColor
-        
-//        mainView.titleTextField.inputAccessoryView = UIView()
-        
+                
         //MARK: 네비게이션 타이틀 뷰
 //        titleViewDatePicker.date = memoryDate
 //        titleViewTextField.inputView = titleViewDatePicker
@@ -205,12 +201,13 @@ final class WritingViewController: BaseViewController {
                     if let task = currentTask {
                         repository.updateMemory(item: task, title: mainView.titleTextField.text!, memoryDateString: memoryDate.dateToString(type: .simple), content: "", petList: withList, imageData: imageList, memoryDate: memoryDate)
                     }
+                    NotificationCenter.default.post(name: NSNotification.Name.editWriting, object: imageList)
                     transition(self, transitionStyle: .dismiss)
                 } else {
                     if let task = currentTask {
                         repository.updateMemory(item: task, title: mainView.titleTextField.text!, memoryDateString: memoryDate.dateToString(type: .simple), content: mainView.contentTextView.text, petList: withList, imageData: imageList, memoryDate: memoryDate)
                     }
-                    
+                    NotificationCenter.default.post(name: NSNotification.Name.editWriting, object: imageList)
                     transition(self, transitionStyle: .dismiss)
                 }
             }
@@ -301,6 +298,7 @@ extension WritingViewController: UICollectionViewDelegate, UICollectionViewDataS
         //테스트
         
         imageList.remove(at: sender.tag)
+        print(imageList)
         mainView.imageCollectionView.reloadData()
     }
 }
@@ -312,7 +310,6 @@ extension WritingViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
 
         transition(self, transitionStyle: .dismiss)
-        
         //편집 띄우기
         let itemProvider = results.first?.itemProvider
         
@@ -339,10 +336,10 @@ extension WritingViewController: CropViewControllerDelegate {
         guard let imageData = image.jpegData(compressionQuality: 0.4) else { return }
         
         imageList.insert(imageData, at: 0)
-        
-        mainView.imageCollectionView.reloadData()
+
         transition(self, transitionStyle: .dismiss)
     }
+    
 }
 
 //MARK: - TextView

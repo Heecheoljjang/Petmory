@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 final class MemoryDetailViewController: BaseViewController {
     
@@ -17,6 +18,8 @@ final class MemoryDetailViewController: BaseViewController {
     
     let repository = UserRepository()
     
+    var imageList: List<Data>?
+    
     override func loadView() {
         self.view = mainView
     }
@@ -24,7 +27,7 @@ final class MemoryDetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
                 
-        
+        //NotificationCenter.default.addObserver(self, selector: #selector(reloadCollectionView(_ :)), name: NSNotification.Name.editWriting, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -37,17 +40,27 @@ final class MemoryDetailViewController: BaseViewController {
             mainView.titleLabel.text = memoryTask.memoryTitle
             mainView.dateLabel.text = memoryTask.memoryDateString
             mainView.contentTextView.text = memoryTask.memoryContent
-            if memoryTask.imageData.count == 0 {
+            //imageList = memoryTask.imageData
+            print(memoryTask.imageData.count)
+           
+        }
+        if let imageList = imageList {
+            if imageList.count == 0 {
                 mainView.imageCollectionView.isHidden = true
+//                mainView.imageCollectionView.reloadData()
             } else {
                 mainView.imageCollectionView.isHidden = false
-                mainView.imageCollectionView.reloadData()
+//                mainView.imageCollectionView.reloadData()
             }
-            print(memoryTask.imageData)
+            //mainView.imageCollectionView.reloadData()
         }
-        
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        //mainView.imageCollectionView.reloadData()
+    }
     override func configure() {
         super.configure()
     }
@@ -63,17 +76,34 @@ final class MemoryDetailViewController: BaseViewController {
         navigationController?.navigationBar.tintColor = .diaryColor
         
         //바버튼
-        let dismissButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(dismissView))
-        let editButton = UIBarButtonItem(title: "편집", style: .plain, target: self, action: #selector(presentEditView))
-        let deleteButton = UIBarButtonItem(title: "삭제", style: .plain, target: self, action: #selector(deleteMemory))
-        navigationItem.leftBarButtonItem = dismissButton
-        navigationItem.rightBarButtonItem = editButton
+        
+        let menus = [
+            UIAction(title: "수정", image: UIImage(systemName: "pencil")) { _ in
+                self.presentEditView()
+            },
+            UIAction(title: "삭제", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+                self.deleteMemory()
+            }
+        ]
+        
+        let menu = UIMenu(title: "", image: nil, identifier: nil, options: [], children: menus)
+        
+        let popButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(popView))
+        let menuButton = UIBarButtonItem(title: nil, image: UIImage(systemName: "ellipsis"), primaryAction: nil, menu: menu)
+        navigationItem.leftBarButtonItem = popButton
+        navigationItem.rightBarButtonItem = menuButton
+        
+        //네비게이션컨트롤러
+        navigationItem.backButtonTitle = ""
     }
     
-    @objc private func presentEditView() {
+    private func presentEditView() {
         let editViewController = WritingViewController()
         editViewController.currentStatus = CurrentStatus.edit
         editViewController.currentTask = memoryTask
+        memoryTask?.imageData.forEach {
+            editViewController.imageList.insert($0, at: 0)
+        }
         
         transition(editViewController, transitionStyle: .presentNavigation)
         
@@ -86,22 +116,32 @@ final class MemoryDetailViewController: BaseViewController {
         
         
         repository.deleteMemory(item: memoryTask)
-        transition(self, transitionStyle: .dismiss)
+        mainView.imageCollectionView.reloadData()
+        transition(self, transitionStyle: .pop)
     }
-    @objc private func dismissView() {
-        transition(self, transitionStyle: .dismiss)
+    @objc private func popView() {
+        transition(self, transitionStyle: .pop)
+    }
+//    @objc private func reloadCollectionView(_ notification: NSNotification) {
+//        imageList = notification.object as? List<Data>
+//
+//        print("imageList: \(imageList)")
+//        mainView.imageCollectionView.reloadData()
+//    }
+    @objc private func presentMenu() {
+        
     }
 }
 
 extension MemoryDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let memoryTask = memoryTask else { return 0 }
+        guard let memoryTask = memoryTask, let imageList = imageList else { return 0 }
         
         if collectionView == mainView.petCollectionView {
             return memoryTask.petList.count
         } else {
-            return memoryTask.imageData.count
+            return imageList.count
         }
     }
     
@@ -117,10 +157,12 @@ extension MemoryDetailViewController: UICollectionViewDelegate, UICollectionView
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemoryDetailImageCollectionViewCell.identifier, for: indexPath) as? MemoryDetailImageCollectionViewCell else { return UICollectionViewCell() }
             
-            if let memoryTask = memoryTask {
-                cell.photoImageView.image = UIImage(data: memoryTask.imageData[indexPath.item])
-            }
-            
+            guard let imageList = imageList else { return UICollectionViewCell() }
+//
+//            if let memoryTask = memoryTask {
+//                cell.photoImageView.image = UIImage(data: memoryTask.imageData[indexPath.item])
+//            }
+            cell.photoImageView.image = UIImage(data: imageList[indexPath.item])
             return cell
         }
     }
