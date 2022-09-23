@@ -61,6 +61,8 @@ final class AddCalendarViewController: BaseViewController {
         self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
         self.navigationController?.navigationBar.standardAppearance = appearance
         
+        navigationController?.navigationBar.tintColor = .diaryColor
+        
     }
     
     override func configure() {
