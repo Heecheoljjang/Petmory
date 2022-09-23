@@ -45,10 +45,11 @@ final class CalendarView: BaseView {
     
     let diaryButton: UIButton = {
         let button = UIButton()
-        var configuration = UIButton.Configuration.filled()
+        var configuration = UIButton.Configuration.plain()
         configuration.image = UIImage(systemName: "chevron.right")
         configuration.title = "작성한 기록 보러가기"
         configuration.imagePlacement = .trailing
+        configuration.baseForegroundColor = .diaryColor
         
         button.configuration = configuration
         return button
@@ -90,8 +91,9 @@ final class CalendarView: BaseView {
         super.setUpContraints()
         
         calendarView.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalTo(self.safeAreaLayoutGuide)
-            make.height.equalToSuperview().multipliedBy(0.5)
+            make.top.equalTo(self.safeAreaLayoutGuide).offset(12)
+            make.horizontalEdges.equalToSuperview()
+            make.height.equalToSuperview().multipliedBy(0.45)
         }
         diaryButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview()

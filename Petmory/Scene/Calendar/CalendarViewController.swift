@@ -46,35 +46,31 @@ final class CalendarViewController: BaseViewController {
         return view
     }()
     
-    let titleViewLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: CustomFont.medium, size: 18)
-        label.textAlignment = .center
-        label.tintColor = .clear
-        label.sizeToFit()
-        label.text = "123123123"
+    var dateButtonTitle = Date().dateToString(type: .yearMonth) {
+        didSet {
+            navigationItem.leftBarButtonItem?.title = dateButtonTitle
+        }
+    }
+
+    //datePicker
+    let datePicker: UIDatePicker = {
+        let picker = UIDatePicker()
+        picker.locale = Locale(identifier: "ko-KR")
+        picker.datePickerMode = .date
+        picker.backgroundColor = .white
+        picker.tintColor = .white
+        picker.preferredDatePickerStyle = .wheels
         
-        return label
+        return picker
     }()
     
-    let titleViewRightButton: UIButton = {
-        let button = UIButton()
-        var configuration = UIButton.Configuration.plain()
-        configuration.image = UIImage(systemName: "chevron.right")
-        configuration.baseForegroundColor = .diaryColor
+    lazy var datePickerView: UIView = {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: mainView.frame.size.width, height: mainView.frame.size.width * 0.6))
+        view.backgroundColor = .white
         
-        button.configuration = configuration
-        return button
+        return view
     }()
-    let titleViewLeftButton: UIButton = {
-        let button = UIButton()
-        var configuration = UIButton.Configuration.plain()
-        configuration.image = UIImage(systemName: "chevron.left")
-        configuration.baseForegroundColor = .diaryColor
-        
-        button.configuration = configuration
-        return button
-    }()
+    
     
     override func loadView() {
         self.view = mainView
@@ -82,6 +78,8 @@ final class CalendarViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        dateButtonTitle = selectDate.dateToString(type: .yearMonth)
         
         calendarTask = repository.fetchCalendar(date: Date())
         
@@ -94,36 +92,24 @@ final class CalendarViewController: BaseViewController {
 
         mainView.tableView.reloadData()
     }
-    
+
     override func configure() {
         super.configure()
         
-        [titleViewLeftButton, titleViewRightButton, titleViewLabel].forEach {
-            customTitleView.addSubview($0)
-        }
+        datePickerView.addSubview(datePicker)
         
-        titleViewLabel.snp.makeConstraints { make in
-            make.verticalEdges.equalToSuperview()
-            make.centerX.equalToSuperview()
-        }
-        titleViewLeftButton.snp.makeConstraints { make in
-            make.centerY.equalTo(titleViewLabel)
-            make.leading.equalToSuperview()
-            make.trailing.equalTo(titleViewLabel.snp.left).offset(-8)
-        }
-        titleViewRightButton.snp.makeConstraints { make in
-            make.centerY.equalTo(titleViewLabel)
-            make.trailing.equalToSuperview()
-            make.leading.equalTo(titleViewLabel.snp.left).offset(-8)
-        }
     }
     
     override func setUpController() {
         super.setUpController()
         
         let addButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(presentAddCalendarView))
+        let dateButton = UIBarButtonItem(title: dateButtonTitle, style: .plain, target: self, action: #selector(presentDatePicker))
+        dateButton.setTitleTextAttributes([.font : UIFont(name: CustomFont.bold, size: 20)], for: .normal)
+        dateButton.setTitleTextAttributes([.font : UIFont(name: CustomFont.bold, size: 20)], for: .highlighted)
         navigationItem.rightBarButtonItem = addButton
-        
+        navigationItem.leftBarButtonItem = dateButton
+        dateButton.tintColor = .black
         navigationController?.navigationBar.tintColor = .diaryColor
         
         mainView.tableView.delegate = self
@@ -133,7 +119,17 @@ final class CalendarViewController: BaseViewController {
         mainView.calendar.dataSource = self
         
         //타이틀뷰
-        navigationItem.titleView = customTitleView
+        //navigationItem.titleView = customTitleView
+    }
+    
+    private func setDatePickerSheet() {
+        let alert = UIAlertController(title: "날짜를 선택해주세요", message: nil, preferredStyle: .actionSheet)
+        let select = UIAlertAction(title: "선택", style: .cancel) { _ in
+            self.mainView.endEditing(true)
+        }
+        alert.view.addSubview(datePickerView)
+        alert.addAction(select)
+        present(alert, animated: true)
     }
     
     //MARK: - @objc
@@ -149,6 +145,11 @@ final class CalendarViewController: BaseViewController {
         calendarTask = repository.fetchCalendar(date: selectDate)
         mainView.tableView.reloadData()
         mainView.calendar.reloadData()
+    }
+
+    @objc private func presentDatePicker(_ sender: UIButton) {
+        //datePicker띄우기
+        setDatePickerSheet()
     }
 }
 
@@ -168,6 +169,10 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
             mainView.tableView.isHidden = false
             mainView.noTaskLabel.isHidden = true
         }
+    }
+    
+    func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
+        navigationItem.leftBarButtonItem?.title = calendar.currentPage.dateToString(type: .yearMonth)
     }
     
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
