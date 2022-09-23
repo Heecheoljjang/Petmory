@@ -80,7 +80,8 @@ final class MainViewController: BaseViewController {
         let petList = repository.fetchPet()
         
         if petList.count == 0 {
-            print("no")
+            //MARK: Alert 제대로 적용해보기
+            noHandlerAlert(title: "반려동물을 등록해주세요!", message: "")
         } else {
             let allMemoryViewController = AllMemoryViewController()
             transition(allMemoryViewController, transitionStyle: .presentNavigation)
@@ -97,7 +98,7 @@ final class MainViewController: BaseViewController {
         let writingViewController = WritingViewController()
         if petList.count == 0 {
             //MARK: 펫부터 등록하라고 alert띄우고 펫 등록화면 띄우는 방식으로
-            print("펫부터 등록하셈")
+            noHandlerAlert(title: "반려동물을 등록해주세요!", message: "")
         } else {
             transition(writingViewController, transitionStyle: .presentNavigation)
         }
