@@ -750,14 +750,21 @@
 
 #### 내용
 
-- 
+- 일정 화면
+    - leftBarButton으로 현재 날짜 표시(년, 월)
+        - 스와이프로 month를 바꾸면 calendar.currenPage의 값으로 title을 수정
+    - 버튼을 누르면 actionSheet을 띄우도록함
+
 #### 이슈
 
--
+- actionSheet에 datePicker를 넣으려고 했는데 view의 크기를 따로 지정하지않으니 늘어나지않아 datePicker가 밖으로 튀어나옴
+- 머리가 안돌아가서 거의 못함
+    - 오늘 푹자기
 
 #### 기억할 것
 
-- 
+- FSCalendar
+    - calendarCurrentPageDidChange 메서드를 통해 스와이프 됐는지 알 수 있음. 이때 calendar.currentPage를 출력해보면 해당 월의 마지막 날짜가 나옴
 
 
 #### 내일 할 것
