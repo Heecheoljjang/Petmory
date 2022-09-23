@@ -10,6 +10,7 @@
 		970826A528D5E1E0000C530E /* MemoryDetailImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970826A428D5E1E0000C530E /* MemoryDetailImageCollectionViewCell.swift */; };
 		970826A728D5E876000C530E /* MemoryDetailPetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970826A628D5E876000C530E /* MemoryDetailPetCollectionViewCell.swift */; };
 		9716A8F828D0E4D600AC62FA /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9716A8F728D0E4D600AC62FA /* IQKeyboardManagerSwift */; };
+		9722A2C728DBA422008C3DB7 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9722A2C628DBA422008C3DB7 /* SettingTableViewCell.swift */; };
 		97332AA128D95D220015ECE8 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97332AA028D95D220015ECE8 /* SettingView.swift */; };
 		97332AA328D95D2D0015ECE8 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97332AA228D95D2D0015ECE8 /* SettingViewController.swift */; };
 		9736007728D8463300FD9285 /* MyPetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9736007628D8463300FD9285 /* MyPetTableViewCell.swift */; };
@@ -78,6 +79,7 @@
 /* Begin PBXFileReference section */
 		970826A428D5E1E0000C530E /* MemoryDetailImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryDetailImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		970826A628D5E876000C530E /* MemoryDetailPetCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryDetailPetCollectionViewCell.swift; sourceTree = "<group>"; };
+		9722A2C628DBA422008C3DB7 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		97332AA028D95D220015ECE8 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		97332AA228D95D2D0015ECE8 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		9736007628D8463300FD9285 /* MyPetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPetTableViewCell.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 			children = (
 				97332AA028D95D220015ECE8 /* SettingView.swift */,
 				97332AA228D95D2D0015ECE8 /* SettingViewController.swift */,
+				9722A2C628DBA422008C3DB7 /* SettingTableViewCell.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -567,6 +570,7 @@
 				97CF58BD28CB5ECA0062FEB9 /* SearchViewController.swift in Sources */,
 				97C7CBD028CE3695007743FF /* BasePetCollectionViewCell.swift in Sources */,
 				9786304A28CC15630042C2E2 /* TodayListViewController.swift in Sources */,
+				9722A2C728DBA422008C3DB7 /* SettingTableViewCell.swift in Sources */,
 				97CF588E28C8CC020062FEB9 /* BaseViewController.swift in Sources */,
 				97C7CBD228CE4560007743FF /* WritingImageCollectionViewCell.swift in Sources */,
 				977CB69028D45418001342E9 /* WritingContentViewController.swift in Sources */,
