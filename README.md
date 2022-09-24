@@ -770,3 +770,54 @@
 #### 내일 할 것
 
 - 
+
+
+### 9/24
+
+#### 내용
+
+- 일정 화면
+    - leftBarButton을 누르면 날짜 선택하는 actionSheet띄우기
+    - 오늘 버튼 추가
+    - 6주차까지 나오는 것 해결
+        - placeholderType을 fillHeadTail로 설정
+    - 테이블뷰와 캘린더 사이에 날짜 표시 레이블 추가
+    - 일정 추가 버튼을 플로팅 버튼으로 변경
+- 메인 화면
+    - dateLabel 오류 수정
+- 모아보기 화면
+    - 날짜 별로 섹션 구분
+        - memoryDate로 필터링해서 Set으로 중복 처리
+- TodayList 화면
+    - 삭제해서 task의 count가 0이됐을때 pop해주도록 함.
+- 검색 화면
+    - 셀을 탭하면 디테일 화면 띄우기
+    
+
+#### 이슈
+
+- 일정 화면
+    - actionsheet에 datepicker를 넣어주는데, 레이아웃 제약조건을 잡을때 actionsheet.view.addsubview(datePicker)가 레이아웃 잡는 코드보다 뒤에 오면 오류 발생
+        - contentViewController를 만들어서 setValue로 해결
+        - 이때, forKey는 contentViewController로 해야함.
+- 메인 화면
+    - 12시 전에 앱을 켜놓고 12시 이후에 작성하면 viewDidLoad에서 설정된 레이블이 그대로 남아있음
+        - viewWillAppear에서 해결
+- 모아보기 화면
+    - 섹션의 마지막 셀을 지우면 index 런타임 오류 뜸.
+        - task의 didSet에서 테이블뷰를 리로드하는 코드가 있었는데, 섹션을 나누는 dateList는 viewWillAppear에서 업데이트하기 때문
+        - task didSet에서 dateList를 바로 업데이트해서 해결
+- 작성 중에 취소하거나 일정, 일기를 삭제할 떄 alert 문구 고민해야할듯..
+    
+    
+
+
+#### 기억할 것
+
+- 
+
+
+
+#### 내일 할 것
+
+- 
