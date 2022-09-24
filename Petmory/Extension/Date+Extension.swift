@@ -9,7 +9,7 @@ import Foundation
 
 enum DateFormatterType {
     
-    case simple, full, onlyTime, yearMonth
+    case simple, full, onlyTime, yearMonth, simpleDay
     
     var dateFormat: String {
         switch self {
@@ -21,6 +21,8 @@ enum DateFormatterType {
             return "a hh:mm"
         case .yearMonth:
             return "yyyy. MM"
+        case .simpleDay:
+            return "yyyy. MM. dd. E"
         }
     }
 }
@@ -40,6 +42,8 @@ extension Date {
             dateFormatter.dateFormat = DateFormatterType.onlyTime.dateFormat
         case .yearMonth:
             dateFormatter.dateFormat = DateFormatterType.yearMonth.dateFormat
+        case .simpleDay:
+            dateFormatter.dateFormat = DateFormatterType.simpleDay.dateFormat
         }
         
         return dateFormatter.string(from: self)

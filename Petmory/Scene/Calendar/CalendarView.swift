@@ -12,7 +12,7 @@ final class CalendarView: BaseView {
     
     let calendarView: UIView = {
         let view = UIView()
-        
+        view.backgroundColor = .white
         return view
     }()
     
@@ -26,7 +26,6 @@ final class CalendarView: BaseView {
         //폰트
         calendar.appearance.titleFont = UIFont(name: CustomFont.medium, size: 12)
         calendar.appearance.weekdayFont = UIFont(name: CustomFont.medium, size: 14)
-        calendar.appearance.headerTitleFont = UIFont(name: CustomFont.medium, size: 20)
         
         //컬러
         calendar.appearance.headerTitleColor = .diaryColor
@@ -35,30 +34,42 @@ final class CalendarView: BaseView {
         calendar.appearance.weekdayTextColor = .diaryColor
         calendar.appearance.titleSelectionColor = .black
         calendar.appearance.titleTodayColor = .white
+        calendar.appearance.todaySelectionColor = .diaryColor
+        calendar.placeholderType = .fillHeadTail
         
         //날짜
         calendar.appearance.headerDateFormat = "yyyy. MM"
         calendar.appearance.headerMinimumDissolvedAlpha = 0.0
+        
+        //세팅
 
         return calendar
     }()
     
-    let diaryButton: UIButton = {
-        let button = UIButton()
-        var configuration = UIButton.Configuration.plain()
-        configuration.image = UIImage(systemName: "chevron.right")
-        configuration.title = "작성한 기록 보러가기"
-        configuration.imagePlacement = .trailing
-        configuration.baseForegroundColor = .diaryColor
-        
-        button.configuration = configuration
-        return button
+//    let diaryButton: UIButton = {
+//        let button = UIButton()
+//        var configuration = UIButton.Configuration.plain()
+//        configuration.title = "일정 등록하기"
+//        configuration.imagePlacement = .trailing
+//        configuration.baseForegroundColor = .diaryColor
+//        
+//        button.configuration = configuration
+//        return button
+//    }()
+    
+    let dateLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: CustomFont.medium, size: 13)
+        label.textAlignment = .left
+        label.textColor = .black
+        return label
     }()
     
     let tableView: UITableView = {
         let view = UITableView()
         view.register(CalendarTableViewCell.self, forCellReuseIdentifier: CalendarTableViewCell.identifier)
         view.separatorStyle = .none
+        view.backgroundColor = .white
         return view
     }()
     
@@ -71,6 +82,23 @@ final class CalendarView: BaseView {
         return label
     }()
     
+    let writingButton: UIButton = {
+        let button = UIButton()
+        var configuration = UIButton.Configuration.filled()
+        configuration.image = UIImage(systemName: "plus")
+        configuration.cornerStyle = .capsule
+        configuration.baseForegroundColor = .stringColor
+        configuration.baseBackgroundColor = .diaryColor
+    
+        button.configuration = configuration
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowRadius = 5
+        button.layer.shadowOpacity = 0.4
+        button.layer.shadowOffset = CGSize.zero
+        
+        return button
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -78,10 +106,11 @@ final class CalendarView: BaseView {
     override func configure() {
         super.configure()
     
-        [calendar, diaryButton].forEach {
-            calendarView.addSubview($0)
-        }
-        [calendarView, noTaskLabel, tableView].forEach {
+//        [calendar, diaryButton].forEach {
+//            calendarView.addSubview($0)
+//        }
+        calendarView.addSubview(calendar)
+        [calendarView, noTaskLabel, tableView, dateLabel, writingButton].forEach {
             self.addSubview($0)
         }
         backgroundColor = .white
@@ -91,27 +120,39 @@ final class CalendarView: BaseView {
         super.setUpContraints()
         
         calendarView.snp.makeConstraints { make in
-            make.top.equalTo(self.safeAreaLayoutGuide).offset(12)
+            make.top.equalTo(self.safeAreaLayoutGuide).offset(8)
             make.horizontalEdges.equalToSuperview()
-            make.height.equalToSuperview().multipliedBy(0.45)
+            make.height.equalToSuperview().multipliedBy(0.35)
         }
-        diaryButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
+//        diaryButton.snp.makeConstraints { make in
+//            make.bottom.equalToSuperview()
+//            make.horizontalEdges.equalToSuperview().inset(20)
+//            make.height.equalTo(40)
+//            make.centerX.equalToSuperview()
+//        }
+        
+        dateLabel.snp.makeConstraints { make in
+            make.top.equalTo(calendarView.snp.bottom).offset(4)
             make.horizontalEdges.equalToSuperview().inset(20)
-            make.height.equalTo(40)
-            make.centerX.equalToSuperview()
         }
+        
         calendar.snp.makeConstraints { make in
             make.top.horizontalEdges.equalToSuperview()
-            make.bottom.equalTo(diaryButton.snp.top)
+            //make.bottom.equalTo(diaryButton.snp.top)
+            make.bottom.equalToSuperview()
         }
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(calendarView.snp.bottom)
-            make.horizontalEdges.equalToSuperview()
+            make.top.equalTo(dateLabel.snp.bottom).offset(12)
+            make.horizontalEdges.equalToSuperview().inset(8)
             make.bottom.equalTo(self.safeAreaLayoutGuide)
         }
         noTaskLabel.snp.makeConstraints { make in
             make.center.equalTo(tableView)
+        }
+        writingButton.snp.makeConstraints { make in
+            make.size.equalTo(52)
+            make.bottom.equalTo(self.safeAreaLayoutGuide).offset(-20)
+            make.trailing.equalToSuperview().offset(-20)
         }
     }
 }

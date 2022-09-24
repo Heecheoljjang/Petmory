@@ -35,7 +35,13 @@ final class CalendarViewController: BaseViewController {
         }
     }
     
-    var selectDate = Date()
+    var selectDate = Date() {
+        didSet {
+            datePicker.date = selectDate
+            mainView.dateLabel.text = selectDate.dateToString(type: .simpleDay)
+            mainView.tableView.reloadData()
+        }
+    }
     
     let repository = UserRepository()
     
@@ -51,26 +57,16 @@ final class CalendarViewController: BaseViewController {
             navigationItem.leftBarButtonItem?.title = dateButtonTitle
         }
     }
-
-    //datePicker
+    
     let datePicker: UIDatePicker = {
-        let picker = UIDatePicker()
-        picker.locale = Locale(identifier: "ko-KR")
-        picker.datePickerMode = .date
-        picker.backgroundColor = .white
-        picker.tintColor = .white
-        picker.preferredDatePickerStyle = .wheels
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        datePicker.preferredDatePickerStyle = .wheels
+
+        datePicker.locale = Locale(identifier: "ko-KR")
         
-        return picker
+        return datePicker
     }()
-    
-    lazy var datePickerView: UIView = {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: mainView.frame.size.width, height: mainView.frame.size.width * 0.6))
-        view.backgroundColor = .white
-        
-        return view
-    }()
-    
     
     override func loadView() {
         self.view = mainView
@@ -82,6 +78,8 @@ final class CalendarViewController: BaseViewController {
         dateButtonTitle = selectDate.dateToString(type: .yearMonth)
         
         calendarTask = repository.fetchCalendar(date: Date())
+        
+        mainView.dateLabel.text = Date().dateToString(type: .simpleDay)
         
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTableView(_ :)), name: NSNotification.Name.doneButton, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTableView(_ :)), name: NSNotification.Name.deleteButton, object: nil)
@@ -95,18 +93,16 @@ final class CalendarViewController: BaseViewController {
 
     override func configure() {
         super.configure()
-        
-        datePickerView.addSubview(datePicker)
-        
+                
     }
     
     override func setUpController() {
         super.setUpController()
         
-        let addButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(presentAddCalendarView))
+        let addButton = UIBarButtonItem(title: "오늘", style: .plain, target: self, action: #selector(setToday))
         let dateButton = UIBarButtonItem(title: dateButtonTitle, style: .plain, target: self, action: #selector(presentDatePicker))
-        dateButton.setTitleTextAttributes([.font : UIFont(name: CustomFont.bold, size: 20)], for: .normal)
-        dateButton.setTitleTextAttributes([.font : UIFont(name: CustomFont.bold, size: 20)], for: .highlighted)
+        dateButton.setTitleTextAttributes([.font : UIFont(name: CustomFont.bold, size: 22)], for: .normal)
+        dateButton.setTitleTextAttributes([.font : UIFont(name: CustomFont.bold, size: 22)], for: .highlighted)
         navigationItem.rightBarButtonItem = addButton
         navigationItem.leftBarButtonItem = dateButton
         dateButton.tintColor = .black
@@ -118,20 +114,29 @@ final class CalendarViewController: BaseViewController {
         mainView.calendar.delegate = self
         mainView.calendar.dataSource = self
         
-        //타이틀뷰
-        //navigationItem.titleView = customTitleView
+        //데이트피커
+        datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
+        
+        //추가버튼
+        mainView.writingButton.addTarget(self, action: #selector(presentAddCalendarView), for: .touchUpInside)
     }
     
     private func setDatePickerSheet() {
-        let alert = UIAlertController(title: "날짜를 선택해주세요", message: nil, preferredStyle: .actionSheet)
+
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let select = UIAlertAction(title: "선택", style: .cancel) { _ in
             self.mainView.endEditing(true)
         }
-        alert.view.addSubview(datePickerView)
+        let contentViewController = UIViewController()
+        contentViewController.view = datePicker
+        contentViewController.preferredContentSize.height = 200
+        
+        alert.setValue(contentViewController, forKey: "contentViewController")
         alert.addAction(select)
+        
         present(alert, animated: true)
     }
-    
+
     //MARK: - @objc
     
     @objc private func presentAddCalendarView() {
@@ -148,8 +153,18 @@ final class CalendarViewController: BaseViewController {
     }
 
     @objc private func presentDatePicker(_ sender: UIButton) {
-        //datePicker띄우기
         setDatePickerSheet()
+    }
+    
+    @objc private func dateChanged(_ sender: UIDatePicker) {
+        print(sender.date)
+        selectDate = sender.date
+        mainView.calendar.select(selectDate, scrollToDate: true)
+        calendarTask = repository.fetchCalendar(date: selectDate)
+    }
+    @objc private func setToday(_ sender: UIButton) {
+        selectDate = Date()
+        mainView.calendar.select(selectDate, scrollToDate: true)
     }
 }
 
@@ -189,6 +204,13 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventSelectionColorsFor date: Date) -> [UIColor]? {
         return [UIColor.diaryColor]
     }
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleSelectionColorFor date: Date) -> UIColor? {
+        if date == calendar.today {
+            return .white
+        } else {
+            return .black
+        }
+    }
 }
 
 extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
@@ -197,9 +219,9 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         return calendarTask.count
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return selectDate.dateToString(type: .simple)
-    }
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        return selectDate.dateToString(type: .simple)
+//    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CalendarTableViewCell.identifier) as? CalendarTableViewCell else { return UITableViewCell() }

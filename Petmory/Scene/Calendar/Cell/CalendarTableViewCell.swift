@@ -18,7 +18,7 @@ final class CalendarTableViewCell: BaseTableViewCell {
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: CustomFont.medium, size: 16)
+        label.font = UIFont(name: CustomFont.medium, size: 14)
         label.sizeToFit()
         return label
     }()
