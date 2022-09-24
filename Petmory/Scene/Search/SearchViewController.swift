@@ -79,6 +79,13 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UISe
         return 88
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let memoryDetailViewController = MemoryDetailViewController()
+        memoryDetailViewController.objectId = tasks[indexPath.row].objectId
+        memoryDetailViewController.imageList = tasks[indexPath.row].imageData
+        transition(memoryDetailViewController, transitionStyle: .push)
+    }
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         guard let text = searchBar.text else { return }
