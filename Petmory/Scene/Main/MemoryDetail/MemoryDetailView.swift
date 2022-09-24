@@ -67,28 +67,28 @@ final class MemoryDetailView: BaseView {
         return view
     }()
     
-    let petCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
-        layout.minimumInteritemSpacing = 0
-        
-        let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-        view.register(MemoryDetailPetCollectionViewCell.self, forCellWithReuseIdentifier: MemoryDetailPetCollectionViewCell.identifier)
-        view.backgroundColor = .systemBackground
-        view.allowsMultipleSelection = true
-        view.showsHorizontalScrollIndicator = false
-        
-        return view
-    }()
+//    let petCollectionView: UICollectionView = {
+//        let layout = UICollectionViewFlowLayout()
+//        layout.scrollDirection = .horizontal
+//        layout.sectionInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+//        layout.minimumInteritemSpacing = 0
+//
+//        let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+//        view.register(MemoryDetailPetCollectionViewCell.self, forCellWithReuseIdentifier: MemoryDetailPetCollectionViewCell.identifier)
+//        view.backgroundColor = .systemBackground
+//        view.allowsMultipleSelection = true
+//        view.showsHorizontalScrollIndicator = false
+//
+//        return view
+//    }()
     
-    let withLabel: UILabel = {
-        let label = UILabel()
-        label.text = "with"
-        label.font = UIFont(name: CustomFont.bold, size: 15)
-        
-        return label
-    }()
+//    let withLabel: UILabel = {
+//        let label = UILabel()
+//        label.text = "with"
+//        label.font = UIFont(name: CustomFont.bold, size: 15)
+//
+//        return label
+//    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -102,7 +102,10 @@ final class MemoryDetailView: BaseView {
 //        [imageCollectionView, titleLabel, dateLabel, contentTextView, petCollectionView, withLabel].forEach {
 //            contentView.addSubview($0)
 //        }
-        [stackView, titleLabel, dateLabel, contentTextView, petCollectionView, withLabel].forEach {
+//        [stackView, titleLabel, dateLabel, contentTextView, petCollectionView, withLabel].forEach {
+//            contentView.addSubview($0)
+//        }
+        [stackView, titleLabel, dateLabel, contentTextView].forEach {
             contentView.addSubview($0)
         }
         
@@ -150,24 +153,24 @@ final class MemoryDetailView: BaseView {
             make.horizontalEdges.equalToSuperview().inset(20)
         }
         
-        withLabel.snp.makeConstraints { make in
-            //            make.leading.equalTo(self).offset(20)
-            //            make.top.equalTo(self.safeAreaLayoutGuide)
-            make.leading.equalToSuperview().offset(20)
-            make.top.equalTo(dateLabel.snp.bottom).offset(20)
-            make.height.equalTo(52)
-        }
-        petCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(withLabel)
-            make.trailing.equalToSuperview()
-            //make.top.trailing.equalTo(self.safeAreaLayoutGuide)
-            make.leading.equalTo(withLabel.snp.trailing).offset(12)
-            make.height.equalTo(52)
-        }
+//        withLabel.snp.makeConstraints { make in
+//            //            make.leading.equalTo(self).offset(20)
+//            //            make.top.equalTo(self.safeAreaLayoutGuide)
+//            make.leading.equalToSuperview().offset(20)
+//            make.top.equalTo(dateLabel.snp.bottom).offset(20)
+//            make.height.equalTo(52)
+//        }
+//        petCollectionView.snp.makeConstraints { make in
+//            make.top.equalTo(withLabel)
+//            make.trailing.equalToSuperview()
+//            //make.top.trailing.equalTo(self.safeAreaLayoutGuide)
+//            make.leading.equalTo(withLabel.snp.trailing).offset(12)
+//            make.height.equalTo(52)
+//        }
         
         contentTextView.snp.makeConstraints { make in
             make.horizontalEdges.equalTo(titleLabel)
-            make.top.equalTo(withLabel.snp.bottom).offset(20)
+            make.top.equalTo(dateLabel.snp.bottom).offset(20)
             //make.height.greaterThanOrEqualTo(100)
             make.bottom.equalToSuperview()
         }

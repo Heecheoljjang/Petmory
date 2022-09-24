@@ -76,8 +76,8 @@ final class MemoryDetailViewController: BaseViewController {
     override func setUpController() {
         super.setUpController()
         
-        mainView.petCollectionView.delegate = self
-        mainView.petCollectionView.dataSource = self
+//        mainView.petCollectionView.delegate = self
+//        mainView.petCollectionView.dataSource = self
         mainView.imageCollectionView.delegate = self
         mainView.imageCollectionView.dataSource = self
         
@@ -175,52 +175,63 @@ extension MemoryDetailViewController: UICollectionViewDelegate, UICollectionView
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let memoryTask = memoryTask, let imageList = imageList else { return 0 }
         
-        if collectionView == mainView.petCollectionView {
-            return memoryTask.petList.count
-        } else {
-            return imageList.count
-        }
+//        if collectionView == mainView.petCollectionView {
+//            return memoryTask.petList.count
+//        } else {
+//            return imageList.count
+//        }
+        return imageList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView == mainView.petCollectionView {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemoryDetailPetCollectionViewCell.identifier, for: indexPath) as? MemoryDetailPetCollectionViewCell else { return UICollectionViewCell() }
-            
-            if let memoryTask = memoryTask {
-                cell.nameLabel.text = memoryTask.petList[indexPath.item]
-            }
-            
-            return cell
-        } else {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemoryDetailImageCollectionViewCell.identifier, for: indexPath) as? MemoryDetailImageCollectionViewCell else { return UICollectionViewCell() }
-            
-            guard let imageList = imageList else { return UICollectionViewCell() }
+//        if collectionView == mainView.petCollectionView {
+//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemoryDetailPetCollectionViewCell.identifier, for: indexPath) as? MemoryDetailPetCollectionViewCell else { return UICollectionViewCell() }
 //
 //            if let memoryTask = memoryTask {
-//                cell.photoImageView.image = UIImage(data: memoryTask.imageData[indexPath.item])
+//                cell.nameLabel.text = memoryTask.petList[indexPath.item]
 //            }
-            cell.photoImageView.image = UIImage(data: imageList[indexPath.item])
-            return cell
-        }
+//
+//            return cell
+//        } else {
+//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemoryDetailImageCollectionViewCell.identifier, for: indexPath) as? MemoryDetailImageCollectionViewCell else { return UICollectionViewCell() }
+//
+//            guard let imageList = imageList else { return UICollectionViewCell() }
+////
+////            if let memoryTask = memoryTask {
+////                cell.photoImageView.image = UIImage(data: memoryTask.imageData[indexPath.item])
+////            }
+//            cell.photoImageView.image = UIImage(data: imageList[indexPath.item])
+//            return cell
+//        }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemoryDetailImageCollectionViewCell.identifier, for: indexPath) as? MemoryDetailImageCollectionViewCell else { return UICollectionViewCell() }
+        
+        guard let imageList = imageList else { return UICollectionViewCell() }
+
+        cell.photoImageView.image = UIImage(data: imageList[indexPath.item])
+        return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         guard let memoryTask = memoryTask else { return CGSize(width: 0, height: 0) }
+//
+//        if collectionView == mainView.petCollectionView {
+//            if memoryTask.petList[indexPath.item].count > 1 {
+//                let cellSize = CGSize(width: memoryTask.petList[indexPath.item].size(withAttributes: [.font : UIFont(name: CustomFont.medium, size: 13)!]).width + 32, height: 52)
+//                return cellSize
+//            } else {
+//                let cellSize = CGSize(width: 52, height: 52)
+//                return cellSize
+//            }
+//        } else {
+//            let width = mainView.frame.size.width
+//            let cellSize = CGSize(width: width, height: width * 0.8)
+//
+//            return cellSize
+//        }
+        let width = mainView.frame.size.width
+        let cellSize = CGSize(width: width, height: width * 0.8)
         
-        if collectionView == mainView.petCollectionView {
-            if memoryTask.petList[indexPath.item].count > 1 {
-                let cellSize = CGSize(width: memoryTask.petList[indexPath.item].size(withAttributes: [.font : UIFont(name: CustomFont.medium, size: 13)!]).width + 32, height: 52)
-                return cellSize
-            } else {
-                let cellSize = CGSize(width: 52, height: 52)
-                return cellSize
-            }
-        } else {
-            let width = mainView.frame.size.width
-            let cellSize = CGSize(width: width, height: width * 0.8)
-            
-            return cellSize
-        }
+        return cellSize
     }
     
 }
