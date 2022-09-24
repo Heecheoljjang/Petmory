@@ -29,7 +29,7 @@ final class MainViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        createMemoryImageDirectory()
+//        createMemoryImageDirectory()
         
     }
     
@@ -39,6 +39,8 @@ final class MainViewController: BaseViewController {
         tasks = repository.fetchTodayMemory()
         
         petList = repository.fetchPet()
+        
+        mainView.dateLabel.text = Date().dateToString(type: .simple)
         
         if tasks.count == 0 {
             mainView.outerView.isHidden = true
@@ -65,7 +67,7 @@ final class MainViewController: BaseViewController {
     override func configure() {
         super.configure()
         
-        mainView.dateLabel.text = Date().dateToString(type: .simple)
+//        mainView.dateLabel.text = Date().dateToString(type: .simple)
         mainView.writingButton.addTarget(self, action: #selector(presentWritingView), for: .touchUpInside)
     }
     

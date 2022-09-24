@@ -66,8 +66,8 @@ final class MainView: BaseView {
     
         button.configuration = configuration
         button.layer.shadowColor = UIColor.black.cgColor
-        button.layer.shadowRadius = 8
-        button.layer.shadowOpacity = 0.6
+        button.layer.shadowRadius = 5
+        button.layer.shadowOpacity = 0.4
         button.layer.shadowOffset = CGSize.zero
         
         return button
@@ -145,7 +145,7 @@ final class MainView: BaseView {
         }
         
         writingButton.snp.makeConstraints { make in
-            make.size.equalTo(60)
+            make.size.equalTo(52)
             make.bottom.equalTo(self.safeAreaLayoutGuide).offset(-20)
             make.trailing.equalTo(self.safeAreaLayoutGuide).offset(-20)
         }
