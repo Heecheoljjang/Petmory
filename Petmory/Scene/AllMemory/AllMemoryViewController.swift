@@ -37,6 +37,8 @@ final class AllMemoryViewController: BaseViewController {
             }
         }
     }
+    
+    var dateList: [String] = []
         
     override func loadView() {
         self.view = mainView
@@ -60,6 +62,9 @@ final class AllMemoryViewController: BaseViewController {
             mainView.noMemoryLabel.isHidden = true
         }
         
+        dateList = Set(tasks.map { $0.memoryDateString }).sorted(by: >)
+       
+        print(dateList)
     }
     
     override func setUpController() {
@@ -105,22 +110,45 @@ final class AllMemoryViewController: BaseViewController {
 //MARK: - TableView
 extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return dateList.count
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel(frame: CGRect(x: 20, y: 0, width: mainView.frame.size.width - 40, height: 28))
+        label.font = UIFont(name: CustomFont.medium, size: 13)
+        label.text = dateList[section]
+        
+        let view = UIView()
+        view.backgroundColor = .lightDiaryColor
+        view.addSubview(label)
+        
+        return view
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 28
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tasks.count
+        //return tasks.count
+        return tasks.filter("memoryDateString == '\(dateList[section])'").count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AllMemoryTableViewCell.identifier, for: indexPath) as? AllMemoryTableViewCell else { return UITableViewCell() }
         
-        cell.memoryTitle.text = tasks[indexPath.row].memoryTitle
-        cell.memoryDate.text = tasks[indexPath.row].memoryDateString
+//        cell.memoryTitle.text = tasks[indexPath.row].memoryTitle
+//        cell.memoryDate.text = tasks[indexPath.row].memoryDateString
+        cell.memoryTitle.text = tasks.filter("memoryDateString == '\(dateList[indexPath.section])'")[indexPath.row].memoryTitle
+        cell.memoryDate.text = tasks.filter("memoryDateString == '\(dateList[indexPath.section])'")[indexPath.row].memoryContent
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let memoryDetailViewController = MemoryDetailViewController()
-        memoryDetailViewController.objectId = tasks[indexPath.row].objectId
-        memoryDetailViewController.imageList = tasks[indexPath.row].imageData
+        memoryDetailViewController.objectId = tasks.filter("memoryDateString == '\(dateList[indexPath.section])'")[indexPath.row].objectId
+        memoryDetailViewController.imageList = tasks.filter("memoryDateString == '\(dateList[indexPath.section])'")[indexPath.row].imageData
         transition(memoryDetailViewController, transitionStyle: .push)
     }
     

@@ -15,6 +15,8 @@ final class AllMemoryView: BaseView {
         let view = UITableView()
         view.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         view.register(AllMemoryTableViewCell.self, forCellReuseIdentifier: AllMemoryTableViewCell.identifier)
+        view.separatorStyle = .none
+        view.sectionHeaderTopPadding = 0
         return view
     }()
     
@@ -85,7 +87,7 @@ final class AllMemoryView: BaseView {
         }
 
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(collectionView.snp.bottom)
+            make.top.equalTo(collectionView.snp.bottom).offset(8)
             make.horizontalEdges.bottom.equalTo(self.safeAreaLayoutGuide)
         }
     }
