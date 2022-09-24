@@ -48,6 +48,10 @@ final class TodayListViewController: BaseViewController {
         
         tasks = repository.fetchTodayMemory()
         
+        if tasks.count == 0 {
+            transition(self, transitionStyle: .pop)
+        }
+        
     }
         
     override func configure() {
@@ -60,7 +64,7 @@ final class TodayListViewController: BaseViewController {
     override func setUpController() {
         super.setUpController()
         
-        var appearance = UINavigationBarAppearance()
+        let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .white
         appearance.shadowColor = .clear
         
