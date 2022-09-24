@@ -17,6 +17,7 @@ final class AllMemoryViewController: BaseViewController {
     
     var tasks: Results<UserMemory>! {
         didSet {
+            dateList = Set(tasks.map { $0.memoryDateString }).sorted(by: >)
             mainView.tableView.reloadData()
         }
     }
