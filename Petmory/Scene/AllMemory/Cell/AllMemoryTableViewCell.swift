@@ -34,6 +34,14 @@ final class AllMemoryTableViewCell: BaseTableViewCell {
         return view
     }()
     
+    let multiSign: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(systemName: "rectangle.fill.on.rectangle.angled.fill")
+        view.backgroundColor = .clear
+        view.tintColor = .white
+        return view
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: AllMemoryTableViewCell.identifier)
         
@@ -42,7 +50,7 @@ final class AllMemoryTableViewCell: BaseTableViewCell {
     override func configure() {
         super.configure()
         
-        [memoryContentLabel, memoryTitle, thumbnailImageView].forEach {
+        [memoryContentLabel, memoryTitle, thumbnailImageView, multiSign].forEach {
             self.addSubview($0)
         }
         selectionStyle = .none
@@ -70,6 +78,10 @@ final class AllMemoryTableViewCell: BaseTableViewCell {
             make.bottom.equalTo(memoryContentLabel)
             make.trailing.equalToSuperview().offset(-20)
             make.size.equalTo(64)
+        }
+        multiSign.snp.makeConstraints { make in
+            make.size.equalTo(16)
+            make.top.trailing.equalTo(thumbnailImageView).inset(4)
         }
     }
     

@@ -141,6 +141,13 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
         cell.memoryTitle.text = tempTask.memoryTitle
         cell.memoryContentLabel.text = tempTask.memoryContent == "" ? "텍스트 없음" : tempTask.memoryContent
         cell.thumbnailImageView.image = tempTask.imageData.count == 0 ? nil : UIImage(data: tempTask.imageData.first!)
+        
+        if tempTask.imageData.count > 1 {
+            cell.multiSign.isHidden = false
+        } else {
+            cell.multiSign.isHidden = true
+        }
+        
         return cell
     }
     

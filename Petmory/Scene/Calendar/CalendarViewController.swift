@@ -89,6 +89,7 @@ final class CalendarViewController: BaseViewController {
         super.viewWillAppear(animated)
 
         mainView.tableView.reloadData()
+        mainView.calendar.reloadData()
     }
 
     override func configure() {

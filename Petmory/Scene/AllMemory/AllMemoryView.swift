@@ -88,7 +88,7 @@ final class AllMemoryView: BaseView {
 
         tableView.snp.makeConstraints { make in
             make.top.equalTo(collectionView.snp.bottom).offset(8)
-            make.horizontalEdges.bottom.equalTo(self.safeAreaLayoutGuide)
+            make.horizontalEdges.bottom.equalToSuperview()
         }
     }
 }
