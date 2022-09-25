@@ -44,6 +44,8 @@ final class WritingViewController: BaseViewController {
     //사진 고를때 잠깐 보이는 시점인지 확인하는 프로퍼티
     var isSelectingPhoto = false
     
+    var settingDetailView: (() -> ())?
+    
     let titleViewTextField: UITextField = {
         let textField = UITextField()
         textField.font = UIFont(name: CustomFont.medium, size: 18)
@@ -55,10 +57,8 @@ final class WritingViewController: BaseViewController {
     
     let titleViewDatePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
-        //datePicker.sizeToFit()
         datePicker.backgroundColor = .white
         datePicker.preferredDatePickerStyle = .wheels
-        //datePicker.date = memoryDate
         datePicker.datePickerMode = .date
         datePicker.locale = Locale(identifier: "ko-KR")
         datePicker.maximumDate = Date()
@@ -74,7 +74,6 @@ final class WritingViewController: BaseViewController {
         super.viewDidLoad()
         
         petList = repository.fetchPet()
-        
         
     }
     
@@ -106,7 +105,8 @@ final class WritingViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        NotificationCenter.default.post(name: NSNotification.Name.reloadCollectionView, object: nil)
+//        NotificationCenter.default.post(name: NSNotification.Name.reloadCollectionView, object: nil)
+        settingDetailView?()
     }
     
     override func setUpController() {
@@ -179,12 +179,12 @@ final class WritingViewController: BaseViewController {
         
         //MARK: 선택된 펫이 없는 경우, 제목이 없는 경우에 alert
         if withList.count == 0 && mainView.titleTextField.text! == "" {
-            
-            print("반려동물과 제목은 필수입니다!")
+            noHandlerAlert(title: "", message: "제목을 입력해주세요.")
         } else if withList.count != 0 && mainView.titleTextField.text! == "" {
-            print("제목을 작성해주세요")
+            noHandlerAlert(title: "", message: "제목을 입력해주세요.")
         } else if withList.count == 0 && mainView.titleTextField.text! != "" {
             print("함께한 반려동물을 선택해주세요")
+            noHandlerAlert(title: "", message: "함께 보낸 반려동물을 선택해주세요.")
         } else {
             //MARK: 새로 작성
             if currentStatus == CurrentStatus.new {
@@ -204,14 +204,16 @@ final class WritingViewController: BaseViewController {
                     if let task = currentTask {
                         repository.updateMemory(item: task, title: mainView.titleTextField.text!, memoryDateString: memoryDate.dateToString(type: .simple), content: "", petList: withList, imageData: imageList, memoryDate: memoryDate)
                     }
-                    NotificationCenter.default.post(name: NSNotification.Name.editWriting, object: nil)
+//                    NotificationCenter.default.post(name: NSNotification.Name.editWriting, object: nil)
+                    settingDetailView?()
 //                    transition(self, transitionStyle: .dismiss)
                     showAlert(title: "수정 완료!")
                 } else {
                     if let task = currentTask {
                         repository.updateMemory(item: task, title: mainView.titleTextField.text!, memoryDateString: memoryDate.dateToString(type: .simple), content: mainView.contentTextView.text, petList: withList, imageData: imageList, memoryDate: memoryDate)
                     }
-                    NotificationCenter.default.post(name: NSNotification.Name.editWriting, object: nil)
+//                    NotificationCenter.default.post(name: NSNotification.Name.editWriting, object: nil)
+                    settingDetailView?()
 //                    transition(self, transitionStyle: .dismiss)
                     showAlert(title: "수정 완료!")
                 }
@@ -349,7 +351,6 @@ extension WritingViewController: CropViewControllerDelegate {
         imageList.insert(imageData, at: 0)
         transition(self, transitionStyle: .dismiss)
     }
-    
 }
 
 //MARK: - TextView
