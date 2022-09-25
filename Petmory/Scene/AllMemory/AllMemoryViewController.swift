@@ -64,8 +64,6 @@ final class AllMemoryViewController: BaseViewController {
         }
         
         dateList = Set(tasks.map { $0.memoryDateString }).sorted(by: >)
-       
-        print(dateList)
     }
     
     override func setUpController() {
@@ -78,7 +76,6 @@ final class AllMemoryViewController: BaseViewController {
         navigationController?.navigationBar.tintColor = .diaryColor
         navigationItem.backButtonTitle = ""
         navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(popView))
-        //navigationItem.hidesBackButton = true
         
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .white
@@ -132,15 +129,12 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //return tasks.count
         return tasks.filter("memoryDateString == '\(dateList[section])'").count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AllMemoryTableViewCell.identifier, for: indexPath) as? AllMemoryTableViewCell else { return UITableViewCell() }
-        
-//        cell.memoryTitle.text = tasks[indexPath.row].memoryTitle
-//        cell.memoryDate.text = tasks[indexPath.row].memoryDateString
+
         cell.memoryTitle.text = tasks.filter("memoryDateString == '\(dateList[indexPath.section])'")[indexPath.row].memoryTitle
         cell.memoryDate.text = tasks.filter("memoryDateString == '\(dateList[indexPath.section])'")[indexPath.row].memoryContent
         return cell

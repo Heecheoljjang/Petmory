@@ -93,7 +93,7 @@ final class MainViewController: BaseViewController {
     @objc private func pushTodayList() {
         let todayListViewController = TodayListViewController()
         todayListViewController.navigationTitle = mainView.dateLabel.text!
-        transition(todayListViewController, transitionStyle: .push)
+        transition(todayListViewController, transitionStyle: .presentNavigation)
     }
     
     @objc private func presentWritingView() {

@@ -26,7 +26,7 @@ final class TodayListView: BaseView {
     override func configure() {
         self.addSubview(tableView)
         
-        backgroundColor = .stringColor
+        backgroundColor = .white
     }
     
     override func setUpContraints() {

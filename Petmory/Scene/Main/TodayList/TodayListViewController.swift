@@ -49,7 +49,7 @@ final class TodayListViewController: BaseViewController {
         tasks = repository.fetchTodayMemory()
         
         if tasks.count == 0 {
-            transition(self, transitionStyle: .pop)
+            transition(self, transitionStyle: .dismiss)
         }
         
     }
@@ -70,6 +70,14 @@ final class TodayListViewController: BaseViewController {
         
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.standardAppearance = appearance
+        
+        let dismissButton = UIBarButtonItem(image: UIImage(systemName: "chevron.down"), style: .plain, target: self, action: #selector(dismissView))
+        navigationItem.leftBarButtonItem = dismissButton
+        navigationController?.navigationBar.tintColor = .diaryColor
+            
+    }
+    @objc private func dismissView() {
+        transition(self, transitionStyle: .dismiss)
     }
 }
 

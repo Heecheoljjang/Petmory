@@ -73,8 +73,7 @@ final class MemoryDetailViewController: BaseViewController {
     override func setUpController() {
         super.setUpController()
 
-//        mainView.petCollectionView.delegate = self
-//        mainView.petCollectionView.dataSource = self
+
         mainView.imageCollectionView.delegate = self
         mainView.imageCollectionView.dataSource = self
 
