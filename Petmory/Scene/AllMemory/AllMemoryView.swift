@@ -13,9 +13,9 @@ final class AllMemoryView: BaseView {
 
     let tableView: UITableView = {
         let view = UITableView()
-        view.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        view.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         view.register(AllMemoryTableViewCell.self, forCellReuseIdentifier: AllMemoryTableViewCell.identifier)
-        view.separatorStyle = .none
+        view.separatorStyle = .singleLine
         view.sectionHeaderTopPadding = 0
         return view
     }()
@@ -63,7 +63,7 @@ final class AllMemoryView: BaseView {
         [tableView, collectionView, withLabel, noMemoryLabel].forEach {
             self.addSubview($0)
         }
-        backgroundColor = .systemBackground
+        backgroundColor = .white
     }
     
     override func setUpContraints() {

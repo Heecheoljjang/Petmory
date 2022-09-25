@@ -116,6 +116,7 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
         let label = UILabel(frame: CGRect(x: 20, y: 0, width: mainView.frame.size.width - 40, height: 28))
         label.font = UIFont(name: CustomFont.medium, size: 13)
         label.text = dateList[section]
+        label.textColor = .black
         
         let view = UIView()
         view.backgroundColor = .lightDiaryColor
@@ -135,8 +136,11 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AllMemoryTableViewCell.identifier, for: indexPath) as? AllMemoryTableViewCell else { return UITableViewCell() }
 
-        cell.memoryTitle.text = tasks.filter("memoryDateString == '\(dateList[indexPath.section])'")[indexPath.row].memoryTitle
-        cell.memoryDate.text = tasks.filter("memoryDateString == '\(dateList[indexPath.section])'")[indexPath.row].memoryContent
+        let tempTask = tasks.filter("memoryDateString == '\(dateList[indexPath.section])'")[indexPath.row]
+        
+        cell.memoryTitle.text = tempTask.memoryTitle
+        cell.memoryContentLabel.text = tempTask.memoryContent == "" ? "텍스트 없음" : tempTask.memoryContent
+        cell.thumbnailImageView.image = tempTask.imageData.count == 0 ? nil : UIImage(data: tempTask.imageData.first!)
         return cell
     }
     
