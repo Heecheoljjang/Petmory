@@ -265,12 +265,13 @@ final class RegisterPetViewController: BaseViewController {
     }
     @objc private func deletePet() {
         //지울건지 alert띄우고
-        
-        //일단 기능만
-        if let task = task {
-            repository.deletePet(item: task)
+        handlerAlert(title: "삭제하시겠습니까?", message: "") { _ in
+            if let task = self.task {
+                self.repository.deletePet(item: task)
+            }
+            self.transition(self, transitionStyle: .dismiss)
         }
-        transition(self, transitionStyle: .dismiss)
+        
     }
     @objc private func addPet() {
         
@@ -321,7 +322,13 @@ final class RegisterPetViewController: BaseViewController {
         }
     }
     @objc private func dismissView() {
-        transition(self, transitionStyle: .dismiss)
+        if gender != "" || mainView.nameTextField.text! != "" || mainView.birthdayTextField.text! != "" || mainView.memoTextView.text! != "" || mainView.profileImageView.image != nil {
+            handlerAlert(title: "취소하시겠습니까?", message: "작성중인 내용은 저장되지 않습니다.") { _ in
+                self.transition(self, transitionStyle: .dismiss)
+            }
+        } else {
+            self.transition(self, transitionStyle: .dismiss)
+        }
     }
 }
 
@@ -338,8 +345,8 @@ extension RegisterPetViewController: PHPickerViewControllerDelegate {
                 guard let selectedImage = image as? UIImage else { return }
                 let cropViewController = CropViewController(croppingStyle: .circular, image: selectedImage)
                 cropViewController.delegate = self
-                cropViewController.doneButtonColor = .stringColor
-                cropViewController.cancelButtonColor = .stringColor
+                cropViewController.doneButtonColor = .diaryColor
+                cropViewController.cancelButtonColor = .diaryColor
                 cropViewController.doneButtonTitle = "완료"
                 cropViewController.cancelButtonTitle = "취소"
                 self.transition(cropViewController, transitionStyle: .present)

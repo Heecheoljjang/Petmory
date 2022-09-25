@@ -126,11 +126,13 @@ final class MemoryDetailViewController: BaseViewController {
        // guard let memoryTask = memoryTask else { return }
         
         //MARK: 진짜 지울건지 확인하는 alert띄우기
-        
-        if let memoryTask = memoryTask {
-            repository.deleteMemory(item: memoryTask)
-            transition(self, transitionStyle: .pop)
+        handlerAlert(title: "삭제하시겠습니까?", message: nil) { _ in
+            if let memoryTask = self.memoryTask {
+                self.repository.deleteMemory(item: memoryTask)
+                self.transition(self, transitionStyle: .pop)
+            }
         }
+        
     }
     @objc private func popView() {
         transition(self, transitionStyle: .pop)

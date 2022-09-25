@@ -152,9 +152,13 @@ final class AddCalendarViewController: BaseViewController {
     //MARK: - @objc
     @objc private func cancelAddingCalendar() {
         //작성한게 있다면 지울건지 alert
-        
-        //dismiss
-        transition(self, transitionStyle: .dismiss)
+        if mainView.titleTextField.text?.count != 0 || mainView.memoTextView.textColor != .placeholderColor {
+            handlerAlert(title: "취소하시겠습니까?", message: "작성중인 내용은 저장되지 않습니다.") { _ in
+                self.transition(self, transitionStyle: .dismiss)
+            }
+        } else {
+            self.transition(self, transitionStyle: .dismiss)
+        }
     }
     @objc private func doneAddingCalendar() {
         
@@ -237,12 +241,15 @@ final class AddCalendarViewController: BaseViewController {
         print(selectedDate)
     }
     @objc private func deleteCalendar() {
-        if let task = task {
-            repository.deleteCalendar(item: task)
-            
-            NotificationCenter.default.post(name: NSNotification.Name.deleteButton, object: nil)
-            transition(self, transitionStyle: .dismiss)
+        handlerAlert(title: "일정을 삭제하시겠습니까?", message: "") { _ in
+            if let task = self.task {
+                self.repository.deleteCalendar(item: task)
+                
+                NotificationCenter.default.post(name: NSNotification.Name.deleteButton, object: nil)
+                self.transition(self, transitionStyle: .dismiss)
+            }
         }
+        
     }
 }
 

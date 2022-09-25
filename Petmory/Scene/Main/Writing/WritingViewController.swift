@@ -221,8 +221,13 @@ final class WritingViewController: BaseViewController {
     
     @objc private func cancelWriting() {
         //alert띄워서 지울지말지 확인
-        
-        transition(self, transitionStyle: .dismiss)
+        if mainView.titleTextField.text?.count != 0 || mainView.contentTextView.textColor != .placeholderColor || imageList.count != 0 {
+            handlerAlert(title: "취소하시겠습니까?", message: "작성중인 내용은 저장되지 않습니다.") { _ in
+                self.transition(self, transitionStyle: .dismiss)
+            }
+        } else {
+            transition(self, transitionStyle: .dismiss)
+        }
     }
     @objc private func presentPhotoPickerView() {
         if imageList.count <= 1 {
@@ -324,8 +329,8 @@ extension WritingViewController: PHPickerViewControllerDelegate {
                 guard let selectedImage = image as? UIImage else { return }
                 let cropViewController = CropViewController(image: selectedImage)
                 cropViewController.delegate = self
-                cropViewController.doneButtonColor = .stringColor
-                cropViewController.cancelButtonColor = .stringColor
+                cropViewController.doneButtonColor = .diaryColor
+                cropViewController.cancelButtonColor = .diaryColor
                 cropViewController.doneButtonTitle = "완료"
                 cropViewController.cancelButtonTitle = "취소"
                 self.transition(cropViewController, transitionStyle: .present)

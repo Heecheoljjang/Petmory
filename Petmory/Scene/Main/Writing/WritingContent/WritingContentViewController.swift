@@ -35,13 +35,21 @@ final class WritingContentViewController: BaseViewController {
         navigationItem.rightBarButtonItem = doneButton
         navigationItem.leftBarButtonItem = cancelButton
         
+        navigationController?.navigationBar.tintColor = .diaryColor
+        
         //네비게이션 컨트롤러
         title = "내용"
     }
     
     //MARK: - @objc
     @objc private func cancelWritingContent() {
-        transition(self, transitionStyle: .dismiss)
+        if mainView.textView.text != "" {
+            handlerAlert(title: "취소하시겠습니까?", message: "작성중인 내용은 저장되지 않습니다.") { _ in
+                self.transition(self, transitionStyle: .dismiss)
+            }
+        } else {
+            self.transition(self, transitionStyle: .dismiss)
+        }
     }
     @objc private func doneWritingContent() {
         //데이터 전달
