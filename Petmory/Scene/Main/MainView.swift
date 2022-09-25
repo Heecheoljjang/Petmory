@@ -89,7 +89,7 @@ final class MainView: BaseView {
         let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.text = "다이어리를 열어\n\n오늘 작성한 기록들을 확인해보세요 :)"
+        label.text = "오늘 작성한 기록들을 확인해보세요 :)"
         label.font = UIFont(name: CustomFont.medium, size: 12)
         label.textColor = .lightGray
         
