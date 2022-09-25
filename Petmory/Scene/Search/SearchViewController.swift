@@ -69,8 +69,12 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UISe
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.identifier) as? SearchResultTableViewCell else { return UITableViewCell() }
-        cell.memoryTitle.text = tasks[indexPath.row].memoryTitle
-        cell.memoryDate.text = "\(tasks[indexPath.row].memoryDateString)"
+        
+        let tempTask = tasks[indexPath.row]
+        
+        cell.memoryTitle.text = tempTask.memoryTitle
+        cell.memoryDateLabel.text = tempTask.memoryDateString
+        cell.thumbnailImageView.image = tempTask.imageData.count == 0 ? nil : UIImage(data: tempTask.imageData.first!)
         
         return cell
     }

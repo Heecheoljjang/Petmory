@@ -18,7 +18,7 @@ final class SearchResultTableViewCell: BaseTableViewCell {
         return label
     }()
     
-    let memoryDate: UILabel = {
+    let memoryDateLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: CustomFont.medium, size: 13)
         label.textColor = .lightGray
@@ -26,33 +26,50 @@ final class SearchResultTableViewCell: BaseTableViewCell {
         return label
     }()
     
+    let thumbnailImageView: UIImageView = {
+        let view = UIImageView()
+        view.layer.cornerRadius = 5
+        view.clipsToBounds = true
+        
+        return view
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: .default, reuseIdentifier: SearchResultTableViewCell.identifier)
+        super.init(style: .default, reuseIdentifier: AllMemoryTableViewCell.identifier)
+        
     }
     
     override func configure() {
         super.configure()
         
-        [memoryDate, memoryTitle].forEach {
+        [memoryDateLabel, memoryTitle, thumbnailImageView].forEach {
             self.addSubview($0)
         }
-        backgroundColor = .stringColor
+        selectionStyle = .none
     }
     
     override func setUpConstraints() {
         super.setUpConstraints()
         
         memoryTitle.snp.makeConstraints { make in
-            make.horizontalEdges.equalToSuperview().inset(20)
-            make.top.equalToSuperview().offset(12)
+            make.leading.equalToSuperview().inset(20)
+            make.trailing.equalTo(thumbnailImageView.snp.leading).offset(-20)
+            make.top.equalTo(self).offset(12)
             make.height.equalTo(32)
         }
         
-        memoryDate.snp.makeConstraints { make in
+        memoryDateLabel.snp.makeConstraints { make in
             make.horizontalEdges.equalTo(memoryTitle)
             make.top.equalTo(memoryTitle.snp.bottom).offset(12)
             make.height.equalTo(20)
             make.bottom.equalToSuperview().offset(-12)
+        }
+        
+        thumbnailImageView.snp.makeConstraints { make in
+            make.top.equalTo(memoryTitle)
+            make.bottom.equalTo(memoryDateLabel)
+            make.trailing.equalToSuperview().offset(-20)
+            make.size.equalTo(64)
         }
     }
 }
