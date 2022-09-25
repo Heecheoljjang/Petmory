@@ -202,4 +202,11 @@ extension MemoryDetailViewController: UICollectionViewDelegate, UICollectionView
         return cellSize
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let photoViewController = PhotoViewController()
+        if imageList?.count != 0 {
+            photoViewController.imageList = imageList
+            transition(photoViewController, transitionStyle: .present)
+        }
+    }
 }
