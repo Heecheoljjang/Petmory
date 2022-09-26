@@ -113,20 +113,20 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let label = UILabel(frame: CGRect(x: 20, y: 0, width: mainView.frame.size.width - 40, height: 28))
-        label.font = UIFont(name: CustomFont.medium, size: 13)
+        let label = UILabel(frame: CGRect(x: 20, y: 0, width: mainView.frame.size.width - 40, height: 40))
+        label.font = UIFont(name: CustomFont.bold, size: 22)
         label.text = dateList[section]
         label.textColor = .black
         
         let view = UIView()
-        view.backgroundColor = .lightDiaryColor
+        view.backgroundColor = .white
         view.addSubview(label)
         
         return view
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 28
+        return 40
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

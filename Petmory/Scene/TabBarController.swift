@@ -38,6 +38,11 @@ final class TabBarController: UITabBarController {
         navMyPet.tabBarItem.imageInsets = UIEdgeInsets(top: 8, left: 0, bottom: -8, right: 0)
 
         setViewControllers([navMain, navCalendar, navMyPet], animated: true)
+        
+        
+        var appearance = UITabBarAppearance()
+        appearance.backgroundColor = .white
+        self.tabBar.standardAppearance
     }
     
     private func setUpAppearance() {

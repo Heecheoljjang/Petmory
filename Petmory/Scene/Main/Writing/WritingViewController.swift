@@ -232,7 +232,7 @@ final class WritingViewController: BaseViewController {
         }
     }
     @objc private func presentPhotoPickerView() {
-        if imageList.count <= 1 {
+        if imageList.count <= 2 {
             presentPHPickerViewController()
         } else {
             print("No")

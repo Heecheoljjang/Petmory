@@ -29,7 +29,8 @@ final class MainViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        createMemoryImageDirectory()
+        //백업 폴더 생성
+        createBackupDirectory()
         
     }
     

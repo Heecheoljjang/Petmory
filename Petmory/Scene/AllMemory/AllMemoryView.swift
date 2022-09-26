@@ -15,8 +15,8 @@ final class AllMemoryView: BaseView {
         let view = UITableView()
         view.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         view.register(AllMemoryTableViewCell.self, forCellReuseIdentifier: AllMemoryTableViewCell.identifier)
-        view.separatorStyle = .singleLine
-        view.sectionHeaderTopPadding = 0
+        view.separatorStyle = .none
+        view.sectionHeaderTopPadding = 8
         return view
     }()
     
