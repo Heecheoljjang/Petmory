@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-final class UserMemory: Object {
+final class UserMemory: Object, Codable {
     
     @Persisted var memoryTitle: String
     @Persisted var memoryDateString: String
@@ -28,6 +28,21 @@ final class UserMemory: Object {
         self.petList = petList
         self.imageData = imageData
         self.objectId = objectId
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case memoryTitle, memoryDateString, petList, memoryContent, imageData, memoryDate, objectId
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(memoryTitle, forKey: .memoryTitle)
+        try container.encode(memoryDateString, forKey: .memoryDateString)
+        try container.encode(petList, forKey: .petList)
+        try container.encode(memoryContent, forKey: .memoryContent)
+        try container.encode(imageData, forKey: .imageData)
+        try container.encode(memoryDate, forKey: .memoryDate)
+        try container.encode(objectId, forKey: .objectId)
     }
 }
 

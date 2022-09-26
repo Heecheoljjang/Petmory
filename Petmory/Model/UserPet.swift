@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-final class UserPet: Object {
+final class UserPet: Object, Codable {
     
     @Persisted var profileImage: Data?
     @Persisted var petName: String
@@ -29,4 +29,18 @@ final class UserPet: Object {
         self.registerDate = registerDate
     }
     
+    enum CodingKeys: String, CodingKey {
+        case profileImage, petName, birthday, gender, comment, registerDate, objectId
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(profileImage, forKey: .profileImage)
+        try container.encode(petName, forKey: .petName)
+        try container.encode(birthday, forKey: .birthday)
+        try container.encode(gender, forKey: .gender)
+        try container.encode(comment, forKey: .comment)
+        try container.encode(registerDate, forKey: .registerDate)
+        try container.encode(objectId, forKey: .objectId)
+    }
 }

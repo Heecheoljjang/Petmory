@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-final class UserCalendar: Object {
+final class UserCalendar: Object, Codable {
     
     @Persisted var title: String
     @Persisted var date = Date()
@@ -27,5 +27,19 @@ final class UserCalendar: Object {
         self.color = color
         self.comment = comment
         self.registerDate = registerDate
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case title, date, dateString, color, comment, registerDate
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(title, forKey: .title)
+        try container.encode(date, forKey: .date)
+        try container.encode(dateString, forKey: .dateString)
+        try container.encode(color, forKey: .color)
+        try container.encode(comment, forKey: .comment)
+        try container.encode(registerDate, forKey: .registerDate)
     }
 }

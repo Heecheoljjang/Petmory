@@ -40,6 +40,8 @@ protocol UserPetRepositoryType {
 
 protocol UserCalendarRepositoryType {
     
+    func fetchAllCalendar() -> Results<UserCalendar>
+    
     func fetchCalendar(date: Date) -> Results<UserCalendar>
     
     func addCalendar(item: UserCalendar)
@@ -166,6 +168,11 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType, Use
     }
     
     //MARK: - Calendar
+    
+    func fetchAllCalendar() -> Results<UserCalendar> {
+        
+        return localRealm.objects(UserCalendar.self).sorted(byKeyPath: "date", ascending: true)
+    }
     
     func fetchCalendar(date: Date) -> Results<UserCalendar> {
         

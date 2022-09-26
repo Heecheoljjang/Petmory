@@ -18,8 +18,19 @@ enum DateComponent: String {
 }
 
 enum SettingList {
-    static let backup = "백업 및 복구"
+    static let backup = "백업"
+    static let restore = "복구"
     static let message = "문의하기"
     static let review = "리뷰 남기기"
     static let shareApp = "앱 공유하기"
+}
+
+enum ErrorType: Error {
+    case encodingError, decodingError, zipError, documentPathError, savingFileError, pathAddingError, unzipError, fetchJsonDataError
+}
+
+enum BackupFileName {
+    static let memory = "memory"
+    static let calendar = "calendar"
+    static let pet = "pet"
 }

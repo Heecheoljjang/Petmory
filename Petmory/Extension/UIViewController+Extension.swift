@@ -7,6 +7,8 @@
 
 import Foundation
 import UIKit
+import Zip
+import RealmSwift
 
 //MARK: - FileManager
 extension UIViewController {
@@ -82,6 +84,217 @@ extension UIViewController {
         } else {
             print("지울 파일이 없습니다.")
         }
+    }
+    
+    //백업 폴더 만들기
+    func createBackupDirectory() {
+        guard let documentDirectory = getDocumentDirectoryPath() else { return }
+        
+        let backupDirectory = documentDirectory.appendingPathComponent("backup")
+        
+        if !FileManager.default.fileExists(atPath: backupDirectory.path) {
+            do {
+                try FileManager.default.createDirectory(atPath: backupDirectory.path, withIntermediateDirectories: true)
+            } catch {
+                print("백업 폴더 생성 오류")
+            }
+        }
+        
+    }
+    
+    //MARK: - 백업/복구
+    
+    func saveDataToDocument(data: Data, fileName: String) throws {
+        guard let documentDirectory = getDocumentDirectoryPath() else { throw ErrorType.documentPathError }
+        
+        let dataPath = documentDirectory.appendingPathComponent(fileName + ".json")
+        print(dataPath)
+        try data.write(to: dataPath)
+    }
+    
+    func saveEncodedMemoryToDocument(data: Results<UserMemory>, fileName: String) throws {
+        let encodeData = try encodeMemoryData(data: data)
+        
+        do {
+            try saveDataToDocument(data: encodeData, fileName: fileName)
+        } catch {
+            throw ErrorType.savingFileError
+        }
+    }
+    
+    func saveEncodedCalendarToDocument(data: Results<UserCalendar>, fileName: String) throws {
+        let encodeData = try encodeCalendarData(data: data)
+        
+        do {
+            try saveDataToDocument(data: encodeData, fileName: fileName)
+        } catch {
+            throw ErrorType.savingFileError
+        }
+    }
+    
+    func saveEncodedPetToDocument(data: Results<UserPet>, fileName: String) throws {
+        let encodeData = try encodePetData(data: data)
+        
+        do {
+            try saveDataToDocument(data: encodeData, fileName: fileName)
+        } catch {
+            throw ErrorType.savingFileError
+        }
+    }
+    
+    //인코딩
+    private func encodeMemoryData(data: Results<UserMemory>) throws -> Data {
+        do {
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            let encodedData = try encoder.encode(data)
+            
+            return encodedData
+        } catch {
+            throw ErrorType.encodingError
+        }
+    }
+    private func encodeCalendarData(data: Results<UserCalendar>) throws -> Data {
+        do {
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            let encodedData = try encoder.encode(data)
+            
+            return encodedData
+        } catch {
+            throw ErrorType.encodingError
+        }
+    }
+    private func encodePetData(data: Results<UserPet>) throws -> Data {
+        do {
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            let encodedData = try encoder.encode(data)
+            
+            return encodedData
+        } catch {
+            throw ErrorType.encodingError
+        }
+    }
+    
+    //디코딩
+    private func decodeMemoryData(data: Data) throws -> [UserMemory]? {
+        let decoder = JSONDecoder()
+        
+        do {
+            decoder.dateDecodingStrategy = .iso8601
+            let decodedData = try decoder.decode([UserMemory].self, from: data)
+            
+            return decodedData
+        } catch {
+            throw ErrorType.decodingError
+        }
+    }
+    private func decodeCalendarData(data: Data) throws -> [UserCalendar]? {
+        let decoder = JSONDecoder()
+        
+        do {
+            decoder.dateDecodingStrategy = .iso8601
+            let decodedData = try decoder.decode([UserCalendar].self, from: data)
+            
+            return decodedData
+        } catch {
+            throw ErrorType.decodingError
+        }
+    }
+    private func decodePetData(data: Data) throws -> [UserPet]? {
+        let decoder = JSONDecoder()
+        
+        do {
+            decoder.dateDecodingStrategy = .iso8601
+            let decodedData = try decoder.decode([UserPet].self, from: data)
+            
+            return decodedData
+        } catch {
+            throw ErrorType.decodingError
+        }
+    }
+    
+    //압축
+    func zipBackupFile() throws -> URL {
+        
+        var urlPath: [URL] = []
+        let fileName = "Petmory_\(Date())"
+        
+        guard let documentDirectory = getDocumentDirectoryPath() else { throw ErrorType.documentPathError }
+        
+        let memoryURL = documentDirectory.appendingPathComponent(BackupFileName.memory + ".json")
+        let calendarURL = documentDirectory.appendingPathComponent(BackupFileName.calendar + ".json")
+        let petURL = documentDirectory.appendingPathComponent(BackupFileName.pet + ".json")
+        
+        guard FileManager.default.fileExists(atPath: memoryURL.path) && FileManager.default.fileExists(atPath: calendarURL.path) && FileManager.default.fileExists(atPath: petURL.path) else {
+            throw ErrorType.pathAddingError
+        }
+        
+        urlPath.append(contentsOf: [memoryURL, calendarURL, petURL])
+        
+        do {
+            let zipFilePath = try Zip.quickZipFiles(urlPath, fileName: fileName)
+            print("zipFilePath: \(zipFilePath)")
+            return zipFilePath
+        } catch {
+            throw ErrorType.zipError
+        }
+    }
+    
+    func unZipBackupFile(fileURL: URL) throws {
+        guard let documentDirectory = getDocumentDirectoryPath() else { throw ErrorType.documentPathError }
+        
+        do {
+            try Zip.unzipFile(fileURL, destination: documentDirectory, overwrite: true, password: nil, progress: nil, fileOutputHandler: nil)
+        } catch {
+            throw ErrorType.unzipError
+        }
+    }
+    
+    //복구
+    func fetchJsonData(fileName: String) throws -> Data {
+        guard let documentDirectory = getDocumentDirectoryPath() else { throw ErrorType.documentPathError }
+        
+        let filePath = documentDirectory.appendingPathComponent(fileName + ".json")
+        
+        do {
+            return try Data(contentsOf: filePath)
+        } catch {
+            throw ErrorType.fetchJsonDataError
+        }
+    }
+    
+    
+//    func fetchDecodedData() throws -> {
+//        let memoryData = try fetchJsonData(fileName: BackupFileName.memory)
+//        let calendarData = try fetchJsonData(fileName: BackupFileName.calendar)
+//        let petData = try fetchJsonData(fileName: BackupFileName.pet)
+//        
+//        guard let decodedMemoryData = try decodeMemoryData(data: memoryData) else { throw ErrorType.decodingError }
+//        guard let decodedCalendarData = try decodeCalendarData(data: calendarData) else { throw ErrorType.decodingError }
+//        guard let decodedPetData = try decodePetData(data: petData) else { throw ErrorType.decodingError }
+//    }
+    
+    //액티비티 컨트롤러
+    func showActivityController(backupUrl: URL) {
+
+        let vc = UIActivityViewController(activityItems: [backupUrl], applicationActivities: [])
+        present(vc, animated: true)
+    }
+    
+    func fetchZipFile() {
+        guard let documentDirectory = getDocumentDirectoryPath() else { return }
+        
+        do {
+            let files = try FileManager.default.contentsOfDirectory(at: documentDirectory, includingPropertiesForKeys: nil)
+            let zipFiles = files.filter { $0.pathExtension == "zip" }
+            let zipFileName = zipFiles.map { $0.lastPathComponent }
+            print(zipFileName)
+        } catch {
+            print("zip파일 가져오는데에서 오류")
+        }
+        
     }
 }
 

@@ -6,12 +6,21 @@
 //
 
 import UIKit
+import RealmSwift
 
 final class SettingViewController: BaseViewController {
     
     var mainView = SettingView()
+
+    let repository = UserRepository()
     
-    let settingList = [SettingList.backup, SettingList.message, SettingList.review, SettingList.shareApp]
+    let settingList = [SettingList.backup, SettingList.restore, SettingList.message, SettingList.review, SettingList.shareApp]
+    
+    var memory: Results<UserMemory>!
+    
+    var calendar: Results<UserCalendar>!
+    
+    var petList: Results<UserPet>!
     
     override func loadView() {
         self.view = mainView
@@ -19,6 +28,10 @@ final class SettingViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        memory = repository.fetchAllMemory()
+        calendar = repository.fetchAllCalendar()
+        petList = repository.fetchPet()
     }
     
     override func setUpController() {
@@ -51,7 +64,7 @@ final class SettingViewController: BaseViewController {
 
 extension SettingViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return 5
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -64,4 +77,47 @@ extension SettingViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 52
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if indexPath.row == 0 {
+            handlerAlert(title: "백업 파일을 만드시겠습니까?", message: nil) { [weak self] _ in
+                self?.backup()
+            }
+        } else if indexPath.row == 1 {
+            handlerAlert(title: "데이터가 덮어씌워집니다. 진행하시겠습니까?", message: nil) { [weak self] _ in
+                
+            }
+        }
+    }
+}
+
+extension SettingViewController {
+    private func backup() {
+        do {
+            try saveEncodedMemoryToDocument(data: memory, fileName: BackupFileName.memory)
+            try saveEncodedCalendarToDocument(data: calendar, fileName: BackupFileName.calendar)
+            try saveEncodedPetToDocument(data: petList, fileName: BackupFileName.pet)
+            
+            let backupFilePath = try zipBackupFile()
+            
+            showActivityController(backupUrl: backupFilePath)
+            
+            fetchZipFile()
+        } catch {
+            noHandlerAlert(title: "압축 실패", message: "다시 확인해주세요.")
+        }
+    }
+}
+
+extension SettingViewController: UIDocumentPickerDelegate {
+    
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        print("취소됨")
+    }
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        
+    }
+    
+    
 }
