@@ -267,18 +267,7 @@ extension UIViewController {
             throw ErrorType.fetchJsonDataError
         }
     }
-    
-    
-//    func fetchDecodedData() throws -> {
-//        let memoryData = try fetchJsonData(fileName: BackupFileName.memory)
-//        let calendarData = try fetchJsonData(fileName: BackupFileName.calendar)
-//        let petData = try fetchJsonData(fileName: BackupFileName.pet)
-//        
-//        guard let decodedMemoryData = try decodeMemoryData(data: memoryData) else { throw ErrorType.decodingError }
-//        guard let decodedCalendarData = try decodeCalendarData(data: calendarData) else { throw ErrorType.decodingError }
-//        guard let decodedPetData = try decodePetData(data: petData) else { throw ErrorType.decodingError }
-//    }
-    
+
     //액티비티 컨트롤러
     func showActivityController(backupUrl: URL) {
 
@@ -293,7 +282,7 @@ extension UIViewController {
             let files = try FileManager.default.contentsOfDirectory(at: documentDirectory, includingPropertiesForKeys: nil)
             let zipFiles = files.filter { $0.pathExtension == "zip" }
             let zipFileName = zipFiles.map { $0.lastPathComponent }
-            return zipFileName
+            return zipFileName.sorted(by: >)
         } catch {
             print("zip파일 가져오는데에서 오류")
         }

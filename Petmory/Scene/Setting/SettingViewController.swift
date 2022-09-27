@@ -86,9 +86,6 @@ extension SettingViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.row == 0 {
-//            handlerAlert(title: "백업 파일을 만드시겠습니까?", message: nil) { [weak self] _ in
-//                self?.backup()
-//            }
             let backupRestoreVC = BackupRestoreViewController()
             transition(backupRestoreVC, transitionStyle: .push)
         } else if indexPath.row == 1 {
@@ -105,45 +102,19 @@ extension SettingViewController: UITableViewDataSource, UITableViewDelegate {
                 present(composeVC, animated: true)
                 
             }
-//            handlerAlert(title: "데이터가 덮어씌워집니다. 진행하시겠습니까?", message: nil) { [weak self] _ in
-//
-//                guard let self = self else { return }
-//
-//                self.repository.deleteAllMemory(task: self.memory)
-//                self.repository.deleteAllPet(task: self.petList)
-//                self.repository.deleteAllCalendar(task: self.calendar)
-//
-//                do {
-//                    let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.archive], asCopy: true)
-//                    documentPicker.delegate = self
-//                    documentPicker.allowsMultipleSelection = false
-//                    self.present(documentPicker, animated: true)
-//
+        } else if indexPath.row == 2 {
+            //6443397065
+//            let url = "itms-apps://itunes.apple.com/app/6443397065"
+//            if let url = URL(string: url), UIApplication.shared.canOpenURL(url) {
+//                if #available(iOS 10.0, *) {
+//                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+//                } else {
+//                    UIApplication.shared.openURL(url)
 //                }
 //            }
-        } else if indexPath.row == 2 {
-            
         }
     }
 }
-//
-//extension SettingViewController {
-//    private func backup() {
-//        do {
-//            try saveEncodedMemoryToDocument(data: memory, fileName: BackupFileName.memory)
-//            try saveEncodedCalendarToDocument(data: calendar, fileName: BackupFileName.calendar)
-//            try saveEncodedPetToDocument(data: petList, fileName: BackupFileName.pet)
-//            
-//            let backupFilePath = try zipBackupFile()
-//            
-//            showActivityController(backupUrl: backupFilePath)
-//            
-//            fetchZipFile()
-//        } catch {
-//            noHandlerAlert(title: "압축 실패", message: "다시 확인해주세요.")
-//        }
-//    }
-//}
 
 //MARK: - DocumentPicker
 extension SettingViewController: UIDocumentPickerDelegate {
