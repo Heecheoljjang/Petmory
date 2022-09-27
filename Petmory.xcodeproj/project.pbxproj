@@ -17,6 +17,8 @@
 		9736007728D8463300FD9285 /* MyPetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9736007628D8463300FD9285 /* MyPetTableViewCell.swift */; };
 		974107A628D0459300617F8F /* CropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = 974107A528D0459300617F8F /* CropViewController */; };
 		9767A58B28D8DBF400304F6C /* AddPetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767A58A28D8DBF400304F6C /* AddPetTableViewCell.swift */; };
+		976FF40028E2E57D007185BE /* BackupRestoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976FF3FF28E2E57D007185BE /* BackupRestoreView.swift */; };
+		976FF40228E2E58B007185BE /* BackupRestoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976FF40128E2E58B007185BE /* BackupRestoreViewController.swift */; };
 		977CB68E28D4540D001342E9 /* WritingContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977CB68D28D4540D001342E9 /* WritingContentView.swift */; };
 		977CB69028D45418001342E9 /* WritingContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977CB68F28D45418001342E9 /* WritingContentViewController.swift */; };
 		977CB69328D47222001342E9 /* enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977CB69228D47222001342E9 /* enum.swift */; };
@@ -42,8 +44,8 @@
 		978E3E8728E0C120007F59D6 /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978E3E8628E0C120007F59D6 /* PhotoCollectionViewCell.swift */; };
 		9799F84528C7741C00E1C12C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9799F84428C7741C00E1C12C /* AppDelegate.swift */; };
 		9799F84728C7741C00E1C12C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9799F84628C7741C00E1C12C /* SceneDelegate.swift */; };
-		9799F84E28C7741D00E1C12C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9799F84D28C7741D00E1C12C /* Assets.xcassets */; };
 		9799F85128C7741D00E1C12C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9799F84F28C7741D00E1C12C /* LaunchScreen.storyboard */; };
+		97BCB47528E2EE0600265631 /* BackupRestoreTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BCB47428E2EE0600265631 /* BackupRestoreTableViewCell.swift */; };
 		97C7CBC428CD8974007743FF /* RegisterPetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C7CBC328CD8974007743FF /* RegisterPetView.swift */; };
 		97C7CBC628CD8981007743FF /* RegisterPetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C7CBC528CD8981007743FF /* RegisterPetViewController.swift */; };
 		97C7CBC828CDC3D7007743FF /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C7CBC728CDC3D7007743FF /* Date+Extension.swift */; };
@@ -78,6 +80,8 @@
 		97CF58CF28CBA31F0062FEB9 /* UICollectionViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CF58CE28CBA31F0062FEB9 /* UICollectionViewCell+Extension.swift */; };
 		97D19CD828D1FB560074226C /* AddCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D19CD728D1FB560074226C /* AddCalendarView.swift */; };
 		97D19CDB28D1FB6D0074226C /* AddCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D19CDA28D1FB6D0074226C /* AddCalendarViewController.swift */; };
+		97F5DC7A28E3356A004A53B3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9799F84D28C7741D00E1C12C /* Assets.xcassets */; };
+		97F5DC7D28E34FE6004A53B3 /* JGProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 97F5DC7C28E34FE6004A53B3 /* JGProgressHUD */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,6 +92,8 @@
 		97332AA228D95D2D0015ECE8 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		9736007628D8463300FD9285 /* MyPetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPetTableViewCell.swift; sourceTree = "<group>"; };
 		9767A58A28D8DBF400304F6C /* AddPetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetTableViewCell.swift; sourceTree = "<group>"; };
+		976FF3FF28E2E57D007185BE /* BackupRestoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRestoreView.swift; sourceTree = "<group>"; };
+		976FF40128E2E58B007185BE /* BackupRestoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRestoreViewController.swift; sourceTree = "<group>"; };
 		977CB68D28D4540D001342E9 /* WritingContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingContentView.swift; sourceTree = "<group>"; };
 		977CB68F28D45418001342E9 /* WritingContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingContentViewController.swift; sourceTree = "<group>"; };
 		977CB69228D47222001342E9 /* enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = enum.swift; sourceTree = "<group>"; };
@@ -116,6 +122,7 @@
 		9799F84D28C7741D00E1C12C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9799F85028C7741D00E1C12C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9799F85228C7741D00E1C12C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		97BCB47428E2EE0600265631 /* BackupRestoreTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRestoreTableViewCell.swift; sourceTree = "<group>"; };
 		97C7CBC328CD8974007743FF /* RegisterPetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPetView.swift; sourceTree = "<group>"; };
 		97C7CBC528CD8981007743FF /* RegisterPetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPetViewController.swift; sourceTree = "<group>"; };
 		97C7CBC728CDC3D7007743FF /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
@@ -158,6 +165,7 @@
 				9716A8F828D0E4D600AC62FA /* IQKeyboardManagerSwift in Frameworks */,
 				9781F0A728D186EF008E6DBB /* FSCalendar in Frameworks */,
 				97CF588728C8C9820062FEB9 /* RealmSwift in Frameworks */,
+				97F5DC7D28E34FE6004A53B3 /* JGProgressHUD in Frameworks */,
 				97CF588528C8C9820062FEB9 /* Realm in Frameworks */,
 				974107A628D0459300617F8F /* CropViewController in Frameworks */,
 				97CF588228C8C9390062FEB9 /* SnapKit in Frameworks */,
@@ -170,6 +178,7 @@
 		97332A9F28D95D160015ECE8 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
+				976FF3FE28E2E54E007185BE /* BackupRestore */,
 				97332AA028D95D220015ECE8 /* SettingView.swift */,
 				97332AA228D95D2D0015ECE8 /* SettingViewController.swift */,
 				9722A2C628DBA422008C3DB7 /* SettingTableViewCell.swift */,
@@ -184,6 +193,16 @@
 				9767A58A28D8DBF400304F6C /* AddPetTableViewCell.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		976FF3FE28E2E54E007185BE /* BackupRestore */ = {
+			isa = PBXGroup;
+			children = (
+				97BCB47428E2EE0600265631 /* BackupRestoreTableViewCell.swift */,
+				976FF3FF28E2E57D007185BE /* BackupRestoreView.swift */,
+				976FF40128E2E58B007185BE /* BackupRestoreViewController.swift */,
+			);
+			path = BackupRestore;
 			sourceTree = "<group>";
 		};
 		977CB68C28D453FB001342E9 /* WritingContent */ = {
@@ -503,6 +522,7 @@
 				9716A8F728D0E4D600AC62FA /* IQKeyboardManagerSwift */,
 				9781F0A628D186EF008E6DBB /* FSCalendar */,
 				9732ABFA28E1C4DC00112962 /* Zip */,
+				97F5DC7C28E34FE6004A53B3 /* JGProgressHUD */,
 			);
 			productName = Petmory;
 			productReference = 9799F84128C7741C00E1C12C /* Petmory.app */;
@@ -539,6 +559,7 @@
 				9716A8F628D0E4D600AC62FA /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 				9781F0A528D186EF008E6DBB /* XCRemoteSwiftPackageReference "FSCalendar" */,
 				9732ABF928E1C4DC00112962 /* XCRemoteSwiftPackageReference "Zip" */,
+				97F5DC7B28E34FE5004A53B3 /* XCRemoteSwiftPackageReference "JGProgressHUD" */,
 			);
 			productRefGroup = 9799F84228C7741C00E1C12C /* Products */;
 			projectDirPath = "";
@@ -556,9 +577,9 @@
 			files = (
 				9799F85128C7741D00E1C12C /* LaunchScreen.storyboard in Resources */,
 				97CF58A028CA481F0062FEB9 /* GmarketSansTTFLight.ttf in Resources */,
-				9799F84E28C7741D00E1C12C /* Assets.xcassets in Resources */,
 				97CF589F28CA481F0062FEB9 /* GmarketSansTTFMedium.ttf in Resources */,
 				97CF58A128CA481F0062FEB9 /* GmarketSansTTFBold.ttf in Resources */,
+				97F5DC7A28E3356A004A53B3 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -586,6 +607,7 @@
 				97D19CDB28D1FB6D0074226C /* AddCalendarViewController.swift in Sources */,
 				9781F0B328D1E37E008E6DBB /* UserCalendar.swift in Sources */,
 				9786305428CC3B570042C2E2 /* WritingView.swift in Sources */,
+				976FF40228E2E58B007185BE /* BackupRestoreViewController.swift in Sources */,
 				97CF58CF28CBA31F0062FEB9 /* UICollectionViewCell+Extension.swift in Sources */,
 				97CF589428C9058E0062FEB9 /* Repository.swift in Sources */,
 				97CF58A728CAE2A60062FEB9 /* UIColor+Extension.swift in Sources */,
@@ -596,6 +618,7 @@
 				97CF58CD28CBA2C70062FEB9 /* BaseImageCollectionViewCell.swift in Sources */,
 				977CB69528D4D051001342E9 /* NSNotification+Extension.swift in Sources */,
 				97CF589228C9057C0062FEB9 /* UserMemory.swift in Sources */,
+				976FF40028E2E57D007185BE /* BackupRestoreView.swift in Sources */,
 				97CF58BD28CB5ECA0062FEB9 /* SearchViewController.swift in Sources */,
 				97C7CBD028CE3695007743FF /* BasePetCollectionViewCell.swift in Sources */,
 				978E3E8428E0B994007F59D6 /* PhotoViewController.swift in Sources */,
@@ -617,6 +640,7 @@
 				97CF58AF28CB03010062FEB9 /* AllMemoryViewController.swift in Sources */,
 				9786306728CC87200042C2E2 /* SearchResultTableViewCell.swift in Sources */,
 				978E3E8228E0B98C007F59D6 /* PhotoView.swift in Sources */,
+				97BCB47528E2EE0600265631 /* BackupRestoreTableViewCell.swift in Sources */,
 				97CF58B628CB4E830062FEB9 /* BaseTableViewCell.swift in Sources */,
 				97332AA328D95D2D0015ECE8 /* SettingViewController.swift in Sources */,
 				97C7CBCE28CE3626007743FF /* WritingPetCollectionViewCell.swift in Sources */,
@@ -695,6 +719,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -749,6 +775,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -764,13 +792,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3C6U386B4C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Petmory/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Petmory;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
@@ -796,13 +826,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3C6U386B4C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Petmory/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Petmory;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
@@ -895,6 +927,14 @@
 				minimumVersion = 10.0.0;
 			};
 		};
+		97F5DC7B28E34FE5004A53B3 /* XCRemoteSwiftPackageReference "JGProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/JonasGessner/JGProgressHUD.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -932,6 +972,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 97CF588328C8C9820062FEB9 /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
+		};
+		97F5DC7C28E34FE6004A53B3 /* JGProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97F5DC7B28E34FE5004A53B3 /* XCRemoteSwiftPackageReference "JGProgressHUD" */;
+			productName = JGProgressHUD;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
