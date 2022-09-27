@@ -48,7 +48,7 @@ final class WritingViewController: BaseViewController {
     
     let titleViewTextField: UITextField = {
         let textField = UITextField()
-        textField.font = UIFont(name: CustomFont.medium, size: 18)
+        textField.font = UIFont(name: CustomFont.medium, size: 16)
         textField.textAlignment = .center
         textField.tintColor = .clear
         

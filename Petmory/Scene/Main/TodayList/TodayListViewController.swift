@@ -30,8 +30,10 @@ final class TodayListViewController: BaseViewController {
     
     var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: CustomFont.medium, size: 18)
+        label.font = UIFont(name: CustomFont.medium, size: 16)
         label.textAlignment = .center
+        label.textColor = .black
+        
         return label
     }()
     

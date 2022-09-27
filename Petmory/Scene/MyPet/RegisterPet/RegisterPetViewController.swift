@@ -57,10 +57,18 @@ final class RegisterPetViewController: BaseViewController {
     var currentStatus = CurrentStatus.new
     
     var task: UserPet?
-    
-    var navTitle = "반려동물 등록"
-    
+        
     let notificationCenter = UNUserNotificationCenter.current()
+    
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: CustomFont.medium, size: 16)
+        label.text = "반려동물 등록"
+        label.textAlignment = .center
+        label.textColor = .black
+        
+        return label
+    }()
     
     override func loadView() {
         self.view = mainView
@@ -136,7 +144,7 @@ final class RegisterPetViewController: BaseViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.standardAppearance = appearance
         navigationItem.leftBarButtonItem = dismissButton
-        navigationItem.title = navTitle
+        navigationItem.titleView = titleLabel
 
         //MARK: - 텍스트필드
         mainView.birthdayTextField.delegate = self

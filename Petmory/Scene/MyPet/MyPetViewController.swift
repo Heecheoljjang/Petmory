@@ -22,6 +22,16 @@ final class MyPetViewController: BaseViewController {
         }
     }
     
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: CustomFont.medium, size: 16)
+        label.text = "나의 반려동물"
+        label.textColor = .black
+        label.textAlignment = .center
+        
+        return label
+    }()
+    
     override func loadView() {
         self.view = mainView
     }
@@ -65,7 +75,7 @@ final class MyPetViewController: BaseViewController {
         
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.standardAppearance = appearance
-        navigationItem.title = "나의 반려동물"
+        navigationItem.titleView = titleLabel
         navigationItem.backButtonTitle = ""
 
     }
@@ -109,7 +119,6 @@ extension MyPetViewController: UITableViewDelegate, UITableViewDataSource {
             let registerPetVC = RegisterPetViewController()
             registerPetVC.currentStatus = CurrentStatus.edit
             registerPetVC.task = tasks[indexPath.row]
-            registerPetVC.navTitle = "반려동물 정보"
             transition(registerPetVC, transitionStyle: .presentNavigation)
         }
     }
