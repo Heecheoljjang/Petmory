@@ -25,6 +25,8 @@ protocol UserMemoryRepositoryType {
     func updateMemory(item: UserMemory, title: String, memoryDateString: String, content: String, petList: List<String>, imageData: List<Data>, memoryDate: Date)
     
     func deleteMemory(item: UserMemory)
+    
+    func deleteAllMemory(task: Results<UserMemory>)
 }
 
 protocol UserPetRepositoryType {
@@ -36,6 +38,8 @@ protocol UserPetRepositoryType {
     func updatePet(item: UserPet, profileImage: Data?, name: String, birthday: Date, gender: String, comment: String)
     
     func deletePet(item: UserPet)
+    
+    func deleteAllPet(task: Results<UserPet>)
 }
 
 protocol UserCalendarRepositoryType {
@@ -49,6 +53,8 @@ protocol UserCalendarRepositoryType {
     func updateCalendar(item: UserCalendar, title: String, date: Date, dateString: String, color: String, comment: String)
     
     func deleteCalendar(item: UserCalendar)
+    
+    func deleteAllCalendar(task: Results<UserCalendar>)
 }
 
 final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType, UserCalendarRepositoryType {
@@ -126,6 +132,16 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType, Use
         }
     }
     
+    func deleteAllMemory(task: Results<UserMemory>) {
+        do {
+            try localRealm.write {
+                localRealm.delete(task)
+            }
+        } catch {
+            print("기록 전체 삭제 오류")
+        }
+    }
+    
     //MARK: - Pet
     
     func fetchPet() -> Results<UserPet> {
@@ -164,6 +180,16 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType, Use
             }
         } catch {
             print("펫 삭제 오류")
+        }
+    }
+    
+    func deleteAllPet(task: Results<UserPet>) {
+        do {
+            try localRealm.write {
+                localRealm.delete(task)
+            }
+        } catch {
+            print("펫 전체 삭제 오류")
         }
     }
     
@@ -214,4 +240,13 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType, Use
         }
     }
     
+    func deleteAllCalendar(task: Results<UserCalendar>) {
+        do {
+            try localRealm.write {
+                localRealm.delete(task)
+            }
+        } catch {
+            print("일정 전체 삭제 오류")
+        }
+    }
 }

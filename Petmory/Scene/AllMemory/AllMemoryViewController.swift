@@ -64,6 +64,7 @@ final class AllMemoryViewController: BaseViewController {
         }
         
         dateList = Set(tasks.map { $0.memoryDateString }).sorted(by: >)
+        
     }
     
     override func setUpController() {

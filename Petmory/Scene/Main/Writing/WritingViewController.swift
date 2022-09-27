@@ -232,7 +232,7 @@ final class WritingViewController: BaseViewController {
         }
     }
     @objc private func presentPhotoPickerView() {
-        if imageList.count <= 2 {
+        if imageList.count <= 1 {
             presentPHPickerViewController()
         } else {
             print("No")
@@ -346,8 +346,7 @@ extension WritingViewController: PHPickerViewControllerDelegate {
 extension WritingViewController: CropViewControllerDelegate {
     func cropViewController(_ cropViewController: CropViewController, didCropToImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
         
-        guard let imageData = image.jpegData(compressionQuality: 0.4) else { return }
-        print(imageData)
+        guard let imageData = image.jpegData(compressionQuality: 0.3) else { return }
         imageList.insert(imageData, at: 0)
         transition(self, transitionStyle: .dismiss)
     }

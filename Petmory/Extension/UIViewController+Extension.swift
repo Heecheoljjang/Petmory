@@ -114,7 +114,7 @@ extension UIViewController {
     
     func saveEncodedMemoryToDocument(data: Results<UserMemory>, fileName: String) throws {
         let encodeData = try encodeMemoryData(data: data)
-        
+        print("인코드:\(encodeData)")
         do {
             try saveDataToDocument(data: encodeData, fileName: fileName)
         } catch {
@@ -178,7 +178,8 @@ extension UIViewController {
     }
     
     //디코딩
-    private func decodeMemoryData(data: Data) throws -> [UserMemory]? {
+    //@discardableResult
+    func decodeMemoryData(data: Data) throws -> [UserMemory]? {
         let decoder = JSONDecoder()
         
         do {
@@ -190,7 +191,8 @@ extension UIViewController {
             throw ErrorType.decodingError
         }
     }
-    private func decodeCalendarData(data: Data) throws -> [UserCalendar]? {
+    //@discardableResult
+    func decodeCalendarData(data: Data) throws -> [UserCalendar]? {
         let decoder = JSONDecoder()
         
         do {
@@ -202,7 +204,8 @@ extension UIViewController {
             throw ErrorType.decodingError
         }
     }
-    private func decodePetData(data: Data) throws -> [UserPet]? {
+    //@discardableResult
+    func decodePetData(data: Data) throws -> [UserPet]? {
         let decoder = JSONDecoder()
         
         do {

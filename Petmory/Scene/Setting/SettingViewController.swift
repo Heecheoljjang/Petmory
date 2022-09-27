@@ -34,6 +34,14 @@ final class SettingViewController: BaseViewController {
         petList = repository.fetchPet()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        print(memory)
+        print(calendar)
+        print(petList)
+    }
+    
     override func setUpController() {
         super.setUpController()
         
@@ -87,6 +95,19 @@ extension SettingViewController: UITableViewDataSource, UITableViewDelegate {
         } else if indexPath.row == 1 {
             handlerAlert(title: "데이터가 덮어씌워집니다. 진행하시겠습니까?", message: nil) { [weak self] _ in
                 
+                guard let self = self else { return }
+                
+                self.repository.deleteAllMemory(task: self.memory)
+                self.repository.deleteAllPet(task: self.petList)
+                self.repository.deleteAllCalendar(task: self.calendar)
+                
+                do {
+                    let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.archive], asCopy: true)
+                    documentPicker.delegate = self
+                    documentPicker.allowsMultipleSelection = false
+                    self.present(documentPicker, animated: true)
+                    
+                }
             }
         }
     }
@@ -117,7 +138,91 @@ extension SettingViewController: UIDocumentPickerDelegate {
     }
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         
+        guard let selectedFile = urls.first else {
+            noHandlerAlert(title: "선택하신 파일을 찾을 수 없습니다.", message: "")
+            return
+        }
+        
+        guard let documentDirectory = getDocumentDirectoryPath() else { return }
+        
+        let sandboxURL = documentDirectory.appendingPathComponent(selectedFile.lastPathComponent)
+        
+        if FileManager.default.fileExists(atPath: sandboxURL.path) {
+            
+            let fileName = selectedFile.lastPathComponent
+            print("fileName: \(fileName)")
+            
+            //파일URL
+            let fileURL = documentDirectory.appendingPathComponent(fileName)
+            print("fileURL: \(fileURL)")
+            
+            do {
+                try unZipBackupFile(fileURL: fileURL)
+                
+                do {
+                    let memoryData = try fetchJsonData(fileName: BackupFileName.memory)
+                    let calendarData = try fetchJsonData(fileName: BackupFileName.calendar)
+                    let petData = try fetchJsonData(fileName: BackupFileName.pet)
+                    
+                    try repository.localRealm.write {
+                        guard let memoryData = try decodeMemoryData(data: memoryData) else { return }
+                        guard let calendarData = try decodeCalendarData(data: calendarData) else { return }
+                        guard let petListData = try decodePetData(data: petData) else { return }
+                        
+                        repository.localRealm.add(memoryData)
+                        repository.localRealm.add(calendarData)
+                        repository.localRealm.add(petListData)
+                    }
+                    
+                    fetchZipFile()
+                } catch {
+                    throw ErrorType.fetchJsonDataError
+                }
+                
+            } catch {
+                noHandlerAlert(title: "압축 해제 실패", message: "")
+            }
+        } else {
+            //앱 내에 없는 경우엔 복사해서 만들어주기
+            
+            do {
+                try FileManager.default.copyItem(at: selectedFile, to: sandboxURL)
+                let fileName = selectedFile.lastPathComponent
+                print("fileName: \(fileName)")
+                
+                //파일URL
+                let fileURL = documentDirectory.appendingPathComponent(fileName)
+                print("fileURL: \(fileURL)")
+                
+                do {
+                    try unZipBackupFile(fileURL: fileURL)
+                    
+                    do {
+                        let memoryData = try fetchJsonData(fileName: BackupFileName.memory)
+                        let calendarData = try fetchJsonData(fileName: BackupFileName.calendar)
+                        let petData = try fetchJsonData(fileName: BackupFileName.pet)
+                        
+                        try repository.localRealm.write {
+                            guard let memoryData = try decodeMemoryData(data: memoryData) else { return }
+                            guard let calendarData = try decodeCalendarData(data: calendarData) else { return }
+                            guard let petListData = try decodePetData(data: petData) else { return }
+                            
+                            repository.localRealm.add(memoryData)
+                            repository.localRealm.add(calendarData)
+                            repository.localRealm.add(petListData)
+                        }
+                        
+                        fetchZipFile()
+                    } catch {
+                        throw ErrorType.fetchJsonDataError
+                    }
+                    
+                } catch {
+                    noHandlerAlert(title: "압축 해제 실패", message: "")
+                }
+            } catch {
+                noHandlerAlert(title: "압축 해제 실패", message: "")
+            }
+        }
     }
-    
-    
 }
