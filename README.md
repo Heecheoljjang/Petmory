@@ -884,3 +884,35 @@
 - CodingKeys를 설정할때, String이 CodingKey보다 먼저 채택되어야함.
     - 얘도 이유 알아보기. 지금 시간없음
 
+
+### 9/27
+
+#### 내용
+
+- 설정 화면
+    - UI 수정
+    - 백업 복구 구현
+        - 개별 화면 추가
+        - realm에 codable을 채택하여 json파일로 변환한 뒤 압축해서 저장하고, 복구할땐 디코딩하여 각 모델의 배열들을 localRealm에 write하였음.
+        - hud 추가
+        - Petmory의 백업 파일이 아닌 경우엔 Alert띄움.
+    - 문의하기
+        - 셀을 누르면 메일 보내는 창 띄움
+            - MFMailComposeViewControllerDelegate 사용
+- 타이틀뷰 폰트 적용
+- 백업 복구 화면
+    - UI 구현
+        - 테이블뷰 헤더를 사용하지 않고 따로 레이블을 두어 스크롤되지 않게 구현
+            - leastNormalMagnitude 사용
+    - 백업 파일 보여주는 테이블뷰 추가
+
+#### 이슈
+
+- 메일 보내거나 취소를 눌러도 창이 내려가지 않음.
+    - 그냥 delegate가 아니라 mailComposeDelegate의 대리자를 설정해야함..
+- 테이블뷰의 스타일이 insetGrouped인 경우엔 상단의 기본적인 spacing이 있음.
+    - 가장 작은 양의 수를 반환하는 leastNormalMagnitude를 이용하여 헤더의 height를 설정해서 해결
+
+#### 기억할 것
+
+- 
