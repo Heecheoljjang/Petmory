@@ -15,7 +15,8 @@ final class SettingView: BaseView {
         view.separatorStyle = .none
         view.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         view.register(SettingTableViewCell.self, forCellReuseIdentifier: SettingTableViewCell.identifier)
-        view.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+        view.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        view.isScrollEnabled = false
         return view
     }()
     

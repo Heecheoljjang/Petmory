@@ -222,7 +222,7 @@ extension UIViewController {
     func zipBackupFile() throws -> URL {
         
         var urlPath: [URL] = []
-        let fileName = "Petmory_\(Date())"
+        let fileName = "Petmory_\(Date().dateToString(type: .forBackupFile))"
         
         guard let documentDirectory = getDocumentDirectoryPath() else { throw ErrorType.documentPathError }
         
@@ -286,18 +286,18 @@ extension UIViewController {
         present(vc, animated: true)
     }
     
-    func fetchZipFile() {
-        guard let documentDirectory = getDocumentDirectoryPath() else { return }
+    func fetchZipFile() -> [String] {
+        guard let documentDirectory = getDocumentDirectoryPath() else { return [] }
         
         do {
             let files = try FileManager.default.contentsOfDirectory(at: documentDirectory, includingPropertiesForKeys: nil)
             let zipFiles = files.filter { $0.pathExtension == "zip" }
             let zipFileName = zipFiles.map { $0.lastPathComponent }
-            print(zipFileName)
+            return zipFileName
         } catch {
             print("zip파일 가져오는데에서 오류")
         }
-        
+        return []
     }
 }
 

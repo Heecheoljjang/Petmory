@@ -15,13 +15,17 @@ final class SettingViewController: BaseViewController {
 
     let repository = UserRepository()
     
-    let settingList = [SettingList.backup, SettingList.restore, SettingList.message, SettingList.review, SettingList.shareApp]
+    let settingList = [SettingList.backupRestore, SettingList.message, SettingList.review, SettingList.shareApp]
+    let imageList = [SettingListImage.backupImage, SettingListImage.message, SettingListImage.review, SettingListImage.shareApp]
     
-    var memory: Results<UserMemory>!
-    
-    var calendar: Results<UserCalendar>!
-    
-    var petList: Results<UserPet>!
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: CustomFont.medium, size: 16)
+        label.text = "설정"
+        label.textAlignment = .center
+        label.textColor = .black
+        return label
+    }()
     
     override func loadView() {
         self.view = mainView
@@ -30,25 +34,24 @@ final class SettingViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        memory = repository.fetchAllMemory()
-        calendar = repository.fetchAllCalendar()
-        petList = repository.fetchPet()
+        
     }
 
     override func setUpController() {
         super.setUpController()
-        
-        navigationItem.title = "설정"
-        
+                
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .white
         appearance.shadowColor = .clear
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.standardAppearance = appearance
         
+        navigationItem.titleView = titleLabel
+        
         //바버튼
         let popButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(popView))
         navigationItem.leftBarButtonItem = popButton
+        
     }
     override func configure() {
         super.configure()
@@ -64,45 +67,31 @@ final class SettingViewController: BaseViewController {
 }
 
 extension SettingViewController: UITableViewDataSource, UITableViewDelegate {
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return 4
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingTableViewCell.identifier) as? SettingTableViewCell else { return UITableViewCell() }
         cell.titleLabel.text = settingList[indexPath.row]
-        
+        cell.cellImage.image = UIImage(systemName: imageList[indexPath.row])
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 52
+        return 60
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.row == 0 {
-            handlerAlert(title: "백업 파일을 만드시겠습니까?", message: nil) { [weak self] _ in
-                self?.backup()
-            }
+//            handlerAlert(title: "백업 파일을 만드시겠습니까?", message: nil) { [weak self] _ in
+//                self?.backup()
+//            }
+            let backupRestoreVC = BackupRestoreViewController()
+            transition(backupRestoreVC, transitionStyle: .push)
         } else if indexPath.row == 1 {
-            handlerAlert(title: "데이터가 덮어씌워집니다. 진행하시겠습니까?", message: nil) { [weak self] _ in
-                
-                guard let self = self else { return }
-                
-                self.repository.deleteAllMemory(task: self.memory)
-                self.repository.deleteAllPet(task: self.petList)
-                self.repository.deleteAllCalendar(task: self.calendar)
-                
-                do {
-                    let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.archive], asCopy: true)
-                    documentPicker.delegate = self
-                    documentPicker.allowsMultipleSelection = false
-                    self.present(documentPicker, animated: true)
-                    
-                }
-            }
-        } else if indexPath.row == 2 {
             if !MFMailComposeViewController.canSendMail() {
                 noHandlerAlert(title: "등록된 메일 계정을 확인해주세요.", message: "")
             } else {
@@ -116,27 +105,45 @@ extension SettingViewController: UITableViewDataSource, UITableViewDelegate {
                 present(composeVC, animated: true)
                 
             }
+//            handlerAlert(title: "데이터가 덮어씌워집니다. 진행하시겠습니까?", message: nil) { [weak self] _ in
+//
+//                guard let self = self else { return }
+//
+//                self.repository.deleteAllMemory(task: self.memory)
+//                self.repository.deleteAllPet(task: self.petList)
+//                self.repository.deleteAllCalendar(task: self.calendar)
+//
+//                do {
+//                    let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.archive], asCopy: true)
+//                    documentPicker.delegate = self
+//                    documentPicker.allowsMultipleSelection = false
+//                    self.present(documentPicker, animated: true)
+//
+//                }
+//            }
+        } else if indexPath.row == 2 {
+            
         }
     }
 }
-
-extension SettingViewController {
-    private func backup() {
-        do {
-            try saveEncodedMemoryToDocument(data: memory, fileName: BackupFileName.memory)
-            try saveEncodedCalendarToDocument(data: calendar, fileName: BackupFileName.calendar)
-            try saveEncodedPetToDocument(data: petList, fileName: BackupFileName.pet)
-            
-            let backupFilePath = try zipBackupFile()
-            
-            showActivityController(backupUrl: backupFilePath)
-            
-            fetchZipFile()
-        } catch {
-            noHandlerAlert(title: "압축 실패", message: "다시 확인해주세요.")
-        }
-    }
-}
+//
+//extension SettingViewController {
+//    private func backup() {
+//        do {
+//            try saveEncodedMemoryToDocument(data: memory, fileName: BackupFileName.memory)
+//            try saveEncodedCalendarToDocument(data: calendar, fileName: BackupFileName.calendar)
+//            try saveEncodedPetToDocument(data: petList, fileName: BackupFileName.pet)
+//            
+//            let backupFilePath = try zipBackupFile()
+//            
+//            showActivityController(backupUrl: backupFilePath)
+//            
+//            fetchZipFile()
+//        } catch {
+//            noHandlerAlert(title: "압축 실패", message: "다시 확인해주세요.")
+//        }
+//    }
+//}
 
 //MARK: - DocumentPicker
 extension SettingViewController: UIDocumentPickerDelegate {
