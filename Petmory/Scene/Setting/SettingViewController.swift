@@ -7,6 +7,7 @@
 
 import UIKit
 import RealmSwift
+import MessageUI
 
 final class SettingViewController: BaseViewController {
     
@@ -33,15 +34,7 @@ final class SettingViewController: BaseViewController {
         calendar = repository.fetchAllCalendar()
         petList = repository.fetchPet()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        print(memory)
-        print(calendar)
-        print(petList)
-    }
-    
+
     override func setUpController() {
         super.setUpController()
         
@@ -109,6 +102,20 @@ extension SettingViewController: UITableViewDataSource, UITableViewDelegate {
                     
                 }
             }
+        } else if indexPath.row == 2 {
+            if !MFMailComposeViewController.canSendMail() {
+                noHandlerAlert(title: "등록된 메일 계정을 확인해주세요.", message: "")
+            } else {
+                let composeVC = MFMailComposeViewController()
+                composeVC.mailComposeDelegate = self
+                
+                composeVC.setToRecipients(["kkll135@gmail.com"])
+                composeVC.setSubject("[Petmory]")
+                composeVC.setMessageBody("[문의]", isHTML: false)
+                
+                present(composeVC, animated: true)
+                
+            }
         }
     }
 }
@@ -131,6 +138,7 @@ extension SettingViewController {
     }
 }
 
+//MARK: - DocumentPicker
 extension SettingViewController: UIDocumentPickerDelegate {
     
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
@@ -225,4 +233,14 @@ extension SettingViewController: UIDocumentPickerDelegate {
             }
         }
     }
+}
+
+//MARK: - MFMailCompose
+
+extension SettingViewController: UINavigationControllerDelegate, MFMailComposeViewControllerDelegate {
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
+    }
+    
 }
