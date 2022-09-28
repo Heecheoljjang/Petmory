@@ -124,7 +124,7 @@ final class RegisterPetView: BaseView {
     let nameLabel: UILabel = {
         let label = UILabel()
         label.text = "이름 :"
-        label.font = UIFont(name: CustomFont.medium, size: 20)
+        label.font = UIFont(name: CustomFont.medium, size: 18)
         
         return label
     }()
@@ -138,8 +138,9 @@ final class RegisterPetView: BaseView {
     
     let nameTextField: UITextField = {
         let textField = UITextField()
-        textField.font = UIFont(name: CustomFont.medium, size: 20)
+        textField.font = UIFont(name: CustomFont.medium, size: 18)
         textField.textAlignment = .center
+        textField.placeholder = "이름을 입력해주세요."
 
         return textField
     }()
@@ -147,17 +148,17 @@ final class RegisterPetView: BaseView {
     let birthdayLabel: UILabel = {
         let label = UILabel()
         label.text = "생일 :"
-        label.font = UIFont(name: CustomFont.medium, size: 20)
+        label.font = UIFont(name: CustomFont.medium, size: 18)
 
         return label
     }()
     
     let birthdayTextField: UITextField = {
         let textField = UITextField()
-        textField.font = UIFont(name: CustomFont.medium, size: 20)
+        textField.font = UIFont(name: CustomFont.medium, size: 18)
         textField.textAlignment = .center
         textField.tintColor = .clear
-        
+        textField.placeholder = "생일을 선택해주세요."
         return textField
     }()
     

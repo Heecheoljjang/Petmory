@@ -177,7 +177,7 @@ final class RegisterPetViewController: BaseViewController {
         
         let picker = PHPickerViewController(configuration: configuartion)
         picker.delegate = self
-        transition(picker, transitionStyle: .present)
+        transition(picker, transitionStyle: .presentModally)
     }
     
     private func requestAuthorization() {
@@ -221,18 +221,18 @@ final class RegisterPetViewController: BaseViewController {
         
         //MARK: alert띄우기
         if gender == "" && mainView.nameTextField.text! == "" {
-            print("이름과 성별은 필수입니다!!")
+            noHandlerAlert(title: "이름을 입력해주세요.", message: "")
         } else if gender == "" && mainView.nameTextField.text! != "" {
-            print("성별을 선택해주세요")
+            noHandlerAlert(title: "성별을 입력해주세요.", message: "")
         } else if gender != "" && mainView.nameTextField.text! == "" {
-            print("이름을 입력해주세요.")
+            noHandlerAlert(title: "이름을 입력해주세요.", message: "")
         } else {
             if mainView.birthdayTextField.text! == "" {
                 //MARK: alert띄워서 확인 누르면 오늘 날짜로 텍스트필드 채우기
-                print("생일을 작성하지 않으시면 오늘 날짜로 작성됩니다!")
+                noHandlerAlert(title: "생일을 입력해주세요.", message: "")
             } else {
                 if profileImage == nil {
-                    print("사진을 등록해주세요")
+                    noHandlerAlert(title: "사진을 등록해주세요.", message: "")
                 } else {
                     let pet = UserPet(profileImage: profileImage, petName: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text, registerDate: currentDate)
                     repository.addPet(item: pet)
@@ -240,7 +240,6 @@ final class RegisterPetViewController: BaseViewController {
                     transition(self, transitionStyle: .dismiss)
                 }
             }
-            
         }
     }
     //MARK: 성별 버튼
@@ -290,10 +289,10 @@ final class RegisterPetViewController: BaseViewController {
         if currentStatus == CurrentStatus.edit {
             //MARK: alert띄우기
             if mainView.nameTextField.text! == "" {
-                noHandlerAlert(title: "", message: "이름을 작성해주세요.")
+                noHandlerAlert(title: "이름을 입력해주세요.", message: "")
             } else {
                 if profileImage == nil {
-                    noHandlerAlert(title: "", message: "사진을 등록해주세요.")
+                    noHandlerAlert(title: "사진을 등록해주세요.", message: "")
                 } else {
                     if let task = task {
                         repository.updatePet(item: task, profileImage: profileImage, name: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text)
@@ -306,19 +305,21 @@ final class RegisterPetViewController: BaseViewController {
         } else {
             //MARK: alert띄우기
             if gender == "" && mainView.nameTextField.text! == "" {
-                noHandlerAlert(title: "", message: "이름을 작성해주세요.")
+                noHandlerAlert(title: "이름을 입력해주세요.", message: "")
             } else if gender == "" && mainView.nameTextField.text! != "" {
-                noHandlerAlert(title: "", message: "성별을 선택해주세요.")
+                noHandlerAlert(title: "성별을 선택해주세요.", message: "")
             } else if gender != "" && mainView.nameTextField.text! == "" {
-                noHandlerAlert(title: "", message: "이름을 작성해주세요.")
+                noHandlerAlert(title: "이름을 입력해주세요.", message: "")
             } else {
                 if mainView.birthdayTextField.text! == "" {
                     //MARK: alert띄워서 확인 누르면 오늘 날짜로 텍스트필드 채우기
                     print("생일을 작성하지 않으시면 오늘 날짜로 작성됩니다!")
+                    noHandlerAlert(title: "생일을 입력해주세요.", message: "")
                     //handlerAlert(title: <#T##String#>, message: <#T##String?#>, handler: <#T##((UIAlertAction) -> Void)?##((UIAlertAction) -> Void)?##(UIAlertAction) -> Void#>)
                 } else {
                     if profileImage == nil {
                         print("사진을 등록해주세요")
+                        noHandlerAlert(title: "사진을 등록해주세요.", message: "")
                     } else {
                         let pet = UserPet(profileImage: profileImage, petName: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text, registerDate: currentDate)
                         repository.addPet(item: pet)
