@@ -67,8 +67,11 @@ final class MonthMemoryViewController: BaseViewController {
         //petList = repository.fetchPet()
         
         if tasks.count == 0 {
-            //만약 디테일 화면에서 삭제하면 바로 pop되도록
-            transition(self, transitionStyle: .pop)
+            mainView.tableView.isHidden = true
+            mainView.noMemoryLabel.isHidden = false
+        } else {
+            mainView.tableView.isHidden = false
+            mainView.noMemoryLabel.isHidden = true
         }
     }
     
