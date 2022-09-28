@@ -169,13 +169,18 @@ final class AddCalendarViewController: BaseViewController {
             if mainView.titleTextField.text != "" {
                 if mainView.memoTextView.textColor == .placeholderColor {
                     repository.addCalendar(item: UserCalendar(title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple), color: currentColor, comment: "", registerDate: currentDate))
-                    sendNotification(body: mainView.titleTextField.text!, date: selectedDate!, identifier: "\(currentDate)")
+                    if selectedDate! > Date() {
+                        sendNotification(body: mainView.titleTextField.text!, date: selectedDate!, identifier: "\(currentDate)")
+                    }
                 } else {
                     repository.addCalendar(item: UserCalendar(title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple), color: currentColor, comment: mainView.memoTextView.text, registerDate: currentDate))
-                    sendNotification(body: mainView.titleTextField.text!, date: selectedDate!, identifier: "\(currentDate)")
+                    if selectedDate! > Date() {
+                        sendNotification(body: mainView.titleTextField.text!, date: selectedDate!, identifier: "\(currentDate)")
+                    }
                 }
             } else {
                 //제목 작성하라고 alert
+                noHandlerAlert(title: "제목을 입력해주세요.", message: "")
             }
         } else {
             //데이터 수정
@@ -183,26 +188,26 @@ final class AddCalendarViewController: BaseViewController {
                 if task.title != mainView.titleTextField.text! || task.color != currentColor || task.date != selectedDate! || task.comment != mainView.memoTextView.text {
                     if mainView.titleTextField.text! == "" {
                         //제목 입력하라고 alert
-                        
-                        
-                        
+                        noHandlerAlert(title: "제목을 입력해주세요.", message: "")
                     } else {
                         if mainView.memoTextView.textColor == .placeholderColor {
                             repository.updateCalendar(item: task, title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple),color: currentColor, comment: "")
                             //알림 지우고 다시 등록
                             notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(task.registerDate)"])
-                            sendNotification(body: mainView.titleTextField.text!, date: selectedDate!, identifier: "\(task.registerDate)")
+                            if selectedDate! > Date() {
+                                sendNotification(body: mainView.titleTextField.text!, date: selectedDate!, identifier: "\(currentDate)")
+                            }
                         } else {
                             repository.updateCalendar(item: task, title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple),color: currentColor, comment: mainView.memoTextView.text)
                             //알림 지우고 다시 등록
                             notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(task.registerDate)"])
-                            sendNotification(body: mainView.titleTextField.text!, date: selectedDate!, identifier: "\(task.registerDate)")
+                            if selectedDate! > Date() {
+                                sendNotification(body: mainView.titleTextField.text!, date: selectedDate!, identifier: "\(currentDate)")
+                            }
                         }
-                        
                     }
                 }
             }
-                
         }
         NotificationCenter.default.post(name: NSNotification.Name.doneButton, object: nil)
         transition(self, transitionStyle: .dismiss)
@@ -241,10 +246,13 @@ final class AddCalendarViewController: BaseViewController {
         print(selectedDate)
     }
     @objc private func deleteCalendar() {
-        handlerAlert(title: "일정을 삭제하시겠습니까?", message: "") { _ in
+        handlerAlert(title: "일정을 삭제하시겠습니까?", message: "") { [weak self] _ in
+            
+            guard let self = self else { return }
+            
             if let task = self.task {
                 self.repository.deleteCalendar(item: task)
-                
+                self.notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(task.registerDate)"])
                 NotificationCenter.default.post(name: NSNotification.Name.deleteButton, object: nil)
                 self.transition(self, transitionStyle: .dismiss)
             }
