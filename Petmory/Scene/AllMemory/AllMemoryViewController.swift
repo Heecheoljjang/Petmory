@@ -17,7 +17,7 @@ final class AllMemoryViewController: BaseViewController {
     
     var tasks: Results<UserMemory>! {
         didSet {
-            dateList = Set(tasks.map { $0.memoryDateString }).sorted(by: >)
+            dateList = Set(tasks.map { $0.memoryDate.dateToString(type: .yearMonth) }).sorted(by: >)
             mainView.tableView.reloadData()
         }
     }
@@ -63,8 +63,8 @@ final class AllMemoryViewController: BaseViewController {
             mainView.noMemoryLabel.isHidden = true
         }
         
-        dateList = Set(tasks.map { $0.memoryDateString }).sorted(by: >)
-        
+        dateList = Set(tasks.map { $0.memoryDate.dateToString(type: .yearMonth) }).sorted(by: >)
+        print(dateList)
     }
     
     override func setUpController() {
@@ -131,13 +131,14 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tasks.filter("memoryDateString == '\(dateList[section])'").count
+        //return tasks.filter("memoryDateString == '\(dateList[section])'").count
+        return repository.fetchDateFiltered(dateString: dateList[section]).count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AllMemoryTableViewCell.identifier, for: indexPath) as? AllMemoryTableViewCell else { return UITableViewCell() }
 
-        let tempTask = tasks.filter("memoryDateString == '\(dateList[indexPath.section])'")[indexPath.row]
+        let tempTask = tasks.filter("memoryDateString CONTAINS[c] '\(dateList[indexPath.section])'").sorted(byKeyPath: "memoryDate", ascending: false)[indexPath.row]
         
         cell.memoryTitle.text = tempTask.memoryTitle
         cell.memoryContentLabel.text = tempTask.memoryContent == "" ? "텍스트 없음" : tempTask.memoryContent
@@ -153,9 +154,14 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let tempTask = tasks.filter("memoryDateString CONTAINS[c] '\(dateList[indexPath.section])'").sorted(byKeyPath: "memoryDate", ascending: false)[indexPath.row]
+        
         let memoryDetailViewController = MemoryDetailViewController()
-        memoryDetailViewController.objectId = tasks.filter("memoryDateString == '\(dateList[indexPath.section])'")[indexPath.row].objectId
-        memoryDetailViewController.imageList = tasks.filter("memoryDateString == '\(dateList[indexPath.section])'")[indexPath.row].imageData
+//        memoryDetailViewController.objectId = tasks.filter("memoryDateString == '\(dateList[indexPath.section])'")[indexPath.row].objectId
+//        memoryDetailViewController.imageList = tasks.filter("memoryDateString == '\(dateList[indexPath.section])'")[indexPath.row].imageData
+        memoryDetailViewController.objectId = tempTask.objectId
+        memoryDetailViewController.imageList = tempTask.imageData
         transition(memoryDetailViewController, transitionStyle: .push)
     }
     
