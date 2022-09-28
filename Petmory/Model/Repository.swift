@@ -18,6 +18,8 @@ protocol UserMemoryRepositoryType {
     
     func fetchFiltered(name: String) -> Results<UserMemory>
     
+    func fetchDateFiltered(dateString: String) -> Results<UserMemory>
+    
     func fetchSearched(keyword: String) -> Results<UserMemory>
     
     func addMemory(item: UserMemory)
@@ -86,7 +88,7 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType, Use
     
     //날짜별 데이터
     func fetchDateFiltered(dateString: String) -> Results<UserMemory> {
-        return localRealm.objects(UserMemory.self).filter("memoryDate == '\(dateString)'")
+        return localRealm.objects(UserMemory.self).filter("memoryDateString CONTAINS[c] '\(dateString)'").sorted(byKeyPath: "memoryDate", ascending: false)
     }
     
     //검색화면
