@@ -172,11 +172,15 @@ final class AddCalendarViewController: BaseViewController {
                     if selectedDate! > Date() {
                         sendNotification(body: mainView.titleTextField.text!, date: selectedDate!, identifier: "\(currentDate)")
                     }
+                    NotificationCenter.default.post(name: NSNotification.Name.doneButton, object: nil)
+                    transition(self, transitionStyle: .dismiss)
                 } else {
                     repository.addCalendar(item: UserCalendar(title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple), color: currentColor, comment: mainView.memoTextView.text, registerDate: currentDate))
                     if selectedDate! > Date() {
                         sendNotification(body: mainView.titleTextField.text!, date: selectedDate!, identifier: "\(currentDate)")
                     }
+                    NotificationCenter.default.post(name: NSNotification.Name.doneButton, object: nil)
+                    transition(self, transitionStyle: .dismiss)
                 }
             } else {
                 //제목 작성하라고 alert
@@ -197,6 +201,8 @@ final class AddCalendarViewController: BaseViewController {
                             if selectedDate! > Date() {
                                 sendNotification(body: mainView.titleTextField.text!, date: selectedDate!, identifier: "\(currentDate)")
                             }
+                            NotificationCenter.default.post(name: NSNotification.Name.doneButton, object: nil)
+                            transition(self, transitionStyle: .dismiss)
                         } else {
                             repository.updateCalendar(item: task, title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple),color: currentColor, comment: mainView.memoTextView.text)
                             //알림 지우고 다시 등록
@@ -204,13 +210,13 @@ final class AddCalendarViewController: BaseViewController {
                             if selectedDate! > Date() {
                                 sendNotification(body: mainView.titleTextField.text!, date: selectedDate!, identifier: "\(currentDate)")
                             }
+                            NotificationCenter.default.post(name: NSNotification.Name.doneButton, object: nil)
+                            transition(self, transitionStyle: .dismiss)
                         }
                     }
                 }
             }
         }
-        NotificationCenter.default.post(name: NSNotification.Name.doneButton, object: nil)
-        transition(self, transitionStyle: .dismiss)
     }
     @objc private func changeColorView(_ sender: UIButton) {
         switch sender.tag {
@@ -251,8 +257,8 @@ final class AddCalendarViewController: BaseViewController {
             guard let self = self else { return }
             
             if let task = self.task {
-                self.repository.deleteCalendar(item: task)
                 self.notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(task.registerDate)"])
+                self.repository.deleteCalendar(item: task)
                 NotificationCenter.default.post(name: NSNotification.Name.deleteButton, object: nil)
                 self.transition(self, transitionStyle: .dismiss)
             }
