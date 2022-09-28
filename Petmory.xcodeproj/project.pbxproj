@@ -15,6 +15,10 @@
 		97332AA128D95D220015ECE8 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97332AA028D95D220015ECE8 /* SettingView.swift */; };
 		97332AA328D95D2D0015ECE8 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97332AA228D95D2D0015ECE8 /* SettingViewController.swift */; };
 		9736007728D8463300FD9285 /* MyPetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9736007628D8463300FD9285 /* MyPetTableViewCell.swift */; };
+		9740D04A28E45C020018680C /* MonthMemoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9740D04928E45C020018680C /* MonthMemoryView.swift */; };
+		9740D04C28E45C0D0018680C /* MonthMemoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9740D04B28E45C0D0018680C /* MonthMemoryViewController.swift */; };
+		9740D04E28E45C1B0018680C /* MonthMemoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9740D04D28E45C1B0018680C /* MonthMemoryTableViewCell.swift */; };
+		9740D05028E45C380018680C /* MonthMemoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9740D04F28E45C380018680C /* MonthMemoryCollectionViewCell.swift */; };
 		974107A628D0459300617F8F /* CropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = 974107A528D0459300617F8F /* CropViewController */; };
 		9767A58B28D8DBF400304F6C /* AddPetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767A58A28D8DBF400304F6C /* AddPetTableViewCell.swift */; };
 		976FF40028E2E57D007185BE /* BackupRestoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976FF3FF28E2E57D007185BE /* BackupRestoreView.swift */; };
@@ -80,6 +84,8 @@
 		97CF58CF28CBA31F0062FEB9 /* UICollectionViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CF58CE28CBA31F0062FEB9 /* UICollectionViewCell+Extension.swift */; };
 		97D19CD828D1FB560074226C /* AddCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D19CD728D1FB560074226C /* AddCalendarView.swift */; };
 		97D19CDB28D1FB6D0074226C /* AddCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D19CDA28D1FB6D0074226C /* AddCalendarViewController.swift */; };
+		97D8AF7428E409CA00F7C233 /* MainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D8AF7328E409CA00F7C233 /* MainCollectionViewCell.swift */; };
+		97D8AF7628E40BB900F7C233 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D8AF7528E40BB900F7C233 /* BaseCollectionViewCell.swift */; };
 		97F5DC7A28E3356A004A53B3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9799F84D28C7741D00E1C12C /* Assets.xcassets */; };
 		97F5DC7D28E34FE6004A53B3 /* JGProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 97F5DC7C28E34FE6004A53B3 /* JGProgressHUD */; };
 /* End PBXBuildFile section */
@@ -91,6 +97,10 @@
 		97332AA028D95D220015ECE8 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		97332AA228D95D2D0015ECE8 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		9736007628D8463300FD9285 /* MyPetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPetTableViewCell.swift; sourceTree = "<group>"; };
+		9740D04928E45C020018680C /* MonthMemoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthMemoryView.swift; sourceTree = "<group>"; };
+		9740D04B28E45C0D0018680C /* MonthMemoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthMemoryViewController.swift; sourceTree = "<group>"; };
+		9740D04D28E45C1B0018680C /* MonthMemoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthMemoryTableViewCell.swift; sourceTree = "<group>"; };
+		9740D04F28E45C380018680C /* MonthMemoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthMemoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		9767A58A28D8DBF400304F6C /* AddPetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetTableViewCell.swift; sourceTree = "<group>"; };
 		976FF3FF28E2E57D007185BE /* BackupRestoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRestoreView.swift; sourceTree = "<group>"; };
 		976FF40128E2E58B007185BE /* BackupRestoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRestoreViewController.swift; sourceTree = "<group>"; };
@@ -154,6 +164,8 @@
 		97CF58CE28CBA31F0062FEB9 /* UICollectionViewCell+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+Extension.swift"; sourceTree = "<group>"; };
 		97D19CD728D1FB560074226C /* AddCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCalendarView.swift; sourceTree = "<group>"; };
 		97D19CDA28D1FB6D0074226C /* AddCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCalendarViewController.swift; sourceTree = "<group>"; };
+		97D8AF7328E409CA00F7C233 /* MainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewCell.swift; sourceTree = "<group>"; };
+		97D8AF7528E40BB900F7C233 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,6 +196,25 @@
 				9722A2C628DBA422008C3DB7 /* SettingTableViewCell.swift */,
 			);
 			path = Setting;
+			sourceTree = "<group>";
+		};
+		9740D04828E45BE90018680C /* MonthMemory */ = {
+			isa = PBXGroup;
+			children = (
+				9740D05128E45C7F0018680C /* Cell */,
+				9740D04928E45C020018680C /* MonthMemoryView.swift */,
+				9740D04B28E45C0D0018680C /* MonthMemoryViewController.swift */,
+			);
+			path = MonthMemory;
+			sourceTree = "<group>";
+		};
+		9740D05128E45C7F0018680C /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				9740D04D28E45C1B0018680C /* MonthMemoryTableViewCell.swift */,
+				9740D04F28E45C380018680C /* MonthMemoryCollectionViewCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		9767A58928D8DBCB00304F6C /* Cell */ = {
@@ -342,6 +373,7 @@
 			children = (
 				97CF588828C8CB8F0062FEB9 /* TabBarController.swift */,
 				97CF58AB28CAFB650062FEB9 /* AllMemory */,
+				9740D04828E45BE90018680C /* MonthMemory */,
 				97CF588A28C8CBBF0062FEB9 /* Main */,
 				97CF588B28C8CBD50062FEB9 /* Calendar */,
 				97CF588C28C8CBDE0062FEB9 /* MyPet */,
@@ -371,6 +403,7 @@
 				97CF58B528CB4E830062FEB9 /* BaseTableViewCell.swift */,
 				97CF58CC28CBA2C70062FEB9 /* BaseImageCollectionViewCell.swift */,
 				97C7CBCF28CE3695007743FF /* BasePetCollectionViewCell.swift */,
+				97D8AF7528E40BB900F7C233 /* BaseCollectionViewCell.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -404,12 +437,11 @@
 		97CF588A28C8CBBF0062FEB9 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				97D8AF7228E409B700F7C233 /* Main */,
 				978E3E8028E0B968007F59D6 /* Photo */,
 				9781F09F28D15FBD008E6DBB /* MemoryDetail */,
 				9786305228CC3B4D0042C2E2 /* Writing */,
 				9786304628CC153E0042C2E2 /* TodayList */,
-				97CF58A228CAC6D70062FEB9 /* MainView.swift */,
-				97CF58A428CAC6E00062FEB9 /* MainViewController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -496,6 +528,16 @@
 				97D19CDA28D1FB6D0074226C /* AddCalendarViewController.swift */,
 			);
 			path = AddCalendar;
+			sourceTree = "<group>";
+		};
+		97D8AF7228E409B700F7C233 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				97CF58A228CAC6D70062FEB9 /* MainView.swift */,
+				97CF58A428CAC6E00062FEB9 /* MainViewController.swift */,
+				97D8AF7328E409CA00F7C233 /* MainCollectionViewCell.swift */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -600,6 +642,7 @@
 				9786305628CC3B5E0042C2E2 /* WritingViewController.swift in Sources */,
 				9781F0AF28D1A0C5008E6DBB /* CalendarTableViewCell.swift in Sources */,
 				97CF589A28CA33800062FEB9 /* UIViewController+Extension.swift in Sources */,
+				9740D04C28E45C0D0018680C /* MonthMemoryViewController.swift in Sources */,
 				9786305F28CC5A980042C2E2 /* MyPetViewController.swift in Sources */,
 				97CF58CB28CBA03D0062FEB9 /* AllMemoryCollectionViewCell.swift in Sources */,
 				97CF58A328CAC6D70062FEB9 /* MainView.swift in Sources */,
@@ -611,13 +654,16 @@
 				97CF58CF28CBA31F0062FEB9 /* UICollectionViewCell+Extension.swift in Sources */,
 				97CF589428C9058E0062FEB9 /* Repository.swift in Sources */,
 				97CF58A728CAE2A60062FEB9 /* UIColor+Extension.swift in Sources */,
+				97D8AF7628E40BB900F7C233 /* BaseCollectionViewCell.swift in Sources */,
 				9781F0A128D16016008E6DBB /* MemoryDetailView.swift in Sources */,
 				97332AA128D95D220015ECE8 /* SettingView.swift in Sources */,
 				9786305B28CC5A2F0042C2E2 /* CalendarViewController.swift in Sources */,
 				97CF588928C8CB8F0062FEB9 /* TabBarController.swift in Sources */,
+				9740D04E28E45C1B0018680C /* MonthMemoryTableViewCell.swift in Sources */,
 				97CF58CD28CBA2C70062FEB9 /* BaseImageCollectionViewCell.swift in Sources */,
 				977CB69528D4D051001342E9 /* NSNotification+Extension.swift in Sources */,
 				97CF589228C9057C0062FEB9 /* UserMemory.swift in Sources */,
+				97D8AF7428E409CA00F7C233 /* MainCollectionViewCell.swift in Sources */,
 				976FF40028E2E57D007185BE /* BackupRestoreView.swift in Sources */,
 				97CF58BD28CB5ECA0062FEB9 /* SearchViewController.swift in Sources */,
 				97C7CBD028CE3695007743FF /* BasePetCollectionViewCell.swift in Sources */,
@@ -626,6 +672,7 @@
 				9722A2C728DBA422008C3DB7 /* SettingTableViewCell.swift in Sources */,
 				97CF588E28C8CC020062FEB9 /* BaseViewController.swift in Sources */,
 				97C7CBD228CE4560007743FF /* WritingImageCollectionViewCell.swift in Sources */,
+				9740D05028E45C380018680C /* MonthMemoryCollectionViewCell.swift in Sources */,
 				978E3E8728E0C120007F59D6 /* PhotoCollectionViewCell.swift in Sources */,
 				977CB69028D45418001342E9 /* WritingContentViewController.swift in Sources */,
 				97D19CD828D1FB560074226C /* AddCalendarView.swift in Sources */,
@@ -649,6 +696,7 @@
 				9781F0B128D1E35C008E6DBB /* UserPet.swift in Sources */,
 				977CB69328D47222001342E9 /* enum.swift in Sources */,
 				9799F84728C7741C00E1C12C /* SceneDelegate.swift in Sources */,
+				9740D04A28E45C020018680C /* MonthMemoryView.swift in Sources */,
 				9786304D28CC1B3C0042C2E2 /* TodayListTableViewCell.swift in Sources */,
 				9786304828CC15570042C2E2 /* TodayListView.swift in Sources */,
 				97CF58A528CAC6E00062FEB9 /* MainViewController.swift in Sources */,
