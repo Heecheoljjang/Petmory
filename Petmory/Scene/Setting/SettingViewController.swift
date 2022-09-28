@@ -129,7 +129,7 @@ extension SettingViewController: UIDocumentPickerDelegate {
             return
         }
         
-        guard let documentDirectory = getDocumentDirectoryPath() else { return }
+        guard let documentDirectory = documentDirectoryPath() else { return }
         
         let sandboxURL = documentDirectory.appendingPathComponent(selectedFile.lastPathComponent)
         

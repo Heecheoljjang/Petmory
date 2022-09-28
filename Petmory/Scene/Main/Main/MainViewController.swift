@@ -107,11 +107,7 @@ final class MainViewController: BaseViewController {
         navigationItem.titleView = titleViewTextField
         
     }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        
-    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         

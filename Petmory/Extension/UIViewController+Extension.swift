@@ -14,98 +14,33 @@ import RealmSwift
 extension UIViewController {
     
     //도큐먼트 폴더 url
-    func getDocumentDirectoryPath() -> URL? {
+    func documentDirectoryPath() -> URL? {
         guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
         
         return documentDirectory
     }
-    
-    //메모리 이미지 저장할 폴더 생성
-    func createMemoryImageDirectory() {
-        guard let documentDirectory = getDocumentDirectoryPath() else { return }
-        
-        let imageDirectory = documentDirectory.appendingPathComponent("images")
-        
-        if !FileManager.default.fileExists(atPath: imageDirectory.path) {
-            do {
-                try FileManager.default.createDirectory(atPath: imageDirectory.path, withIntermediateDirectories: true)
-            } catch {
-                print("이미지 폴더 생성 오류")
-            }
-        }
-    }
-    
-    //이미지 저장(원본, 압축)
-    func saveImageToDocument(fileName: String, image: UIImage) {
-        guard let documentDirectory = getDocumentDirectoryPath() else { return }
-        
-        let imageDirectory = documentDirectory.appendingPathComponent("images")
-        let originalImageURL = imageDirectory.appendingPathComponent("\(fileName)") //원본
-        
-        guard let originalImageData = image.jpegData(compressionQuality: 1) else { return }
-        
-        do {
-            try originalImageData.write(to: originalImageURL)
-        } catch {
-            print("이미지 저장 오류")
-        }
-    }
-    
-    //이미지 불러오기
-    func loadImageFromDocument(fileName: String) -> UIImage? {
-        guard let documentDirectory = getDocumentDirectoryPath() else { return nil }
-        
-        let imageDirectory = documentDirectory.appendingPathComponent("images")
-        
-        let imageURL = imageDirectory.appendingPathComponent("\(fileName)")
-        if FileManager.default.fileExists(atPath: imageURL.path) {
-            return UIImage(contentsOfFile: imageURL.path)
-        } else {
-            //디폴트 이미지 설정
-            return nil
-        }
-    }
-    
-    //이미지 삭제
-    func deleteImageFromDocument(fileName: String) {
-        guard let documentDirectory = getDocumentDirectoryPath() else { return }
-        
-        let imageDirectory = documentDirectory.appendingPathComponent("images")
-        
-        let imageURL = imageDirectory.appendingPathComponent("\(fileName)")
-        print("삭제할 url: \(imageURL)")
-        if FileManager.default.fileExists(atPath: imageURL.path) {
-            do {
-                try FileManager.default.removeItem(at: imageURL)
-                print("삭제 성공")
-            } catch {
-                print("파일 삭제 실패")
-            }
-        } else {
-            print("지울 파일이 없습니다.")
-        }
-    }
-    
-    //백업 폴더 만들기
-    func createBackupDirectory() {
-        guard let documentDirectory = getDocumentDirectoryPath() else { return }
-        
-        let backupDirectory = documentDirectory.appendingPathComponent("backup")
-        
-        if !FileManager.default.fileExists(atPath: backupDirectory.path) {
-            do {
-                try FileManager.default.createDirectory(atPath: backupDirectory.path, withIntermediateDirectories: true)
-            } catch {
-                print("백업 폴더 생성 오류")
-            }
-        }
-        
-    }
-    
+
     //MARK: - 백업/복구
     
+    func deleteFileFromDocument(fileName: String) {
+        guard let documentDirectory = documentDirectoryPath() else { return }
+                
+        let fileURL = documentDirectory.appendingPathComponent("\(fileName)")
+        print("삭제할 url: \(fileURL)")
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+            do {
+                try FileManager.default.removeItem(at: fileURL)
+                noHandlerAlert(title: "삭제되었습니다.", message: "")
+            } catch {
+                noHandlerAlert(title: "삭제 중 오류가 발생하였습니다.", message: "")
+            }
+        } else {
+            noHandlerAlert(title: "삭제하실 파일이 존재하지 않습니다.", message: "")
+        }
+    }
+    
     func saveDataToDocument(data: Data, fileName: String) throws {
-        guard let documentDirectory = getDocumentDirectoryPath() else { throw ErrorType.documentPathError }
+        guard let documentDirectory = documentDirectoryPath() else { throw ErrorType.documentPathError }
         
         let dataPath = documentDirectory.appendingPathComponent(fileName + ".json")
         print(dataPath)
@@ -224,7 +159,7 @@ extension UIViewController {
         var urlPath: [URL] = []
         let fileName = "Petmory_\(Date().dateToString(type: .forBackupFile))"
         
-        guard let documentDirectory = getDocumentDirectoryPath() else { throw ErrorType.documentPathError }
+        guard let documentDirectory = documentDirectoryPath() else { throw ErrorType.documentPathError }
         
         let memoryURL = documentDirectory.appendingPathComponent(BackupFileName.memory + ".json")
         let calendarURL = documentDirectory.appendingPathComponent(BackupFileName.calendar + ".json")
@@ -246,7 +181,7 @@ extension UIViewController {
     }
     
     func unZipBackupFile(fileURL: URL) throws {
-        guard let documentDirectory = getDocumentDirectoryPath() else { throw ErrorType.documentPathError }
+        guard let documentDirectory = documentDirectoryPath() else { throw ErrorType.documentPathError }
         
         do {
             try Zip.unzipFile(fileURL, destination: documentDirectory, overwrite: true, password: nil, progress: nil, fileOutputHandler: nil)
@@ -257,7 +192,7 @@ extension UIViewController {
     
     //복구
     func fetchJsonData(fileName: String) throws -> Data {
-        guard let documentDirectory = getDocumentDirectoryPath() else { throw ErrorType.documentPathError }
+        guard let documentDirectory = documentDirectoryPath() else { throw ErrorType.documentPathError }
         
         let filePath = documentDirectory.appendingPathComponent(fileName + ".json")
         
@@ -276,7 +211,7 @@ extension UIViewController {
     }
     
     func fetchZipFile() -> [String] {
-        guard let documentDirectory = getDocumentDirectoryPath() else { return [] }
+        guard let documentDirectory = documentDirectoryPath() else { return [] }
         
         do {
             let files = try FileManager.default.contentsOfDirectory(at: documentDirectory, includingPropertiesForKeys: nil)

@@ -124,9 +124,9 @@ extension BackupRestoreViewController: UITableViewDelegate, UITableViewDataSourc
         return 56
     }
     
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        <#code#>
-//    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+    }
 }
 
 extension BackupRestoreViewController {
@@ -172,7 +172,7 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                     return
                 }
                 
-                guard let documentDirectory = self.getDocumentDirectoryPath() else { return }
+                guard let documentDirectory = self.documentDirectoryPath() else { return }
                 
                 let sandboxURL = documentDirectory.appendingPathComponent(selectedFile.lastPathComponent)
                 
@@ -272,4 +272,22 @@ extension BackupRestoreViewController: UINavigationControllerDelegate, MFMailCom
 }
 
 //MARK: - ActionSheet
-
+extension BackupRestoreViewController {
+    
+    private func showActionSheet() {
+//        let alert = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
+//        
+//        let restore = UIAlertAction(title: "복구", style: .default) { _ in
+//            self.handlerAlert(title: "복구", message: "선택하신 파일로 복구를 진행하시겠습니까?", handler: <#T##((UIAlertAction) -> Void)?##((UIAlertAction) -> Void)?##(UIAlertAction) -> Void#>)
+//        }
+//        let delete = UIAlertAction(title: "삭제", style: .destructive) { _ in
+//            self.handlerAlert(title: "삭제", message: "선택하신 파일을 삭제하시겠습니까?", handler: <#T##((UIAlertAction) -> Void)?##((UIAlertAction) -> Void)?##(UIAlertAction) -> Void#>)
+//        }
+//        let cancel = UIAlertAction(title: "", style: .cancel)
+//        
+//        alert.addAction(restore)
+//        alert.addAction(delete)
+//        alert.addAction(cancel)
+    }
+    
+}
