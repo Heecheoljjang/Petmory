@@ -323,6 +323,7 @@
 		9799F84328C7741C00E1C12C /* Petmory */ = {
 			isa = PBXGroup;
 			children = (
+				9799F85B28C7BCE600E1C12C /* Resource */,
 				97CF589828CA336F0062FEB9 /* Extension */,
 				9799F85A28C7BBDE00E1C12C /* Utility */,
 				9799F85928C7BBCC00E1C12C /* Model */,
@@ -332,7 +333,6 @@
 				9799F84D28C7741D00E1C12C /* Assets.xcassets */,
 				9799F84F28C7741D00E1C12C /* LaunchScreen.storyboard */,
 				9799F85228C7741D00E1C12C /* Info.plist */,
-				9799F85B28C7BCE600E1C12C /* Resource */,
 			);
 			path = Petmory;
 			sourceTree = "<group>";
