@@ -164,8 +164,10 @@ final class CalendarViewController: BaseViewController {
         calendarTask = repository.fetchCalendar(date: selectDate)
     }
     @objc private func setToday(_ sender: UIButton) {
-        selectDate = Date()
+        selectDate = Date().nearestHour()
         mainView.calendar.select(selectDate, scrollToDate: true)
+        
+        calendarTask = repository.fetchCalendar(date: selectDate)
     }
 }
 
@@ -173,9 +175,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         selectDate = date.nearestHour()
-        print("calendarDate: \(selectDate)")
         
-//        memories = repository.fetchDateFiltered(dateString: selectDate)
         calendarTask = repository.fetchCalendar(date: date)
         
         if calendarTask.count == 0 {
