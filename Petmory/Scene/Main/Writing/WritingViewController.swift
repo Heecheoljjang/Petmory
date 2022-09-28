@@ -331,8 +331,8 @@ extension WritingViewController: PHPickerViewControllerDelegate {
                 guard let selectedImage = image as? UIImage else { return }
                 let cropViewController = CropViewController(image: selectedImage)
                 cropViewController.delegate = self
-                cropViewController.doneButtonColor = .diaryColor
-                cropViewController.cancelButtonColor = .diaryColor
+                cropViewController.doneButtonColor = .stringColor
+                cropViewController.cancelButtonColor = .stringColor
                 cropViewController.doneButtonTitle = "완료"
                 cropViewController.cancelButtonTitle = "취소"
                 self.transition(cropViewController, transitionStyle: .present)

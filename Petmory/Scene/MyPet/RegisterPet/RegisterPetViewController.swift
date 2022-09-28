@@ -273,8 +273,10 @@ final class RegisterPetViewController: BaseViewController {
     }
     @objc private func deletePet() {
         //지울건지 alert띄우고
-        handlerAlert(title: "삭제하시겠습니까?", message: "") { _ in
+        handlerAlert(title: "삭제하시겠습니까?", message: "") { [weak self] _ in
+            guard let self = self else { return }
             if let task = self.task {
+                self.notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(task.registerDate)"])
                 self.repository.deletePet(item: task)
             }
             self.transition(self, transitionStyle: .dismiss)
@@ -352,8 +354,8 @@ extension RegisterPetViewController: PHPickerViewControllerDelegate {
                 guard let selectedImage = image as? UIImage else { return }
                 let cropViewController = CropViewController(croppingStyle: .circular, image: selectedImage)
                 cropViewController.delegate = self
-                cropViewController.doneButtonColor = .diaryColor
-                cropViewController.cancelButtonColor = .diaryColor
+                cropViewController.doneButtonColor = .stringColor
+                cropViewController.cancelButtonColor = .stringColor
                 cropViewController.doneButtonTitle = "완료"
                 cropViewController.cancelButtonTitle = "취소"
                 self.transition(cropViewController, transitionStyle: .present)
