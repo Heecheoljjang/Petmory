@@ -43,6 +43,8 @@ final class CalendarViewController: BaseViewController {
         }
     }
     
+    var tempDate = Date()
+    
     let repository = UserRepository()
     
     //헤더뷰
@@ -64,7 +66,16 @@ final class CalendarViewController: BaseViewController {
         datePicker.preferredDatePickerStyle = .wheels
 
         datePicker.locale = Locale(identifier: "ko-KR")
+        let currentDate = Date()
+        var dateComponents = DateComponents()
+        let calendar = Calendar.init(identifier: .gregorian)
+        dateComponents.year = -50
+        let minDate = calendar.date(byAdding: dateComponents, to: currentDate)
+        dateComponents.year = 30
+        let maxDate = calendar.date(byAdding: dateComponents, to: currentDate)
         
+        datePicker.minimumDate = minDate
+        datePicker.maximumDate = maxDate
         return datePicker
     }()
     
@@ -125,7 +136,14 @@ final class CalendarViewController: BaseViewController {
     private func setDatePickerSheet() {
 
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let select = UIAlertAction(title: "선택", style: .cancel) { _ in
+        let select = UIAlertAction(title: "선택", style: .default) { [weak self] _ in
+            
+            guard let self = self else { return }
+            
+            self.selectDate = self.tempDate
+            self.mainView.calendar.select(self.selectDate, scrollToDate: true)
+            self.calendarTask = self.repository.fetchCalendar(date: self.selectDate)
+            
             self.mainView.endEditing(true)
         }
         let contentViewController = UIViewController()
@@ -159,9 +177,8 @@ final class CalendarViewController: BaseViewController {
     
     @objc private func dateChanged(_ sender: UIDatePicker) {
         print(sender.date)
-        selectDate = sender.date
-        mainView.calendar.select(selectDate, scrollToDate: true)
-        calendarTask = repository.fetchCalendar(date: selectDate)
+        tempDate = sender.date
+       
     }
     @objc private func setToday(_ sender: UIButton) {
         selectDate = Date().nearestHour()
