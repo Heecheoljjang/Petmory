@@ -111,4 +111,8 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UISe
         mainView.tableView.reloadData()
         
     }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.endEditing(true)
+    }
 }
