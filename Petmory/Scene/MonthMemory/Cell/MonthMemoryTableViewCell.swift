@@ -64,7 +64,7 @@ final class MonthMemoryTableViewCell: BaseTableViewCell {
         
         stackView.addArrangedSubview(thumbnailImageView)
         
-        [memoryContentLabel, memoryTitle, multiSign, dateLabel, stackView].forEach {
+        [memoryContentLabel, memoryTitle, dateLabel, stackView, multiSign].forEach {
             self.addSubview($0)
         }
         
