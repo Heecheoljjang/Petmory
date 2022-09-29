@@ -21,14 +21,14 @@ enum SettingList {
     static let backupRestore = "백업 및 복구"
     static let message = "문의하기"
     static let review = "리뷰 남기기"
-    static let shareApp = "앱 공유하기"
+    static let openLicense = "오픈소스 라이선스"
 }
 
 enum SettingListImage {
     static let backupImage = "cloud"
     static let message = "pencil"
     static let review = "star"
-    static let shareApp = "square.and.arrow.up"
+    static let openLicense = "doc"
 }
 
 enum ErrorType: Error {

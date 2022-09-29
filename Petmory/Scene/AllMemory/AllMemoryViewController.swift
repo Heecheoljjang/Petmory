@@ -141,8 +141,15 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
         let tempTask = tasks.filter("memoryDateString CONTAINS[c] '\(dateList[indexPath.section])'").sorted(byKeyPath: "memoryDate", ascending: false)[indexPath.row]
         
         cell.memoryTitle.text = tempTask.memoryTitle
-        cell.memoryContentLabel.text = tempTask.memoryContent == "" ? "텍스트 없음" : tempTask.memoryContent
-        cell.thumbnailImageView.image = tempTask.imageData.count == 0 ? nil : UIImage(data: tempTask.imageData.first!)
+        //cell.memoryContentLabel.text = tempTask.memoryContent == "" ? "텍스트 없음" : tempTask.memoryContent
+        cell.memoryContentLabel.text = tempTask.memoryContent
+        if tempTask.imageData.count == 0 {
+            cell.thumbnailImageView.isHidden = true
+        } else {
+            cell.thumbnailImageView.isHidden = false
+            cell.thumbnailImageView.image = UIImage(data: tempTask.imageData.first!)
+        }
+        cell.dateLabel.text = tempTask.memoryDate.dateToString(type: .monthDay)
         
         if tempTask.imageData.count > 1 {
             cell.multiSign.isHidden = false
