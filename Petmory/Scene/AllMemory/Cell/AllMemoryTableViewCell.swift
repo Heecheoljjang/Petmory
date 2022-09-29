@@ -97,7 +97,6 @@ final class AllMemoryTableViewCell: BaseTableViewCell {
         
         thumbnailImageView.snp.makeConstraints { make in
             
-            make.edges.equalToSuperview()
             make.width.equalTo(80)
         }
         

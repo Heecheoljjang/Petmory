@@ -151,6 +151,7 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.memoryTitle.text = tempTask.memoryTitle
         cell.memoryContentLabel.text = tempTask.memoryContent
+        
         if tempTask.imageData.count == 0 {
             cell.thumbnailImageView.isHidden = true
         } else {
