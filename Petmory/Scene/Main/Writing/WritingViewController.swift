@@ -234,7 +234,7 @@ final class WritingViewController: BaseViewController {
         if imageList.count <= 1 {
             presentPHPickerViewController()
         } else {
-            print("No")
+            noHandlerAlert(title: "최대 두 장까지 추가할 수 있습니다.", message: "")
         }
     }
     @objc private func selectDate(_ sender: UIDatePicker) {

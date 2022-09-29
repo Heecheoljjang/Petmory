@@ -13,8 +13,8 @@ final class AddPetTableViewCell: BaseTableViewCell {
     let addButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.filled()
-        configuration.baseForegroundColor = .diaryColor
-        configuration.baseBackgroundColor = .white
+        configuration.baseForegroundColor = .darkGray
+        configuration.baseBackgroundColor = .veryLightGray
         //configuration.cornerStyle = .medium
         //configuration.image = UIImage(systemName: "plus")
         configuration.title = "반려동물 등록하기"
@@ -22,8 +22,8 @@ final class AddPetTableViewCell: BaseTableViewCell {
         //configuration.imagePlacement = .leading
         button.configuration = configuration
         button.layer.cornerRadius = 10
-        button.layer.borderColor = UIColor.diaryColor.cgColor
-        button.layer.borderWidth = 1
+//        button.layer.borderColor = UIColor.systemGray6.cgColor
+//        button.layer.borderWidth = 1
         button.clipsToBounds = true
         return button
     }()
@@ -42,7 +42,7 @@ final class AddPetTableViewCell: BaseTableViewCell {
     override func setUpConstraints() {
         super.setUpConstraints()
         addButton.snp.makeConstraints { make in
-            make.horizontalEdges.equalToSuperview().inset(60)
+            make.horizontalEdges.equalToSuperview().inset(48)
             make.verticalEdges.equalToSuperview().inset(20)
         }
     }

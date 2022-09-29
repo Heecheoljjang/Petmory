@@ -108,6 +108,12 @@ final class MainViewController: BaseViewController {
         
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        titleViewTextField.resignFirstResponder()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         

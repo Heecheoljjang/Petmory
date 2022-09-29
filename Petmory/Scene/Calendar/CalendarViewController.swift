@@ -257,10 +257,6 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         return calendarTask.count
     }
     
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        return selectDate.dateToString(type: .simple)
-//    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CalendarTableViewCell.identifier) as? CalendarTableViewCell else { return UITableViewCell() }
         cell.colorView.backgroundColor = .setCustomColor(calendarTask[indexPath.row].color)
