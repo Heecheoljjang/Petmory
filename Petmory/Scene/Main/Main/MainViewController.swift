@@ -43,7 +43,7 @@ final class MainViewController: BaseViewController {
         }
     }
     
-    let yearList = [Int](1900...2200)
+    let yearList = [Int](1990...2050)
     
     let titleViewTextField: UITextField = {
         let textField = UITextField()
@@ -75,7 +75,7 @@ final class MainViewController: BaseViewController {
         //현재 년도 구해서 monthList와 더해주기
         currentYear = Date().dateToString(type: .onlyYear)
                 
-        pickerView.selectRow(Int(Date().dateToString(type: .onlyYear))! - 1900, inComponent: 0, animated: false)
+        pickerView.selectRow(Int(Date().dateToString(type: .onlyYear))! - 1990, inComponent: 0, animated: false)
         
         countList = []
         
@@ -196,8 +196,19 @@ final class MainViewController: BaseViewController {
     
     @objc private func tapDoneButton() {
         let row = pickerView.selectedRow(inComponent: 0)
-        pickerView.selectRow(row, inComponent: 0, animated: false)
+        
+        currentYear = "\(yearList[row])"
+        
+        countList = []
+        
+        tempList.forEach { date in
+            countList.append(tasks.filter("memoryDateString CONTAINS[c] '\(date)'").count)
+        }
+        
         titleViewTextField.text = "\(yearList[row])년"
+        
+        navigationItem.titleView = titleViewTextField
+
         titleViewTextField.resignFirstResponder()
     }
     
@@ -247,22 +258,14 @@ extension MainViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        currentYear = "\(yearList[row])"
         
-        navigationItem.titleView = titleViewTextField
-
-        countList = []
-        
-        tempList.forEach { date in
-            countList.append(tasks.filter("memoryDateString CONTAINS[c] '\(date)'").count)
-        }
     }
 }
 
 extension MainViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        pickerView.selectRow(Int(Date().dateToString(type: .onlyYear))! - 1990, inComponent: 0, animated: false)
         titleViewTextField.isUserInteractionEnabled = false
-        
         return true
     }
     
