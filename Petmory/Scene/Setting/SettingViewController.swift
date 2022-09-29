@@ -15,8 +15,8 @@ final class SettingViewController: BaseViewController {
 
     let repository = UserRepository()
     
-    let settingList = [SettingList.backupRestore, SettingList.message, SettingList.review, SettingList.shareApp]
-    let imageList = [SettingListImage.backupImage, SettingListImage.message, SettingListImage.review, SettingListImage.shareApp]
+    let settingList = [SettingList.backupRestore, SettingList.message, SettingList.review, SettingList.openLicense]
+    let imageList = [SettingListImage.backupImage, SettingListImage.message, SettingListImage.review, SettingListImage.openLicense]
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -112,6 +112,9 @@ extension SettingViewController: UITableViewDataSource, UITableViewDelegate {
 //                    UIApplication.shared.openURL(url)
 //                }
 //            }
+            if let reviewURL = URL(string: "itms-apps://itunes.apple.com/app/itunes-u/id6443397065?ls=1&mt=8&action=write-review"), UIApplication.shared.canOpenURL(reviewURL) {
+                UIApplication.shared.open(reviewURL, options: [:], completionHandler: nil)
+            }
         }
     }
 }

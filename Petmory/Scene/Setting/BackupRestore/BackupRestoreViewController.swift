@@ -125,7 +125,7 @@ extension BackupRestoreViewController: UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        showActionSheet(fileName: backupFileList[indexPath.row])
     }
 }
 
@@ -274,20 +274,38 @@ extension BackupRestoreViewController: UINavigationControllerDelegate, MFMailCom
 //MARK: - ActionSheet
 extension BackupRestoreViewController {
     
-    private func showActionSheet() {
-//        let alert = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
-//        
-//        let restore = UIAlertAction(title: "복구", style: .default) { _ in
-//            self.handlerAlert(title: "복구", message: "선택하신 파일로 복구를 진행하시겠습니까?", handler: <#T##((UIAlertAction) -> Void)?##((UIAlertAction) -> Void)?##(UIAlertAction) -> Void#>)
-//        }
-//        let delete = UIAlertAction(title: "삭제", style: .destructive) { _ in
-//            self.handlerAlert(title: "삭제", message: "선택하신 파일을 삭제하시겠습니까?", handler: <#T##((UIAlertAction) -> Void)?##((UIAlertAction) -> Void)?##(UIAlertAction) -> Void#>)
-//        }
-//        let cancel = UIAlertAction(title: "", style: .cancel)
-//        
-//        alert.addAction(restore)
-//        alert.addAction(delete)
-//        alert.addAction(cancel)
+    private func showActionSheet(fileName: String) {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let restore = UIAlertAction(title: "내보내기", style: .default) { [weak self] _ in
+            
+            guard let self = self else { return }
+            
+            let documentPath = self.documentDirectoryPath()
+            if let url = documentPath?.appendingPathComponent(fileName) {
+                if FileManager.default.fileExists(atPath: url.path) {
+                    self.showActivityController(backupUrl: url)
+                } else {
+                    self.noHandlerAlert(title: "파일을 찾을 수 없습니다.", message: "")
+                }
+            }
+            
+        }
+        let delete = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
+            
+            guard let self = self else { return }
+            
+            self.deleteFileFromDocument(fileName: fileName)
+            self.backupFileList = self.fetchZipFile()
+            self.mainView.tableView.reloadData()
+        }
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        
+        alert.addAction(restore)
+        alert.addAction(delete)
+        alert.addAction(cancel)
+        
+        present(alert, animated: true)
     }
     
 }
