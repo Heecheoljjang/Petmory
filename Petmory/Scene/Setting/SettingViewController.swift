@@ -15,8 +15,8 @@ final class SettingViewController: BaseViewController {
 
     let repository = UserRepository()
     
-    let settingList = [SettingList.backupRestore, SettingList.message, SettingList.review, SettingList.openLicense]
-    let imageList = [SettingListImage.backupImage, SettingListImage.message, SettingListImage.review, SettingListImage.openLicense]
+    let settingList = [SettingList.backupRestore, SettingList.message, SettingList.review]
+    let imageList = [SettingListImage.backupImage, SettingListImage.message, SettingListImage.review]
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -69,7 +69,7 @@ final class SettingViewController: BaseViewController {
 extension SettingViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -103,15 +103,7 @@ extension SettingViewController: UITableViewDataSource, UITableViewDelegate {
                 
             }
         } else if indexPath.row == 2 {
-            //6443397065
-//            let url = "itms-apps://itunes.apple.com/app/6443397065"
-//            if let url = URL(string: url), UIApplication.shared.canOpenURL(url) {
-//                if #available(iOS 10.0, *) {
-//                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
-//                } else {
-//                    UIApplication.shared.openURL(url)
-//                }
-//            }
+
             if let reviewURL = URL(string: "itms-apps://itunes.apple.com/app/itunes-u/id6443397065?ls=1&mt=8&action=write-review"), UIApplication.shared.canOpenURL(reviewURL) {
                 UIApplication.shared.open(reviewURL, options: [:], completionHandler: nil)
             }
@@ -139,11 +131,9 @@ extension SettingViewController: UIDocumentPickerDelegate {
         if FileManager.default.fileExists(atPath: sandboxURL.path) {
             
             let fileName = selectedFile.lastPathComponent
-            print("fileName: \(fileName)")
             
             //파일URL
             let fileURL = documentDirectory.appendingPathComponent(fileName)
-            print("fileURL: \(fileURL)")
             
             do {
                 try unZipBackupFile(fileURL: fileURL)
@@ -177,11 +167,9 @@ extension SettingViewController: UIDocumentPickerDelegate {
             do {
                 try FileManager.default.copyItem(at: selectedFile, to: sandboxURL)
                 let fileName = selectedFile.lastPathComponent
-                print("fileName: \(fileName)")
                 
                 //파일URL
                 let fileURL = documentDirectory.appendingPathComponent(fileName)
-                print("fileURL: \(fileURL)")
                 
                 do {
                     try unZipBackupFile(fileURL: fileURL)
