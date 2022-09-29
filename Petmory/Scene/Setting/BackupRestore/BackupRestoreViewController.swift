@@ -200,6 +200,16 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                                 self.repository.localRealm.add(petListData)
                             }
                             self.hud.dismiss(animated: true)
+                            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+                            let sceneDelegate = windowScene?.delegate as? SceneDelegate
+                            
+                            let transition = CATransition()
+                            transition.type = .fade
+                            transition.duration = 0.3
+                            sceneDelegate?.window?.layer.add(transition, forKey: kCATransition)
+                            
+                            sceneDelegate?.window?.rootViewController = TabBarController()
+                            sceneDelegate?.window?.makeKeyAndVisible()
                         } catch {
                             self.hud.dismiss(animated: true)
                             throw ErrorType.fetchJsonDataError
@@ -236,6 +246,16 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                                     self.repository.localRealm.add(petListData)
                                 }
                                 self.hud.dismiss(animated: true)
+                                let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+                                let sceneDelegate = windowScene?.delegate as? SceneDelegate
+                                
+                                let transition = CATransition()
+                                transition.type = .fade
+                                transition.duration = 0.3
+                                sceneDelegate?.window?.layer.add(transition, forKey: kCATransition)
+                                
+                                sceneDelegate?.window?.rootViewController = TabBarController()
+                                sceneDelegate?.window?.makeKeyAndVisible()
                             } catch {
                                 self.hud.dismiss(animated: true)
                                 throw ErrorType.fetchJsonDataError
