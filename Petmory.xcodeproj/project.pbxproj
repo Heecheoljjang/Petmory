@@ -23,6 +23,7 @@
 		9767A58B28D8DBF400304F6C /* AddPetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767A58A28D8DBF400304F6C /* AddPetTableViewCell.swift */; };
 		976FF40028E2E57D007185BE /* BackupRestoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976FF3FF28E2E57D007185BE /* BackupRestoreView.swift */; };
 		976FF40228E2E58B007185BE /* BackupRestoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976FF40128E2E58B007185BE /* BackupRestoreViewController.swift */; };
+		97785C8E28E5E4F900D058FB /* AddPhotoButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97785C8D28E5E4F900D058FB /* AddPhotoButtonCell.swift */; };
 		977CB68E28D4540D001342E9 /* WritingContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977CB68D28D4540D001342E9 /* WritingContentView.swift */; };
 		977CB69028D45418001342E9 /* WritingContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977CB68F28D45418001342E9 /* WritingContentViewController.swift */; };
 		977CB69328D47222001342E9 /* enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977CB69228D47222001342E9 /* enum.swift */; };
@@ -33,9 +34,6 @@
 		9781F0AF28D1A0C5008E6DBB /* CalendarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9781F0AE28D1A0C5008E6DBB /* CalendarTableViewCell.swift */; };
 		9781F0B128D1E35C008E6DBB /* UserPet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9781F0B028D1E35C008E6DBB /* UserPet.swift */; };
 		9781F0B328D1E37E008E6DBB /* UserCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9781F0B228D1E37E008E6DBB /* UserCalendar.swift */; };
-		9786304828CC15570042C2E2 /* TodayListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786304728CC15570042C2E2 /* TodayListView.swift */; };
-		9786304A28CC15630042C2E2 /* TodayListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786304928CC15630042C2E2 /* TodayListViewController.swift */; };
-		9786304D28CC1B3C0042C2E2 /* TodayListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786304C28CC1B3C0042C2E2 /* TodayListTableViewCell.swift */; };
 		9786305428CC3B570042C2E2 /* WritingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786305328CC3B570042C2E2 /* WritingView.swift */; };
 		9786305628CC3B5E0042C2E2 /* WritingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786305528CC3B5E0042C2E2 /* WritingViewController.swift */; };
 		9786305928CC5A260042C2E2 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9786305828CC5A260042C2E2 /* CalendarView.swift */; };
@@ -104,6 +102,7 @@
 		9767A58A28D8DBF400304F6C /* AddPetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetTableViewCell.swift; sourceTree = "<group>"; };
 		976FF3FF28E2E57D007185BE /* BackupRestoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRestoreView.swift; sourceTree = "<group>"; };
 		976FF40128E2E58B007185BE /* BackupRestoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRestoreViewController.swift; sourceTree = "<group>"; };
+		97785C8D28E5E4F900D058FB /* AddPhotoButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoButtonCell.swift; sourceTree = "<group>"; };
 		977CB68D28D4540D001342E9 /* WritingContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingContentView.swift; sourceTree = "<group>"; };
 		977CB68F28D45418001342E9 /* WritingContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingContentViewController.swift; sourceTree = "<group>"; };
 		977CB69228D47222001342E9 /* enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = enum.swift; sourceTree = "<group>"; };
@@ -113,9 +112,6 @@
 		9781F0AE28D1A0C5008E6DBB /* CalendarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTableViewCell.swift; sourceTree = "<group>"; };
 		9781F0B028D1E35C008E6DBB /* UserPet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPet.swift; sourceTree = "<group>"; };
 		9781F0B228D1E37E008E6DBB /* UserCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCalendar.swift; sourceTree = "<group>"; };
-		9786304728CC15570042C2E2 /* TodayListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayListView.swift; sourceTree = "<group>"; };
-		9786304928CC15630042C2E2 /* TodayListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayListViewController.swift; sourceTree = "<group>"; };
-		9786304C28CC1B3C0042C2E2 /* TodayListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayListTableViewCell.swift; sourceTree = "<group>"; };
 		9786305328CC3B570042C2E2 /* WritingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingView.swift; sourceTree = "<group>"; };
 		9786305528CC3B5E0042C2E2 /* WritingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingViewController.swift; sourceTree = "<group>"; };
 		9786305828CC5A260042C2E2 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
@@ -272,24 +268,6 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
-		9786304628CC153E0042C2E2 /* TodayList */ = {
-			isa = PBXGroup;
-			children = (
-				9786304B28CC1B1F0042C2E2 /* Cell */,
-				9786304728CC15570042C2E2 /* TodayListView.swift */,
-				9786304928CC15630042C2E2 /* TodayListViewController.swift */,
-			);
-			path = TodayList;
-			sourceTree = "<group>";
-		};
-		9786304B28CC1B1F0042C2E2 /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				9786304C28CC1B3C0042C2E2 /* TodayListTableViewCell.swift */,
-			);
-			path = Cell;
-			sourceTree = "<group>";
-		};
 		9786305228CC3B4D0042C2E2 /* Writing */ = {
 			isa = PBXGroup;
 			children = (
@@ -430,6 +408,7 @@
 			children = (
 				97C7CBCD28CE3626007743FF /* WritingPetCollectionViewCell.swift */,
 				97C7CBD128CE455F007743FF /* WritingImageCollectionViewCell.swift */,
+				97785C8D28E5E4F900D058FB /* AddPhotoButtonCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -441,7 +420,6 @@
 				978E3E8028E0B968007F59D6 /* Photo */,
 				9781F09F28D15FBD008E6DBB /* MemoryDetail */,
 				9786305228CC3B4D0042C2E2 /* Writing */,
-				9786304628CC153E0042C2E2 /* TodayList */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -664,11 +642,11 @@
 				977CB69528D4D051001342E9 /* NSNotification+Extension.swift in Sources */,
 				97CF589228C9057C0062FEB9 /* UserMemory.swift in Sources */,
 				97D8AF7428E409CA00F7C233 /* MainCollectionViewCell.swift in Sources */,
+				97785C8E28E5E4F900D058FB /* AddPhotoButtonCell.swift in Sources */,
 				976FF40028E2E57D007185BE /* BackupRestoreView.swift in Sources */,
 				97CF58BD28CB5ECA0062FEB9 /* SearchViewController.swift in Sources */,
 				97C7CBD028CE3695007743FF /* BasePetCollectionViewCell.swift in Sources */,
 				978E3E8428E0B994007F59D6 /* PhotoViewController.swift in Sources */,
-				9786304A28CC15630042C2E2 /* TodayListViewController.swift in Sources */,
 				9722A2C728DBA422008C3DB7 /* SettingTableViewCell.swift in Sources */,
 				97CF588E28C8CC020062FEB9 /* BaseViewController.swift in Sources */,
 				97C7CBD228CE4560007743FF /* WritingImageCollectionViewCell.swift in Sources */,
@@ -697,8 +675,6 @@
 				977CB69328D47222001342E9 /* enum.swift in Sources */,
 				9799F84728C7741C00E1C12C /* SceneDelegate.swift in Sources */,
 				9740D04A28E45C020018680C /* MonthMemoryView.swift in Sources */,
-				9786304D28CC1B3C0042C2E2 /* TodayListTableViewCell.swift in Sources */,
-				9786304828CC15570042C2E2 /* TodayListView.swift in Sources */,
 				97CF58A528CAC6E00062FEB9 /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
