@@ -61,7 +61,6 @@ final class WritingViewController: BaseViewController {
         datePicker.preferredDatePickerStyle = .wheels
         datePicker.datePickerMode = .date
         datePicker.locale = Locale(identifier: "ko-KR")
-        datePicker.maximumDate = Date()
         
         return datePicker
     }()
