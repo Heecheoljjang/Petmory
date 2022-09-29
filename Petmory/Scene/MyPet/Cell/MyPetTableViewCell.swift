@@ -57,11 +57,5 @@ final class MyPetTableViewCell: BaseTableViewCell {
             make.trailing.equalToSuperview().offset(-20)
             make.centerY.equalTo(profileImageView)
         }
-        
-//        separatorView.snp.makeConstraints { make in
-//            make.horizontalEdges.equalToSuperview().inset(20)
-//            make.height.equalTo(1)
-//            make.bottom.equalToSuperview()
-//        }
     }
 }

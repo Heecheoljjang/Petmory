@@ -13,12 +13,7 @@ final class MainViewController: BaseViewController {
     
     let repository = UserRepository()
     
-    var tasks: Results<UserMemory>! {
-        didSet {
-            //페이지 바꾸기
-            //mainView.pageLabel.text = "\(tasks.count)페이지"
-        }
-    }
+    var tasks: Results<UserMemory>!
     
     var petList: Results<UserPet>!
     
@@ -85,8 +80,6 @@ final class MainViewController: BaseViewController {
         
         mainView.diaryCollectionView.reloadData()
         
-        
-        print(#function, tempList)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -161,7 +154,6 @@ final class MainViewController: BaseViewController {
         let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(tapCancelButton))
         
         toolBar.setItems([cancelButton,flexibleSpace,doneButton], animated: false)
-//        toolBar.isUserInteractionEnabled = true
         
         titleViewTextField.inputAccessoryView = toolBar
     }

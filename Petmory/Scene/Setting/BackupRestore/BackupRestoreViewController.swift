@@ -142,7 +142,6 @@ extension BackupRestoreViewController {
             showActivityController(backupUrl: backupFilePath)
             
             backupFileList = fetchZipFile()
-            print(backupFileList)
         } catch {
             hud.dismiss(animated: true)
             noHandlerAlert(title: "압축 실패", message: "다시 확인해주세요.")
@@ -179,11 +178,9 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                 if FileManager.default.fileExists(atPath: sandboxURL.path) {
                     
                     let fileName = selectedFile.lastPathComponent
-                    print("fileName: \(fileName)")
                     
                     //파일URL
                     let fileURL = documentDirectory.appendingPathComponent(fileName)
-                    print("fileURL: \(fileURL)")
                     
                     do {
                         try self.unZipBackupFile(fileURL: fileURL)
@@ -217,11 +214,9 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                     do {
                         try FileManager.default.copyItem(at: selectedFile, to: sandboxURL)
                         let fileName = selectedFile.lastPathComponent
-                        print("fileName: \(fileName)")
                         
                         //파일URL
                         let fileURL = documentDirectory.appendingPathComponent(fileName)
-                        print("fileURL: \(fileURL)")
                         
                         do {
                             try self.unZipBackupFile(fileURL: fileURL)

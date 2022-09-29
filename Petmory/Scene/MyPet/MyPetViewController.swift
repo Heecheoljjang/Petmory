@@ -44,14 +44,7 @@ final class MyPetViewController: BaseViewController {
         super.viewWillAppear(animated)
         
         tasks = repository.fetchPet()
-        
-//        if tasks.count == 0 {
-//            mainView.noPetLabel.isHidden = false
-//            mainView.tableView.isHidden = true
-//        } else {
-//            mainView.noPetLabel.isHidden = true
-//            mainView.tableView.isHidden = false
-//        }
+
         mainView.tableView.reloadData()
     }
     
@@ -60,8 +53,7 @@ final class MyPetViewController: BaseViewController {
         
         mainView.tableView.delegate = self
         mainView.tableView.dataSource = self
-        
-        
+    
     }
     
     override func setUpController() {

@@ -5,7 +5,7 @@
 //  Created by HeecheolYoon on 2022/09/08.
 //
 
-import Foundation
+import UIKit
 import RealmSwift
 
 protocol UserMemoryRepositoryType {
@@ -67,7 +67,6 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType, Use
     
     //모아보기 첫 화면에 사용
     func fetchTodayMemory() -> Results<UserMemory> {
-//        return localRealm.objects(UserMemory.self).sorted(byKeyPath: "memoryDate", ascending: false)
         return localRealm.objects(UserMemory.self).filter("memoryDateString == '\(Date().dateToString(type: .simple))'").sorted(byKeyPath: "memoryTitle", ascending: true)
     }
     
@@ -102,7 +101,7 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType, Use
         do {
             try localRealm.write {
                 localRealm.add(item)
-                print(localRealm.configuration.fileURL!)
+//                print(localRealm.configuration.fileURL!)
             }
         } catch {
             print("기록 추가 오류")

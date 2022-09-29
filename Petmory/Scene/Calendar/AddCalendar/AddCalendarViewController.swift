@@ -118,12 +118,12 @@ final class AddCalendarViewController: BaseViewController {
         let authorizationOptions = UNAuthorizationOptions(arrayLiteral: .alert, .sound)
         notificationCenter.requestAuthorization(options: authorizationOptions) { success, error in
             if let error {
-                print("알림 권한을 요청하는데에서 오류가 발생하였습니다. \(error)")
+                self.noHandlerAlert(title: "오류", message: "알림 권한을 확인해주세요.")
             }
             if success == true {
                 print("허용")
             } else {
-                print("허요안함")
+                self.noHandlerAlert(title: "알림을 받으실 수 없습니다.", message: "설정에서 변경하실 수 있습니다.")
             }
         }
     }
@@ -249,7 +249,6 @@ final class AddCalendarViewController: BaseViewController {
         
         mainView.dateTextField.text = sender.date.dateToString(type: .full)
         selectedDate = sender.date
-        print(selectedDate)
     }
     @objc private func deleteCalendar() {
         handlerAlert(title: "일정을 삭제하시겠습니까?", message: "") { [weak self] _ in

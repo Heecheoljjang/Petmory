@@ -219,7 +219,7 @@ extension UIViewController {
             let zipFileName = zipFiles.map { $0.lastPathComponent }
             return zipFileName.sorted(by: >)
         } catch {
-            print("zip파일 가져오는데에서 오류")
+            noHandlerAlert(title: "오류", message: "압축 파일을 가져오지 못했습니다.")
         }
         return []
     }

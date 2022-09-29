@@ -15,15 +15,12 @@ final class AddPetTableViewCell: BaseTableViewCell {
         var configuration = UIButton.Configuration.filled()
         configuration.baseForegroundColor = .darkGray
         configuration.baseBackgroundColor = .veryLightGray
-        //configuration.cornerStyle = .medium
-        //configuration.image = UIImage(systemName: "plus")
+
         configuration.title = "반려동물 등록하기"
         
-        //configuration.imagePlacement = .leading
         button.configuration = configuration
         button.layer.cornerRadius = 10
-//        button.layer.borderColor = UIColor.systemGray6.cgColor
-//        button.layer.borderWidth = 1
+
         button.clipsToBounds = true
         return button
     }()
@@ -35,7 +32,6 @@ final class AddPetTableViewCell: BaseTableViewCell {
     override func configure() {
         super.configure()
         contentView.addSubview(addButton)
-        //self.addSubview(addButton)
         self.selectionStyle = .none
     }
     

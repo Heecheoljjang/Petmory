@@ -15,15 +15,10 @@ final class CalendarViewController: BaseViewController {
     
     var mainView = CalendarView()
     
-    var memories: Results<UserMemory>! {
-        didSet {
-            //print("memories: \(memories)")
-        }
-    }
+    var memories: Results<UserMemory>!
     
     var calendarTask: Results<UserCalendar>! {
         didSet {
-            //print(calendarTask)
             if calendarTask.count == 0 {
                 mainView.tableView.isHidden = true
                 mainView.noTaskLabel.isHidden = false
@@ -176,7 +171,6 @@ final class CalendarViewController: BaseViewController {
     }
     
     @objc private func dateChanged(_ sender: UIDatePicker) {
-        print(sender.date)
         tempDate = sender.date
        
     }

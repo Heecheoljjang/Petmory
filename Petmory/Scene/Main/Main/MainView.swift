@@ -20,10 +20,7 @@ final class MainView: BaseView {
         let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         view.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: MainCollectionViewCell.identifier)
         view.showsHorizontalScrollIndicator = false
-        
         view.backgroundColor = .white
-        
-        
         
         return view
     }()
@@ -58,26 +55,11 @@ final class MainView: BaseView {
         return label
     }()
     
-//    let tapLabel: UILabel = {
-//        let label = UILabel()
-//        label.numberOfLines = 0
-//        label.textAlignment = .center
-//        label.text = "오늘 작성한 기록들을 확인해보세요 :)"
-//        label.font = UIFont(name: CustomFont.medium, size: 12)
-//        label.textColor = .lightGray
-//        
-//        return label
-//    }()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
     
     override func configure() {
-    
-//        [diaryCollectionView, writingButton, zeroContentsLabel].forEach {
-//            addSubview($0)
-//        }
         
         [diaryCollectionView, writingButton].forEach {
             addSubview($0)
@@ -90,8 +72,6 @@ final class MainView: BaseView {
         diaryCollectionView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview().offset(-28)
-//            make.top.equalTo(self.safeAreaLayoutGuide).offset(44)
-            //make.bottom.equalTo(writingButton.snp.top).offset(-40)
             make.horizontalEdges.equalToSuperview()
             make.height.equalTo(420)
         }
@@ -101,17 +81,6 @@ final class MainView: BaseView {
             make.bottom.equalTo(self.safeAreaLayoutGuide).offset(-20)
             make.trailing.equalTo(self.safeAreaLayoutGuide).offset(-20)
         }
-        
-//        tapLabel.snp.makeConstraints { make in
-//            make.centerX.equalToSuperview()
-//            make.bottom.equalTo(diaryCollectionView.snp.top).offset(-40)
-//        }
-//
-//        zeroContentsLabel.snp.makeConstraints { make in
-//            make.centerX.equalToSuperview()
-//            make.top.equalTo(self.safeAreaLayoutGuide).offset(20)
-//            make.bottom.equalTo(diaryCollectionView.snp.top).offset(20)
-//        }
-//
+
     }
 }

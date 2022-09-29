@@ -16,32 +16,12 @@ final class MonthMemoryViewController: BaseViewController {
     
     var tasks: Results<UserMemory>! {
         didSet {
-            //dateList = Set(tasks.map { $0.memoryDateString }).sorted(by: >)
             mainView.tableView.reloadData()
         }
     }
     
     var monthDate: String = ""
-//    var petList: Results<UserPet>! {
-//        didSet {
-//            mainView.collectionView.reloadData()
-//        }
-//    }
-//
-//    var filterPetName: String = "" {
-//        didSet {
-//            if filterPetName == "" {
-//                tasks = repository.fetchAllMemory()
-//                mainView.tableView.reloadData()
-//            } else {
-//                tasks = repository.fetchFiltered(name: filterPetName)
-//                mainView.tableView.reloadData()
-//            }
-//        }
-//    }
-//
-//    var dateList: [String] = []
-        
+
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: CustomFont.medium, size: 16)
@@ -64,7 +44,6 @@ final class MonthMemoryViewController: BaseViewController {
         super.viewWillAppear(animated)
         
         tasks = repository.fetchDateFiltered(dateString: monthDate)
-        //petList = repository.fetchPet()
         
         if tasks.count == 0 {
             mainView.tableView.isHidden = true
@@ -78,13 +57,9 @@ final class MonthMemoryViewController: BaseViewController {
     override func setUpController() {
         //네비게이션 바버튼
         let popButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(popView))
-//        let searchButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(pushSearchView))
         navigationItem.leftBarButtonItem = popButton
-        //navigationItem.rightBarButtonItem = searchButton
         
         navigationController?.navigationBar.tintColor = .diaryColor
-        //navigationItem.backButtonTitle = ""
-        //navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(popView))
         
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .white
@@ -100,17 +75,11 @@ final class MonthMemoryViewController: BaseViewController {
     override func configure() {
         mainView.tableView.delegate = self
         mainView.tableView.dataSource = self
-//        mainView.collectionView.dataSource = self
-//        mainView.collectionView.delegate = self
+
     }
 
     //MARK: - @objc
-//    @objc private func dismissView() {
-//        transition(self, transitionStyle: .dismiss)
-//    }
-//    @objc private func pushSearchView() {
-//        transition(SearchViewController(), transitionStyle: .push)
-//    }
+
     @objc private func popView() {
         transition(self, transitionStyle: .pop)
     }
@@ -156,44 +125,3 @@ extension MonthMemoryViewController: UITableViewDelegate, UITableViewDataSource 
     }
 }
 
-//MARK: - CollectionView
-
-//extension AllMemoryViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-//    
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return petList.count
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AllMemoryCollectionViewCell.identifier, for: indexPath) as? AllMemoryCollectionViewCell else { return UICollectionViewCell() }
-//        
-//        cell.nameLabel.text = petList[indexPath.item].petName
-//        
-//        return cell
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-//        guard let cell = collectionView.cellForItem(at: indexPath) else { return true }
-//
-//        if cell.isSelected == true {
-//            collectionView.deselectItem(at: indexPath, animated: true)
-//            filterPetName = ""
-//            return false
-//        } else {
-//            collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
-//            filterPetName = petList[indexPath.item].petName
-//            return true
-//        }
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//
-//        if petList[indexPath.item].petName.count > 1 {
-//            let cellSize = CGSize(width: petList[indexPath.item].petName.size(withAttributes: [.font : UIFont(name: CustomFont.medium, size: 13)!]).width + 32, height: 52)
-//            return cellSize
-//        } else {
-//            let cellSize = CGSize(width: 52, height: 52)
-//            return cellSize
-//        }
-//    }
-//}

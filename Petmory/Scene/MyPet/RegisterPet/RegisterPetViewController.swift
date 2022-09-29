@@ -84,7 +84,6 @@ final class RegisterPetViewController: BaseViewController {
             if let task = task {
                 //프로필 이미지 설정
                 if let imageData = task.profileImage {
-//                    mainView.profileImageView.image = UIImage(data: imageData)
                     profileImage = imageData
                 }
                 //성별 설정
@@ -184,7 +183,6 @@ final class RegisterPetViewController: BaseViewController {
         let authorizationOptions = UNAuthorizationOptions(arrayLiteral: .alert, .sound)
         notificationCenter.requestAuthorization(options: authorizationOptions) { success, error in
             if let error {
-                print("알림 권한을 요청하는데에서 오류가 발생하였습니다. \(error)")
                 self.noHandlerAlert(title: "오류", message: "알림 권한을 확인해주세요.")
             }
             if success == true {
@@ -260,7 +258,6 @@ final class RegisterPetViewController: BaseViewController {
     //MARK: 날짜 선택
     @objc private func selectDate(_ sender: UIDatePicker) {
         birthdayDate = sender.date
-        print(birthdayDate)
     }
     @objc private func doneSelectDate() {
         
@@ -313,12 +310,9 @@ final class RegisterPetViewController: BaseViewController {
             } else {
                 if mainView.birthdayTextField.text! == "" {
                     //MARK: alert띄워서 확인 누르면 오늘 날짜로 텍스트필드 채우기
-                    print("생일을 작성하지 않으시면 오늘 날짜로 작성됩니다!")
                     noHandlerAlert(title: "생일을 입력해주세요.", message: "")
-                    //handlerAlert(title: <#T##String#>, message: <#T##String?#>, handler: <#T##((UIAlertAction) -> Void)?##((UIAlertAction) -> Void)?##(UIAlertAction) -> Void#>)
                 } else {
                     if profileImage == nil {
-                        print("사진을 등록해주세요")
                         noHandlerAlert(title: "사진을 등록해주세요.", message: "")
                     } else {
                         let pet = UserPet(profileImage: profileImage, petName: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text, registerDate: currentDate)

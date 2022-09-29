@@ -45,18 +45,7 @@ final class CalendarView: BaseView {
 
         return calendar
     }()
-    
-//    let diaryButton: UIButton = {
-//        let button = UIButton()
-//        var configuration = UIButton.Configuration.plain()
-//        configuration.title = "일정 등록하기"
-//        configuration.imagePlacement = .trailing
-//        configuration.baseForegroundColor = .diaryColor
-//        
-//        button.configuration = configuration
-//        return button
-//    }()
-    
+
     let dateLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: CustomFont.medium, size: 13)
@@ -105,10 +94,7 @@ final class CalendarView: BaseView {
     
     override func configure() {
         super.configure()
-    
-//        [calendar, diaryButton].forEach {
-//            calendarView.addSubview($0)
-//        }
+
         calendarView.addSubview(calendar)
         [calendarView, noTaskLabel, tableView, dateLabel, writingButton].forEach {
             self.addSubview($0)
@@ -124,13 +110,7 @@ final class CalendarView: BaseView {
             make.horizontalEdges.equalToSuperview()
             make.height.equalToSuperview().multipliedBy(0.35)
         }
-//        diaryButton.snp.makeConstraints { make in
-//            make.bottom.equalToSuperview()
-//            make.horizontalEdges.equalToSuperview().inset(20)
-//            make.height.equalTo(40)
-//            make.centerX.equalToSuperview()
-//        }
-        
+
         dateLabel.snp.makeConstraints { make in
             make.top.equalTo(calendarView.snp.bottom).offset(4)
             make.horizontalEdges.equalToSuperview().inset(20)
@@ -138,7 +118,6 @@ final class CalendarView: BaseView {
         
         calendar.snp.makeConstraints { make in
             make.top.horizontalEdges.equalToSuperview()
-            //make.bottom.equalTo(diaryButton.snp.top)
             make.bottom.equalToSuperview()
         }
         tableView.snp.makeConstraints { make in

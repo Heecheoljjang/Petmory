@@ -30,13 +30,10 @@ final class AllMemoryViewController: BaseViewController {
     var filterPetName: String = "" {
         didSet {
             if filterPetName == "" {
-                print("empty")
                 tasks = repository.fetchAllMemory()
                 mainView.tableView.reloadData()
             } else {
-                print("noempty", filterPetName)
                 tasks = repository.fetchFiltered(name: filterPetName)
-                print("tasks", tasks)
                 mainView.tableView.reloadData()
             }
         }
@@ -76,7 +73,6 @@ final class AllMemoryViewController: BaseViewController {
         }
         
         dateList = Set(tasks.map { $0.memoryDate.dateToString(type: .yearMonth) }).sorted(by: >)
-        print(dateList)
     }
     
     override func setUpController() {
@@ -146,7 +142,6 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tasks.filter("memoryDateString CONTAINS[c] '\(dateList[section])'").count
-//        return repository.fetchDateFiltered(dateString: dateList[section]).count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -178,8 +173,7 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
         let tempTask = tasks.filter("memoryDateString CONTAINS[c] '\(dateList[indexPath.section])'").sorted(byKeyPath: "memoryDate", ascending: false)[indexPath.row]
         
         let memoryDetailViewController = MemoryDetailViewController()
-//        memoryDetailViewController.objectId = tasks.filter("memoryDateString == '\(dateList[indexPath.section])'")[indexPath.row].objectId
-//        memoryDetailViewController.imageList = tasks.filter("memoryDateString == '\(dateList[indexPath.section])'")[indexPath.row].imageData
+
         memoryDetailViewController.objectId = tempTask.objectId
         memoryDetailViewController.imageList = tempTask.imageData
         transition(memoryDetailViewController, transitionStyle: .push)
@@ -209,15 +203,11 @@ extension AllMemoryViewController: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         guard let cell = collectionView.cellForItem(at: indexPath) else { return true }
 
-        print(indexPath)
-        print(filterPetName)
         if cell.isSelected == true {
-            print("true")
             collectionView.deselectItem(at: indexPath, animated: true)
             filterPetName = ""
             return false
         } else {
-            print("false", petList)
             collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
             filterPetName = petList[indexPath.item].petName
             return true
