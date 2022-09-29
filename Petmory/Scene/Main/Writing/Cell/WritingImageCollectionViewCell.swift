@@ -13,12 +13,14 @@ final class WritingImageCollectionViewCell: BaseCollectionViewCell {
         
     let deleteButton: UIButton = {
         let button = UIButton()
-        var configuration = UIButton.Configuration.plain()
-        configuration.image = UIImage(systemName: "xmark.circle.fill")
-        configuration.baseForegroundColor = .darkGray
+        var configuration = UIButton.Configuration.filled()
+        configuration.image = UIImage(systemName: "xmark")
+        configuration.baseForegroundColor = .veryLightGray
+        configuration.baseBackgroundColor = .darkGray
+        configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 11)
 
         button.configuration = configuration
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = 14
         button.clipsToBounds = true
         button.backgroundColor = .white
         return button
@@ -48,19 +50,18 @@ final class WritingImageCollectionViewCell: BaseCollectionViewCell {
         [photoImageView, deleteButton].forEach {
             addSubview($0)
         }
-
     }
     override func setUpContraints() {
         super.setUpContraints()
         
         photoImageView.snp.makeConstraints { make in
             make.verticalEdges.equalToSuperview().inset(8)
-            make.horizontalEdges.equalToSuperview()
+            make.horizontalEdges.equalToSuperview().inset(14)
         }
         deleteButton.snp.makeConstraints { make in
             make.trailing.equalTo(photoImageView).offset(10)
             make.top.equalTo(photoImageView).offset(-10)
-            make.size.equalTo(20)
+            make.size.equalTo(28)
         }
     }
 

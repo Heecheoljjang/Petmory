@@ -286,7 +286,7 @@ extension WritingViewController: UICollectionViewDelegate, UICollectionViewDataS
             } else {
                 let width = mainView.imageCollectionView.frame.size.height - 20
                 
-                return CGSize(width: width + 20, height: width)
+                return CGSize(width: width + 48, height: width)
             }
         }
     }

@@ -25,7 +25,7 @@ final class WritingView: BaseView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.minimumInteritemSpacing = 20
+        layout.minimumInteritemSpacing = 6
         layout.minimumLineSpacing = 0
         
         let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
