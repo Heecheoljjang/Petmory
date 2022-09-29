@@ -171,21 +171,11 @@ final class MainViewController: BaseViewController {
         
         let petList = repository.fetchPet()
         
-        if petList.count == 0 {
-            //MARK: Alert 제대로 적용해보기
-            noHandlerAlert(title: "반려동물을 등록해주세요!", message: "")
-        } else {
-            let allMemoryViewController = AllMemoryViewController()
-            transition(allMemoryViewController, transitionStyle: .presentNavigation)
-        }
+        let allMemoryViewController = AllMemoryViewController()
+        transition(allMemoryViewController, transitionStyle: .presentNavigation)
+        
     }
-    
-    @objc private func pushTodayList() {
-//        let todayListViewController = TodayListViewController()
-//        todayListViewController.navigationTitle = mainView.dateLabel.text!
-//        transition(todayListViewController, transitionStyle: .presentNavigation)
-    }
-    
+
     @objc private func presentWritingView() {
         let writingViewController = WritingViewController()
         if petList.count == 0 {

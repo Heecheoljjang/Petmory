@@ -30,16 +30,28 @@ final class AllMemoryViewController: BaseViewController {
     var filterPetName: String = "" {
         didSet {
             if filterPetName == "" {
+                print("empty")
                 tasks = repository.fetchAllMemory()
                 mainView.tableView.reloadData()
             } else {
+                print("noempty", filterPetName)
                 tasks = repository.fetchFiltered(name: filterPetName)
+                print("tasks", tasks)
                 mainView.tableView.reloadData()
             }
         }
     }
     
     var dateList: [String] = []
+    
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: CustomFont.medium, size: 16)
+        label.text = "모아보기"
+        label.textAlignment = .center
+        label.textColor = .black
+        return label
+    }()
         
     override func loadView() {
         self.view = mainView
@@ -83,6 +95,8 @@ final class AllMemoryViewController: BaseViewController {
         appearance.shadowColor = .clear
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.standardAppearance = appearance
+        
+        navigationItem.titleView = titleLabel
     
         
     }
@@ -131,8 +145,8 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //return tasks.filter("memoryDateString == '\(dateList[section])'").count
-        return repository.fetchDateFiltered(dateString: dateList[section]).count
+        return tasks.filter("memoryDateString CONTAINS[c] '\(dateList[section])'").count
+//        return repository.fetchDateFiltered(dateString: dateList[section]).count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -195,11 +209,15 @@ extension AllMemoryViewController: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         guard let cell = collectionView.cellForItem(at: indexPath) else { return true }
 
+        print(indexPath)
+        print(filterPetName)
         if cell.isSelected == true {
+            print("true")
             collectionView.deselectItem(at: indexPath, animated: true)
             filterPetName = ""
             return false
         } else {
+            print("false", petList)
             collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
             filterPetName = petList[indexPath.item].petName
             return true
