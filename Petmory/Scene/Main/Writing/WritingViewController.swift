@@ -30,13 +30,12 @@ final class WritingViewController: BaseViewController {
         }
     }
     
-    let placeholderText = "오늘 하루를 어떻게 보내셨나요?"
+    let placeholderText = "어떤 하루를 보내셨나요?"
     
     var currentTask: UserMemory?
     
     var memoryDate = Date() {
         didSet {
-//            titleViewTextField.text = memoryDate.dateToString(type: .simple)
             titleViewDatePicker.date = memoryDate
         }
     }
@@ -98,13 +97,11 @@ final class WritingViewController: BaseViewController {
     
         mainView.imageCollectionView.reloadData()
         
-        print(imageList)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-//        NotificationCenter.default.post(name: NSNotification.Name.reloadCollectionView, object: nil)
         settingDetailView?()
     }
     
@@ -122,18 +119,13 @@ final class WritingViewController: BaseViewController {
         appearance.shadowColor = .clear
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.standardAppearance = appearance
-                
-        //MARK: 액션 추가
-        mainView.pickButton.addTarget(self, action: #selector(presentPhotoPickerView), for: .touchUpInside)
-        
+
         //MARK: 텍스트뷰
         mainView.contentTextView.text = placeholderText
         mainView.contentTextView.textColor = .placeholderColor
                 
         //MARK: 네비게이션 타이틀 뷰
-//        titleViewDatePicker.date = memoryDate
-//        titleViewTextField.inputView = titleViewDatePicker
-//        titleViewTextField.text = memoryDate.dateToString(type: .simple)
+
         titleViewTextField.delegate = self
         titleViewDatePicker.addTarget(self, action: #selector(selectDate), for: .valueChanged)
         
@@ -145,7 +137,6 @@ final class WritingViewController: BaseViewController {
         toolBar.setItems([toolBarCancelButton, flexibleSpace, toolBarDoneButton], animated: true)
         titleViewTextField.inputAccessoryView = toolBar
         
-        //navigationItem.titleView = titleViewTextField
     }
     
     override func configure() {
@@ -174,7 +165,6 @@ final class WritingViewController: BaseViewController {
         mainView.petCollectionView.indexPathsForSelectedItems?.forEach {
             withList.append(petList[$0.item].petName)
         }
-        //let currentDate = Date()
         
         //MARK: 선택된 펫이 없는 경우, 제목이 없는 경우에 alert
         if withList.count == 0 && mainView.titleTextField.text! == "" {
@@ -182,8 +172,7 @@ final class WritingViewController: BaseViewController {
         } else if withList.count != 0 && mainView.titleTextField.text! == "" {
             noHandlerAlert(title: "", message: "제목을 입력해주세요.")
         } else if withList.count == 0 && mainView.titleTextField.text! != "" {
-            print("함께한 반려동물을 선택해주세요")
-            noHandlerAlert(title: "", message: "함께 보낸 반려동물을 선택해주세요.")
+            noHandlerAlert(title: "", message: "함께한 반려동물을 선택해주세요.")
         } else {
             //MARK: 새로 작성
             if currentStatus == CurrentStatus.new {
@@ -203,17 +192,13 @@ final class WritingViewController: BaseViewController {
                     if let task = currentTask {
                         repository.updateMemory(item: task, title: mainView.titleTextField.text!, memoryDateString: memoryDate.dateToString(type: .simple), content: "", petList: withList, imageData: imageList, memoryDate: memoryDate)
                     }
-//                    NotificationCenter.default.post(name: NSNotification.Name.editWriting, object: nil)
                     settingDetailView?()
-//                    transition(self, transitionStyle: .dismiss)
                     showAlert(title: "수정 완료!")
                 } else {
                     if let task = currentTask {
                         repository.updateMemory(item: task, title: mainView.titleTextField.text!, memoryDateString: memoryDate.dateToString(type: .simple), content: mainView.contentTextView.text, petList: withList, imageData: imageList, memoryDate: memoryDate)
                     }
-//                    NotificationCenter.default.post(name: NSNotification.Name.editWriting, object: nil)
                     settingDetailView?()
-//                    transition(self, transitionStyle: .dismiss)
                     showAlert(title: "수정 완료!")
                 }
             }
@@ -258,21 +243,9 @@ extension WritingViewController: UICollectionViewDelegate, UICollectionViewDataS
         if collectionView == mainView.petCollectionView {
             return petList.count
         } else {
-            return imageList.count
+            return imageList.count + 1
         }
     }
-    
-    
-    
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        if collectionView == mainView.petCollectionView {
-//
-//        } else {
-//            let cell = collectionView.cellForItem(at: indexPath)
-//            cell?.isSelected = true
-//        }
-//    }
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == mainView.petCollectionView {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WritingPetCollectionViewCell.identifier, for: indexPath) as? WritingPetCollectionViewCell else { return UICollectionViewCell() }
@@ -280,11 +253,18 @@ extension WritingViewController: UICollectionViewDelegate, UICollectionViewDataS
             
             return cell
         } else {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WritingImageCollectionViewCell.identifier, for: indexPath) as? WritingImageCollectionViewCell else { return UICollectionViewCell() }
-            cell.photoImageView.image = UIImage(data: imageList[indexPath.item])
-            cell.deleteButton.tag = indexPath.item
-            cell.deleteButton.addTarget(self, action: #selector(deleteImage(_ :)), for: .touchUpInside)
-            return cell
+            if indexPath.item == 0 {
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddPhotoButtonCell.identifier, for: indexPath) as? AddPhotoButtonCell else { return UICollectionViewCell() }
+                cell.addButton.addTarget(self, action: #selector(presentPhotoPickerView), for: .touchUpInside)
+                
+                return cell
+            } else {
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WritingImageCollectionViewCell.identifier, for: indexPath) as? WritingImageCollectionViewCell else { return UICollectionViewCell() }
+                cell.photoImageView.image = UIImage(data: imageList[indexPath.item - 1])
+                cell.deleteButton.tag = indexPath.item - 1
+                cell.deleteButton.addTarget(self, action: #selector(deleteImage(_ :)), for: .touchUpInside)
+                return cell
+            }
         }
     }
 
@@ -298,18 +278,22 @@ extension WritingViewController: UICollectionViewDelegate, UICollectionViewDataS
                 return cellSize
             }
         } else {
-            let width = mainView.frame.size.width - 40
-            let cellSize = CGSize(width: width, height: width * 0.8)
-            
-            return cellSize
+            if indexPath.item == 0 {
+                
+                let width = mainView.imageCollectionView.frame.size.height - 60
+                
+                return CGSize(width: width, height: width)
+            } else {
+                let width = mainView.imageCollectionView.frame.size.height - 20
+                
+                return CGSize(width: width + 20, height: width)
+            }
         }
     }
     @objc private func deleteImage(_ sender: UIButton) {
         //MARK: 지울건지 alert띄우기
-        //테스트
         
         imageList.remove(at: sender.tag)
-        print(imageList)
         mainView.imageCollectionView.reloadData()
     }
 }

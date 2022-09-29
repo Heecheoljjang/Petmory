@@ -14,6 +14,8 @@ final class AllMemoryTableViewCell: BaseTableViewCell {
     let stackView: UIStackView = {
         let view = UIStackView()
         view.axis = .horizontal
+        view.layer.cornerRadius = 5
+        view.clipsToBounds = true
         return view
     }()
     
@@ -41,7 +43,7 @@ final class AllMemoryTableViewCell: BaseTableViewCell {
         let view = UIImageView()
         view.layer.cornerRadius = 5
         view.clipsToBounds = true
-        
+        view.contentMode = .scaleToFill
         return view
     }()
     
@@ -85,7 +87,6 @@ final class AllMemoryTableViewCell: BaseTableViewCell {
             make.horizontalEdges.equalTo(memoryTitle)
             make.top.equalTo(memoryTitle.snp.bottom).offset(8)
             make.height.equalTo(16)
-            //make.bottom.equalToSuperview().offset(-12)
         }
         
         dateLabel.snp.makeConstraints { make in
@@ -95,18 +96,14 @@ final class AllMemoryTableViewCell: BaseTableViewCell {
         }
         
         thumbnailImageView.snp.makeConstraints { make in
-//            make.top.equalTo(memoryTitle)
-//            make.bottom.equalTo(memoryContentLabel)
-//            make.trailing.equalToSuperview().offset(-20)
-//            make.height.equalTo(64)
+            
+            make.edges.equalToSuperview()
             make.width.equalTo(80)
         }
         
         stackView.snp.makeConstraints { make in
             make.verticalEdges.equalToSuperview().inset(12)
             make.trailing.equalToSuperview().offset(-20)
-//            make.height.equalTo(64)
-//            make.width.equalTo(80)
         }
         
         multiSign.snp.makeConstraints { make in

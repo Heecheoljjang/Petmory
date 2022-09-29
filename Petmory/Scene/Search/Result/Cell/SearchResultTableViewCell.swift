@@ -14,6 +14,8 @@ final class SearchResultTableViewCell: BaseTableViewCell {
     let stackView: UIStackView = {
         let view = UIStackView()
         view.axis = .horizontal
+        view.layer.cornerRadius = 5
+        view.clipsToBounds = true
         return view
     }()
     
@@ -95,18 +97,14 @@ final class SearchResultTableViewCell: BaseTableViewCell {
         }
         
         thumbnailImageView.snp.makeConstraints { make in
-//            make.top.equalTo(memoryTitle)
-//            make.bottom.equalTo(memoryContentLabel)
-//            make.trailing.equalToSuperview().offset(-20)
-//            make.height.equalTo(64)
+
             make.width.equalTo(80)
         }
         
         stackView.snp.makeConstraints { make in
             make.verticalEdges.equalToSuperview().inset(12)
             make.trailing.equalToSuperview().offset(-20)
-//            make.height.equalTo(64)
-//            make.width.equalTo(80)
+
         }
         
         multiSign.snp.makeConstraints { make in

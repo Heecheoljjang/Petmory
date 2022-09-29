@@ -9,16 +9,27 @@ import Foundation
 import UIKit
 import SnapKit
 
-final class WritingImageCollectionViewCell: BaseImageCollectionViewCell {
+final class WritingImageCollectionViewCell: BaseCollectionViewCell {
         
     let deleteButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.plain()
-        configuration.image = UIImage(systemName: "xmark")
-        configuration.baseForegroundColor = .white
+        configuration.image = UIImage(systemName: "xmark.circle.fill")
+        configuration.baseForegroundColor = .darkGray
 
         button.configuration = configuration
+        button.layer.cornerRadius = 10
+        button.clipsToBounds = true
+        button.backgroundColor = .white
         return button
+    }()
+    
+    let photoImageView: UIImageView = {
+        let view = UIImageView()
+        view.contentMode = .scaleAspectFill
+        view.layer.cornerRadius = 5
+        view.clipsToBounds = true
+        return view
     }()
     
     override init(frame: CGRect) {
@@ -34,17 +45,22 @@ final class WritingImageCollectionViewCell: BaseImageCollectionViewCell {
     
     override func configure() {
         super.configure()
-        
-        self.layer.cornerRadius = 5
-        self.addSubview(deleteButton)
+        [photoImageView, deleteButton].forEach {
+            addSubview($0)
+        }
+
     }
-    
-    override func setUpConstraints() {
-        super.setUpConstraints()
+    override func setUpContraints() {
+        super.setUpContraints()
         
+        photoImageView.snp.makeConstraints { make in
+            make.verticalEdges.equalToSuperview().inset(8)
+            make.horizontalEdges.equalToSuperview()
+        }
         deleteButton.snp.makeConstraints { make in
-            make.leading.top.equalTo(self).offset(20)
-            make.size.equalTo(44)
+            make.trailing.equalTo(photoImageView).offset(10)
+            make.top.equalTo(photoImageView).offset(-10)
+            make.size.equalTo(20)
         }
     }
 

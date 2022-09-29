@@ -22,9 +22,13 @@ final class MemoryDetailViewController: BaseViewController {
     
     var isEditStatus = false
     
-    deinit {
-        print("deinit")
-    }
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: CustomFont.medium, size: 16)
+        label.textAlignment = .center
+        label.textColor = .black
+        return label
+    }()
     
     override func loadView() {
         self.view = mainView
@@ -37,7 +41,7 @@ final class MemoryDetailViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-    
+        
         //편집 상태에서 돌아올때는 노티피케이션으로 memoryTasks를 주기 위해
         if isEditStatus == false {
             memoryTask = repository.fetchWithObjectId(objectId: objectId).first
@@ -45,8 +49,11 @@ final class MemoryDetailViewController: BaseViewController {
             if let memoryTask = memoryTask {
                 
                 mainView.titleLabel.text = memoryTask.memoryTitle
-                mainView.dateLabel.text = memoryTask.memoryDateString
                 mainView.contentTextView.text = memoryTask.memoryContent
+                
+                titleLabel.text = memoryTask.memoryDateString
+                
+                navigationItem.titleView = titleLabel
                
             }
             if let imageList = imageList {
@@ -120,9 +127,9 @@ final class MemoryDetailViewController: BaseViewController {
             if let memoryTask = self.memoryTask {
                 
                 self.mainView.titleLabel.text = memoryTask.memoryTitle
-                self.mainView.dateLabel.text = memoryTask.memoryDateString
                 self.mainView.contentTextView.text = memoryTask.memoryContent
-               
+                self.titleLabel.text = memoryTask.memoryDateString
+                self.navigationItem.titleView = self.titleLabel
             }
             if let imageList = self.imageList {
                 if imageList.count == 0 {
@@ -159,7 +166,6 @@ final class MemoryDetailViewController: BaseViewController {
         if let memoryTask = memoryTask {
             
             mainView.titleLabel.text = memoryTask.memoryTitle
-            mainView.dateLabel.text = memoryTask.memoryDateString
             mainView.contentTextView.text = memoryTask.memoryContent
            
         }

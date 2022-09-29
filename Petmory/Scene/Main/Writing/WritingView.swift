@@ -25,43 +25,38 @@ final class WritingView: BaseView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.minimumInteritemSpacing = 0
+        layout.minimumInteritemSpacing = 20
         layout.minimumLineSpacing = 0
         
         let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         view.register(WritingImageCollectionViewCell.self, forCellWithReuseIdentifier: WritingImageCollectionViewCell.identifier)
-        view.backgroundColor = .systemGray6
-        view.isPagingEnabled = true
-        view.layer.cornerRadius = 5
+        view.register(AddPhotoButtonCell.self, forCellWithReuseIdentifier: AddPhotoButtonCell.identifier)
         view.showsHorizontalScrollIndicator = false
+        view.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         
         return view
     }()
-    
-    let pickButton: UIButton = {
-        let button = UIButton()
-        var configuration = UIButton.Configuration.filled()
-        configuration.cornerStyle = .capsule
-        configuration.baseForegroundColor = .diaryColor
-        configuration.baseBackgroundColor = .stringColor
-        configuration.image = UIImage(systemName: "photo")
-        
-        button.configuration = configuration
-        return button
-    }()
-    
+
     let titleTextField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .systemBackground
         textField.font = UIFont(name: CustomFont.medium, size: 20)
         textField.placeholder = "제목"
+        textField.textAlignment = .center
         
         return textField
     }()
     
     let titleTextFieldLineView: UIView = {
         let view = UIView()
-        view.backgroundColor = .black
+        view.backgroundColor = .systemGray5
+        
+        return view
+    }()
+    
+    let photoLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .systemGray5
         
         return view
     }()
@@ -73,6 +68,7 @@ final class WritingView: BaseView {
         view.font = UIFont(name: CustomFont.medium, size: 15)
         return view
     }()
+    
     
     let petCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -104,7 +100,7 @@ final class WritingView: BaseView {
     override func configure() {
         super.configure()
                 
-        [imageCollectionView, pickButton,titleTextFieldLineView, titleTextField, contentTextView, petCollectionView, withLabel].forEach {
+        [imageCollectionView,titleTextFieldLineView, titleTextField, contentTextView, petCollectionView, withLabel, photoLineView].forEach {
             contentView.addSubview($0)
         }
 
@@ -129,8 +125,7 @@ final class WritingView: BaseView {
         }
         
         withLabel.snp.makeConstraints { make in
-//            make.leading.equalTo(self).offset(20)
-//            make.top.equalTo(self.safeAreaLayoutGuide)
+
             make.leading.equalToSuperview().offset(20)
             make.top.equalToSuperview()
             make.height.equalTo(52)
@@ -138,24 +133,24 @@ final class WritingView: BaseView {
         
         petCollectionView.snp.makeConstraints { make in
             make.top.trailing.equalTo(contentView)
-            //make.top.trailing.equalTo(self.safeAreaLayoutGuide)
             make.leading.equalTo(withLabel.snp.trailing).offset(12)
             make.height.equalTo(52)
         }
         
         imageCollectionView.snp.makeConstraints { make in
-            make.horizontalEdges.equalToSuperview().inset(20)
-            make.height.equalTo(imageCollectionView.snp.width).multipliedBy(0.8)
-            make.top.equalTo(petCollectionView.snp.bottom).offset(20)
+            make.horizontalEdges.equalToSuperview()
+            make.height.equalTo(120)
+            make.top.equalTo(petCollectionView.snp.bottom)
         }
-        
-        pickButton.snp.makeConstraints { make in
-            make.width.height.equalTo(44)
-            make.bottom.trailing.equalTo(imageCollectionView).offset(-12)
+
+        photoLineView.snp.makeConstraints { make in
+            make.top.equalTo(imageCollectionView.snp.bottom).offset(12)
+            make.height.equalTo(1)
+            make.horizontalEdges.equalTo(titleTextField)
         }
         
         titleTextField.snp.makeConstraints { make in
-            make.top.equalTo(imageCollectionView.snp.bottom).offset(20)
+            make.top.equalTo(photoLineView.snp.bottom).offset(16)
             make.horizontalEdges.equalToSuperview().inset(20)
             make.height.equalTo(60)
         }

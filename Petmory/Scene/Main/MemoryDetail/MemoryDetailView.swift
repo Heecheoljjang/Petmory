@@ -50,14 +50,13 @@ final class MemoryDetailView: BaseView {
         return label
     }()
     
-    let dateLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: CustomFont.medium, size: 12)
-        label.textAlignment = .center
+    let titleTextFieldLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .systemGray5
         
-        return label
+        return view
     }()
-    
+
     let contentTextView: UITextView = {
         let view = UITextView()
         view.backgroundColor = .systemBackground
@@ -67,29 +66,6 @@ final class MemoryDetailView: BaseView {
         return view
     }()
     
-//    let petCollectionView: UICollectionView = {
-//        let layout = UICollectionViewFlowLayout()
-//        layout.scrollDirection = .horizontal
-//        layout.sectionInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
-//        layout.minimumInteritemSpacing = 0
-//
-//        let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-//        view.register(MemoryDetailPetCollectionViewCell.self, forCellWithReuseIdentifier: MemoryDetailPetCollectionViewCell.identifier)
-//        view.backgroundColor = .systemBackground
-//        view.allowsMultipleSelection = true
-//        view.showsHorizontalScrollIndicator = false
-//
-//        return view
-//    }()
-    
-//    let withLabel: UILabel = {
-//        let label = UILabel()
-//        label.text = "with"
-//        label.font = UIFont(name: CustomFont.bold, size: 15)
-//
-//        return label
-//    }()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -98,14 +74,8 @@ final class MemoryDetailView: BaseView {
         super.configure()
         
         stackView.addArrangedSubview(imageCollectionView)
-        
-//        [imageCollectionView, titleLabel, dateLabel, contentTextView, petCollectionView, withLabel].forEach {
-//            contentView.addSubview($0)
-//        }
-//        [stackView, titleLabel, dateLabel, contentTextView, petCollectionView, withLabel].forEach {
-//            contentView.addSubview($0)
-//        }
-        [stackView, titleLabel, dateLabel, contentTextView].forEach {
+
+        [stackView, titleLabel, titleTextFieldLineView, contentTextView].forEach {
             contentView.addSubview($0)
         }
         
@@ -134,44 +104,23 @@ final class MemoryDetailView: BaseView {
             make.height.equalTo(imageCollectionView.snp.width).multipliedBy(0.8)
             make.top.equalToSuperview()
         }
-        
-//        imageCollectionView.snp.makeConstraints { make in
-//            make.horizontalEdges.equalToSuperview()
-//            make.height.equalTo(imageCollectionView.snp.width).multipliedBy(0.8)
-//            make.top.equalToSuperview().offset(20)
-//        }
-        
+
         titleLabel.snp.makeConstraints { make in
             make.centerX.equalTo(imageCollectionView)
             make.top.equalTo(imageCollectionView.snp.bottom).offset(20)
             make.horizontalEdges.equalToSuperview().inset(20)
+            make.height.equalTo(40)
         }
         
-        dateLabel.snp.makeConstraints { make in
-            make.centerX.equalTo(titleLabel)
-            make.top.equalTo(titleLabel.snp.bottom).offset(20)
-            make.horizontalEdges.equalToSuperview().inset(20)
+        titleTextFieldLineView.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.top.equalTo(titleLabel.snp.bottom)
+            make.horizontalEdges.equalTo(titleLabel)
         }
-        
-//        withLabel.snp.makeConstraints { make in
-//            //            make.leading.equalTo(self).offset(20)
-//            //            make.top.equalTo(self.safeAreaLayoutGuide)
-//            make.leading.equalToSuperview().offset(20)
-//            make.top.equalTo(dateLabel.snp.bottom).offset(20)
-//            make.height.equalTo(52)
-//        }
-//        petCollectionView.snp.makeConstraints { make in
-//            make.top.equalTo(withLabel)
-//            make.trailing.equalToSuperview()
-//            //make.top.trailing.equalTo(self.safeAreaLayoutGuide)
-//            make.leading.equalTo(withLabel.snp.trailing).offset(12)
-//            make.height.equalTo(52)
-//        }
-        
+
         contentTextView.snp.makeConstraints { make in
             make.horizontalEdges.equalTo(titleLabel)
-            make.top.equalTo(dateLabel.snp.bottom).offset(20)
-            //make.height.greaterThanOrEqualTo(100)
+            make.top.equalTo(titleTextFieldLineView.snp.bottom).offset(20)
             make.bottom.equalToSuperview()
         }
     }
