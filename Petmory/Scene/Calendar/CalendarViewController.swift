@@ -229,6 +229,26 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
             return .black
         }
     }
+    
+    func minimumDate(for calendar: FSCalendar) -> Date {
+        let currentDate = Date()
+        var dateComponents = DateComponents()
+        let calendar = Calendar.init(identifier: .gregorian)
+        dateComponents.year = -50
+        let minDate = calendar.date(byAdding: dateComponents, to: currentDate)
+        
+        return minDate!
+    }
+    
+    func maximumDate(for calendar: FSCalendar) -> Date {
+        let currentDate = Date()
+        var dateComponents = DateComponents()
+        let calendar = Calendar.init(identifier: .gregorian)
+        dateComponents.year = 30
+        let maxDate = calendar.date(byAdding: dateComponents, to: currentDate)
+        
+        return maxDate!
+    }
 }
 
 extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
