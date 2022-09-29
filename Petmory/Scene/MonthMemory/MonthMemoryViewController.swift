@@ -125,12 +125,16 @@ extension MonthMemoryViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MonthMemoryTableViewCell.identifier) as? MonthMemoryTableViewCell else { return UITableViewCell() }
 
-        //let tempTask = tasks.filter("memoryDateString == '\(dateList[indexPath.section])'")[indexPath.row]
-        
         cell.memoryTitle.text = tasks[indexPath.row].memoryTitle
-        cell.memoryContentLabel.text = tasks[indexPath.row].memoryContent == "" ? "텍스트 없음" : tasks[indexPath.row].memoryContent
-        cell.thumbnailImageView.image = tasks[indexPath.row].imageData.count == 0 ? nil : UIImage(data: tasks[indexPath.row].imageData.first!)
+        cell.memoryContentLabel.text = tasks[indexPath.row].memoryContent
         
+        if tasks[indexPath.row].imageData.count == 0 {
+            cell.thumbnailImageView.isHidden = true
+        } else {
+            cell.thumbnailImageView.isHidden = false
+            cell.thumbnailImageView.image = UIImage(data: tasks[indexPath.row].imageData.first!)
+        }
+        cell.dateLabel.text = tasks[indexPath.row].memoryDate.dateToString(type: .monthDay)
         if tasks[indexPath.row].imageData.count > 1 {
             cell.multiSign.isHidden = false
         } else {

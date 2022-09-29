@@ -11,18 +11,29 @@ import SnapKit
 
 final class SearchResultTableViewCell: BaseTableViewCell {
     
-    let memoryTitle: UILabel = {
+    let stackView: UIStackView = {
+        let view = UIStackView()
+        view.axis = .horizontal
+        return view
+    }()
+    
+    let dateLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: CustomFont.medium, size: 18)
-        
+        label.font = UIFont(name: CustomFont.medium, size: 10)
+        label.textColor = .lightGray
         return label
     }()
     
-    let memoryDateLabel: UILabel = {
+    let memoryTitle: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: CustomFont.medium, size: 13)
-        label.textColor = .lightGray
-        
+        label.font = UIFont(name: CustomFont.medium, size: 16)
+        return label
+    }()
+    
+    let memoryContentLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: CustomFont.medium, size: 12)
+        label.textColor = .darkGray
         return label
     }()
     
@@ -34,6 +45,14 @@ final class SearchResultTableViewCell: BaseTableViewCell {
         return view
     }()
     
+    let multiSign: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(systemName: "rectangle.fill.on.rectangle.angled.fill")
+        view.backgroundColor = .clear
+        view.tintColor = .white
+        return view
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: AllMemoryTableViewCell.identifier)
         
@@ -42,34 +61,57 @@ final class SearchResultTableViewCell: BaseTableViewCell {
     override func configure() {
         super.configure()
         
-        [memoryDateLabel, memoryTitle, thumbnailImageView].forEach {
+        stackView.addArrangedSubview(thumbnailImageView)
+        
+        [memoryContentLabel, memoryTitle, multiSign, dateLabel, stackView].forEach {
             self.addSubview($0)
         }
+        
         selectionStyle = .none
     }
     
     override func setUpConstraints() {
         super.setUpConstraints()
         
+        //88
         memoryTitle.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(20)
-            make.trailing.equalTo(thumbnailImageView.snp.leading).offset(-20)
+            make.trailing.equalTo(stackView.snp.leading).offset(-20)
             make.top.equalTo(self).offset(12)
-            make.height.equalTo(32)
+            make.height.equalTo(24)
         }
         
-        memoryDateLabel.snp.makeConstraints { make in
+        memoryContentLabel.snp.makeConstraints { make in
             make.horizontalEdges.equalTo(memoryTitle)
-            make.top.equalTo(memoryTitle.snp.bottom).offset(12)
-            make.height.equalTo(20)
+            make.top.equalTo(memoryTitle.snp.bottom).offset(8)
+            make.height.equalTo(16)
+            //make.bottom.equalToSuperview().offset(-12)
+        }
+        
+        dateLabel.snp.makeConstraints { make in
+            make.horizontalEdges.equalTo(memoryTitle)
+            make.top.equalTo(memoryContentLabel.snp.bottom).offset(4)
             make.bottom.equalToSuperview().offset(-12)
         }
         
         thumbnailImageView.snp.makeConstraints { make in
-            make.top.equalTo(memoryTitle)
-            make.bottom.equalTo(memoryDateLabel)
+//            make.top.equalTo(memoryTitle)
+//            make.bottom.equalTo(memoryContentLabel)
+//            make.trailing.equalToSuperview().offset(-20)
+//            make.height.equalTo(64)
+            make.width.equalTo(80)
+        }
+        
+        stackView.snp.makeConstraints { make in
+            make.verticalEdges.equalToSuperview().inset(12)
             make.trailing.equalToSuperview().offset(-20)
-            make.size.equalTo(64)
+//            make.height.equalTo(64)
+//            make.width.equalTo(80)
+        }
+        
+        multiSign.snp.makeConstraints { make in
+            make.size.equalTo(16)
+            make.top.trailing.equalTo(thumbnailImageView).inset(4)
         }
     }
 }

@@ -73,8 +73,21 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UISe
         let tempTask = tasks[indexPath.row]
         
         cell.memoryTitle.text = tempTask.memoryTitle
-        cell.memoryDateLabel.text = tempTask.memoryDateString
-        cell.thumbnailImageView.image = tempTask.imageData.count == 0 ? nil : UIImage(data: tempTask.imageData.first!)
+        cell.memoryContentLabel.text = tempTask.memoryContent
+        if tempTask.imageData.count == 0 {
+            cell.thumbnailImageView.isHidden = true
+        } else {
+            cell.thumbnailImageView.isHidden = false
+            cell.thumbnailImageView.image = UIImage(data: tempTask.imageData.first!)
+        }
+        cell.dateLabel.text = tempTask.memoryDate.dateToString(type: .simple)
+        
+        if tempTask.imageData.count > 1 {
+            cell.multiSign.isHidden = false
+        } else {
+            cell.multiSign.isHidden = true
+        }
+        
         
         return cell
     }

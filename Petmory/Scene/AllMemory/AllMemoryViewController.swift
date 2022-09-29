@@ -120,7 +120,7 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
         label.textColor = .black
         
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = .veryLightGray
         view.addSubview(label)
         
         return view
@@ -141,7 +141,6 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
         let tempTask = tasks.filter("memoryDateString CONTAINS[c] '\(dateList[indexPath.section])'").sorted(byKeyPath: "memoryDate", ascending: false)[indexPath.row]
         
         cell.memoryTitle.text = tempTask.memoryTitle
-        //cell.memoryContentLabel.text = tempTask.memoryContent == "" ? "텍스트 없음" : tempTask.memoryContent
         cell.memoryContentLabel.text = tempTask.memoryContent
         if tempTask.imageData.count == 0 {
             cell.thumbnailImageView.isHidden = true
