@@ -214,6 +214,8 @@ final class AddCalendarViewController: BaseViewController {
                             transition(self, transitionStyle: .dismiss)
                         }
                     }
+                } else {
+                    transition(self, transitionStyle: .dismiss)
                 }
             }
         }
