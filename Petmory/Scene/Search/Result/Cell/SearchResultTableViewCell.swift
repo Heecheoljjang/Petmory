@@ -43,7 +43,8 @@ final class SearchResultTableViewCell: BaseTableViewCell {
         let view = UIImageView()
         view.layer.cornerRadius = 5
         view.clipsToBounds = true
-        
+        view.contentMode = .scaleAspectFill
+
         return view
     }()
     

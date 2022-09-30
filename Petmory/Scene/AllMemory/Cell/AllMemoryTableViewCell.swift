@@ -43,7 +43,7 @@ final class AllMemoryTableViewCell: BaseTableViewCell {
         let view = UIImageView()
         view.layer.cornerRadius = 5
         view.clipsToBounds = true
-        view.contentMode = .scaleToFill
+        view.contentMode = .scaleAspectFill
         return view
     }()
     
