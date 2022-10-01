@@ -72,7 +72,7 @@ final class WritingViewController: BaseViewController {
         super.viewDidLoad()
         
         petList = repository.fetchPet()
-        
+        print(#function)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -247,9 +247,14 @@ extension WritingViewController: UICollectionViewDelegate, UICollectionViewDataS
         }
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        print(#function)
         if collectionView == mainView.petCollectionView {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WritingPetCollectionViewCell.identifier, for: indexPath) as? WritingPetCollectionViewCell else { return UICollectionViewCell() }
             cell.nameLabel.text = petList[indexPath.item].petName
+            
+            if petList.count == 1 {
+                collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .init())
+            }
             
             return cell
         } else {
