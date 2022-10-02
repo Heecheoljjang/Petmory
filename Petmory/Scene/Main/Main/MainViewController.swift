@@ -40,6 +40,8 @@ final class MainViewController: BaseViewController {
     
     let yearList = [Int](1990...2050)
     
+    let notificationCenter = UNUserNotificationCenter.current()
+    
     let titleViewTextField: UITextField = {
         let textField = UITextField()
         textField.font = UIFont(name: CustomFont.medium, size: 16)
@@ -63,6 +65,8 @@ final class MainViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        requestAuthorization()
+        
         tasks = repository.fetchAllMemory()
         
         petList = repository.fetchPet()
@@ -156,6 +160,19 @@ final class MainViewController: BaseViewController {
         toolBar.setItems([cancelButton,flexibleSpace,doneButton], animated: false)
         
         titleViewTextField.inputAccessoryView = toolBar
+    }
+    private func requestAuthorization() {
+        let authorizationOptions = UNAuthorizationOptions(arrayLiteral: .alert, .sound)
+        notificationCenter.requestAuthorization(options: authorizationOptions) { success, error in
+            if let error {
+                self.noHandlerAlert(title: "오류", message: "알림 권한을 확인해주세요.")
+            }
+            if success == true {
+                
+            } else {
+                self.noHandlerAlert(title: "알림을 받으실 수 없습니다.", message: "설정에서 변경하실 수 있습니다.")
+            }
+        }
     }
     
     //MARK: - @objc

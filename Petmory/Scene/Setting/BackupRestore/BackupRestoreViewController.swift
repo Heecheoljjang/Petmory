@@ -45,6 +45,8 @@ final class BackupRestoreViewController: BaseViewController {
         return label
     }()
     
+    let notificationCenter = UNUserNotificationCenter.current()
+    
     override func loadView() {
         view = mainView
     }
@@ -198,6 +200,23 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                                 self.repository.localRealm.add(memoryData)
                                 self.repository.localRealm.add(calendarData)
                                 self.repository.localRealm.add(petListData)
+
+                                //알림 다시
+                                self.calendar = self.repository.fetchAllCalendar()
+                                self.petList = self.repository.fetchPet()
+                                
+                                if self.calendar.count != 0 {
+                                    self.calendar.forEach {
+                                        print($0)
+                                        self.sendNotification(notiTitle: "오늘의 일정", body: $0.title, date: $0.date, identifier: "\($0.registerDate)", type: .calendar)
+                                    }
+                                }
+                                if self.petList.count != 0 {
+                                    self.petList.forEach {
+                                        print($0)
+                                        self.sendNotification(notiTitle: "\($0.petName) 생일", body: "소중한 하루를 선물해주세요 :)", date: $0.birthday!, identifier: "\($0.registerDate)", type: .pet)
+                                    }
+                                }
                             }
                             self.hud.dismiss(animated: true)
                             let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -244,6 +263,23 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                                     self.repository.localRealm.add(memoryData)
                                     self.repository.localRealm.add(calendarData)
                                     self.repository.localRealm.add(petListData)
+                                    
+                                    //알림 다시
+                                    self.calendar = self.repository.fetchAllCalendar()
+                                    self.petList = self.repository.fetchPet()
+                                    
+                                    if self.calendar.count != 0 {
+                                        self.calendar.forEach {
+                                            print($0)
+                                            self.sendNotification(notiTitle: "오늘의 일정", body: $0.title, date: $0.date, identifier: "\($0.registerDate)", type: .calendar)
+                                        }
+                                    }
+                                    if self.petList.count != 0 {
+                                        self.petList.forEach {
+                                            print($0)
+                                            self.sendNotification(notiTitle: "\($0.petName) 생일", body: "소중한 하루를 선물해주세요 :)", date: $0.birthday!, identifier: "\($0.registerDate)", type: .pet)
+                                        }
+                                    }
                                 }
                                 self.hud.dismiss(animated: true)
                                 let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -323,4 +359,39 @@ extension BackupRestoreViewController {
         present(alert, animated: true)
     }
     
+}
+
+extension BackupRestoreViewController {
+    private func sendNotification(notiTitle: String, body: String, date: Date, identifier: String, type: NotificationType) {
+ 
+        let notificationContent = UNMutableNotificationContent()
+        notificationContent.sound = .default
+        notificationContent.title = notiTitle
+        notificationContent.body = body
+        
+        if type == .calendar {
+            var dateComponents = DateComponents()
+            dateComponents.year = date.dateComponentFromDate(component: DateComponent.year.rawValue)
+            dateComponents.month = date.dateComponentFromDate(component: DateComponent.month.rawValue)
+            dateComponents.day = date.dateComponentFromDate(component: DateComponent.day.rawValue)
+            dateComponents.hour = 0
+            dateComponents.minute = 0
+            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+            
+            let request = UNNotificationRequest(identifier: identifier, content: notificationContent, trigger: trigger)
+            
+            notificationCenter.add(request)
+        } else {
+            var dateComponents = DateComponents()
+            dateComponents.month = date.dateComponentFromDate(component: DateComponent.month.rawValue)
+            dateComponents.day = date.dateComponentFromDate(component: DateComponent.day.rawValue)
+            dateComponents.hour = 0
+            dateComponents.minute = 0
+            
+            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+            
+            let request = UNNotificationRequest(identifier: identifier, content: notificationContent, trigger: trigger)
+            notificationCenter.add(request)
+        }
+    }
 }

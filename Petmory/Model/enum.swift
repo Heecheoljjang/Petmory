@@ -40,3 +40,7 @@ enum BackupFileName {
     static let calendar = "calendar"
     static let pet = "pet"
 }
+
+enum NotificationType {
+    case calendar, pet
+}
