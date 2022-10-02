@@ -152,6 +152,7 @@ final class WritingViewController: BaseViewController {
             self.memoryDate = self.tempDate
             
         }
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
         let contentViewController = UIViewController()
         contentViewController.view = mainView.titleViewDatePicker
         contentViewController.preferredContentSize.height = 200
@@ -160,6 +161,7 @@ final class WritingViewController: BaseViewController {
         
         alert.setValue(contentViewController, forKey: "contentViewController")
         alert.addAction(select)
+        alert.addAction(cancel)
         
         present(alert, animated: true)
     }

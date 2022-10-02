@@ -14,8 +14,7 @@ final class WritingView: BaseView {
     // 타이틀뷰
     let titleViewButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 160, height: 40))
-        var configuration = UIButton.Configuration.filled()
-        configuration.baseBackgroundColor = .darkGray
+        var configuration = UIButton.Configuration.plain()
         configuration.image = UIImage(systemName: "chevron.down")
         configuration.imagePlacement = .trailing
         configuration.imagePadding = 4

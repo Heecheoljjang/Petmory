@@ -158,6 +158,7 @@ final class MainViewController: BaseViewController {
                 self.countList.append(self.tasks.filter("memoryDateString CONTAINS[c] '\(date)'").count)
             }
         }
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
         let contentViewController = UIViewController()
         contentViewController.view = pickerView
         contentViewController.preferredContentSize.height = 200
@@ -167,6 +168,7 @@ final class MainViewController: BaseViewController {
         
         alert.setValue(contentViewController, forKey: "contentViewController")
         alert.addAction(select)
+        alert.addAction(cancel)
         
         present(alert, animated: true)
     }
