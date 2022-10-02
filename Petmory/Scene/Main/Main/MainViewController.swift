@@ -21,9 +21,24 @@ final class MainViewController: BaseViewController {
     
     var tempList: [String] = []
     
+//    var currentYear: String = "" {
+//        didSet {
+//            titleViewTextField.text = currentYear + "년"
+//
+//            tempList = monthList
+//            for i in 0..<monthList.count {
+//                tempList[i] = currentYear + monthList[i]
+//            }
+//        }
+//    }
+    
+    var selectedDate = ""
+    
     var currentYear: String = "" {
         didSet {
-            titleViewTextField.text = currentYear + "년"
+            var attributedTitle = AttributedString(currentYear + "년")
+            attributedTitle.font = UIFont(name: CustomFont.medium, size: 16)
+            mainView.titleViewButton.configuration?.attributedTitle = attributedTitle
             
             tempList = monthList
             for i in 0..<monthList.count {
@@ -42,18 +57,17 @@ final class MainViewController: BaseViewController {
     
     let notificationCenter = UNUserNotificationCenter.current()
     
-    let titleViewTextField: UITextField = {
-        let textField = UITextField()
-        textField.font = UIFont(name: CustomFont.medium, size: 16)
-        textField.textAlignment = .center
-        textField.tintColor = .clear
-        
-        return textField
-    }()
+//    let titleViewTextField: UITextField = {
+//        let textField = UITextField()
+//        textField.font = UIFont(name: CustomFont.medium, size: 16)
+//        textField.textAlignment = .center
+//        textField.tintColor = .clear
+//
+//        return textField
+//    }()
     
     let pickerView: UIPickerView = {
         let view = UIPickerView()
-        
         return view
     }()
     
@@ -101,15 +115,15 @@ final class MainViewController: BaseViewController {
         
         mainView.diaryCollectionView.reloadData()
 
-        navigationItem.titleView = titleViewTextField
-        
+        //navigationItem.titleView = titleViewTextField
+        navigationItem.titleView = mainView.titleViewButton
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        titleViewTextField.resignFirstResponder()
-    }
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//
+//        titleViewTextField.resignFirstResponder()
+//    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -130,7 +144,7 @@ final class MainViewController: BaseViewController {
         navigationController?.navigationBar.tintColor = .diaryColor
         navigationItem.backButtonTitle = ""
         
-        navigationItem.titleView = titleViewTextField
+        //navigationItem.titleView = titleViewTextField
     }
     
     override func configure() {
@@ -140,39 +154,62 @@ final class MainViewController: BaseViewController {
         mainView.diaryCollectionView.dataSource = self
         
         mainView.writingButton.addTarget(self, action: #selector(presentWritingView), for: .touchUpInside)
+        mainView.titleViewButton.addTarget(self, action: #selector(presentPickerView(_ :)), for: .touchUpInside)
         
         pickerView.delegate = self
         pickerView.dataSource = self
         
-        titleViewTextField.delegate = self
-        titleViewTextField.inputView = pickerView
+//        titleViewTextField.delegate = self
+//        titleViewTextField.inputView = pickerView
         
-        let toolBar = UIToolbar()
-        toolBar.barStyle = .default
-        toolBar.isTranslucent = true
-        toolBar.tintColor = .diaryColor
-        toolBar.sizeToFit()
+//        let toolBar = UIToolbar()
+//        toolBar.barStyle = .default
+//        toolBar.isTranslucent = true
+//        toolBar.tintColor = .diaryColor
+//        toolBar.sizeToFit()
+//
+//        let doneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(tapDoneButton))
+//        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+//        let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(tapCancelButton))
+//
+//        toolBar.setItems([cancelButton,flexibleSpace,doneButton], animated: false)
         
-        let doneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(tapDoneButton))
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(tapCancelButton))
-        
-        toolBar.setItems([cancelButton,flexibleSpace,doneButton], animated: false)
-        
-        titleViewTextField.inputAccessoryView = toolBar
+        //titleViewTextField.inputAccessoryView = toolBar
     }
     private func requestAuthorization() {
         let authorizationOptions = UNAuthorizationOptions(arrayLiteral: .alert, .sound)
         notificationCenter.requestAuthorization(options: authorizationOptions) { success, error in
-            if let error {
-                self.noHandlerAlert(title: "오류", message: "알림 권한을 확인해주세요.")
-            }
+
             if success == true {
                 
             } else {
                 self.noHandlerAlert(title: "알림을 받으실 수 없습니다.", message: "설정에서 변경하실 수 있습니다.")
             }
         }
+    }
+    
+    private func setDatePickerSheet() {
+
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let select = UIAlertAction(title: "선택", style: .default) { [weak self] _ in
+            
+            guard let self = self else { return }
+
+            self.currentYear = self.selectedDate
+            self.countList = []
+            
+            self.tempList.forEach { date in
+                self.countList.append(self.tasks.filter("memoryDateString CONTAINS[c] '\(date)'").count)
+            }
+        }
+        let contentViewController = UIViewController()
+        contentViewController.view = pickerView
+        contentViewController.preferredContentSize.height = 200
+        
+        alert.setValue(contentViewController, forKey: "contentViewController")
+        alert.addAction(select)
+        
+        present(alert, animated: true)
     }
     
     //MARK: - @objc
@@ -199,26 +236,31 @@ final class MainViewController: BaseViewController {
         transition(settingViewController, transitionStyle: .push)
     }
     
-    @objc private func tapDoneButton() {
-        let row = pickerView.selectedRow(inComponent: 0)
-        
-        currentYear = "\(yearList[row])"
-        
-        countList = []
-        
-        tempList.forEach { date in
-            countList.append(tasks.filter("memoryDateString CONTAINS[c] '\(date)'").count)
-        }
-        
-        titleViewTextField.text = "\(yearList[row])년"
-        
-        navigationItem.titleView = titleViewTextField
-
-        titleViewTextField.resignFirstResponder()
-    }
+//    @objc private func tapDoneButton() {
+//        let row = pickerView.selectedRow(inComponent: 0)
+//
+//        currentYear = "\(yearList[row])"
+//
+//        countList = []
+//
+//        tempList.forEach { date in
+//            countList.append(tasks.filter("memoryDateString CONTAINS[c] '\(date)'").count)
+//        }
+//
+//        titleViewTextField.text = "\(yearList[row])년"
+//
+//        navigationItem.titleView = titleViewTextField
+//
+//        titleViewTextField.resignFirstResponder()
+//    }
+//
+//    @objc private func tapCancelButton() {
+//        titleViewTextField.resignFirstResponder()
+//    }
     
-    @objc private func tapCancelButton() {
-        titleViewTextField.resignFirstResponder()
+    //MARK: - picker띄우기
+    @objc private func presentPickerView(_ sender: UIButton) {
+        setDatePickerSheet()
     }
 }
 
@@ -263,18 +305,18 @@ extension MainViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        
+        selectedDate = "\(yearList[row])"
     }
 }
-
-extension MainViewController: UITextFieldDelegate {
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        pickerView.selectRow(Int(Date().dateToString(type: .onlyYear))! - 1990, inComponent: 0, animated: false)
-        titleViewTextField.isUserInteractionEnabled = false
-        return true
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        titleViewTextField.isUserInteractionEnabled = true
-    }
-}
+//
+//extension MainViewController: UITextFieldDelegate {
+//    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+//        pickerView.selectRow(Int(Date().dateToString(type: .onlyYear))! - 1990, inComponent: 0, animated: false)
+//        titleViewTextField.isUserInteractionEnabled = false
+//        return true
+//    }
+//
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//        titleViewTextField.isUserInteractionEnabled = true
+//    }
+//}

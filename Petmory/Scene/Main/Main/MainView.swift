@@ -11,6 +11,21 @@ import SnapKit
 
 final class MainView: BaseView {
     
+    let titleViewButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 120, height: 40))
+        var configuration = UIButton.Configuration.filled()
+
+        configuration.image = UIImage(systemName: "chevron.down")
+        configuration.baseBackgroundColor = .darkGray
+        configuration.imagePlacement = .trailing
+        configuration.imagePadding = 4
+        configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 10)
+        
+        button.configuration = configuration
+        
+        return button
+    }()
+    
     let diaryCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
