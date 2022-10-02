@@ -36,33 +36,21 @@ final class WritingViewController: BaseViewController {
     
     var memoryDate = Date() {
         didSet {
-            titleViewDatePicker.date = memoryDate
+            mainView.titleViewDatePicker.date = memoryDate
+            
+            var attributedTitle = AttributedString(memoryDate.dateToString(type: .simple))
+            attributedTitle.font = UIFont(name: CustomFont.medium, size: 16)
+            mainView.titleViewButton.configuration?.attributedTitle = attributedTitle
+            navigationItem.titleView = mainView.titleViewButton
         }
     }
+    
+    var tempDate = Date()
     
     //사진 고를때 잠깐 보이는 시점인지 확인하는 프로퍼티
     var isSelectingPhoto = false
     
     var settingDetailView: (() -> ())?
-    
-    let titleViewTextField: UITextField = {
-        let textField = UITextField()
-        textField.font = UIFont(name: CustomFont.medium, size: 16)
-        textField.textAlignment = .center
-        textField.tintColor = .clear
-        
-        return textField
-    }()
-    
-    let titleViewDatePicker: UIDatePicker = {
-        let datePicker = UIDatePicker()
-        datePicker.backgroundColor = .white
-        datePicker.preferredDatePickerStyle = .wheels
-        datePicker.datePickerMode = .date
-        datePicker.locale = Locale(identifier: "ko-KR")
-        
-        return datePicker
-    }()
     
     override func loadView() {
         self.view = mainView
@@ -90,11 +78,7 @@ final class WritingViewController: BaseViewController {
                 mainView.contentTextView.textColor = .placeholderColor
             }
         }
-        titleViewDatePicker.date = memoryDate
-        titleViewTextField.inputView = titleViewDatePicker
-        titleViewTextField.text = memoryDate.dateToString(type: .simple)
-        navigationItem.titleView = titleViewTextField
-    
+        
         mainView.imageCollectionView.reloadData()
         
     }
@@ -110,6 +94,7 @@ final class WritingViewController: BaseViewController {
         
         let doneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(finishWriting))
         let cancelButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(cancelWriting))
+        
         navigationController?.navigationBar.tintColor = .diaryColor
         navigationItem.rightBarButtonItem = doneButton
         navigationItem.leftBarButtonItem = cancelButton
@@ -125,18 +110,16 @@ final class WritingViewController: BaseViewController {
         mainView.contentTextView.textColor = .placeholderColor
                 
         //MARK: 네비게이션 타이틀 뷰
+        mainView.titleViewButton.addTarget(self, action: #selector(presentPickerView(_ :)), for: .touchUpInside)
+        mainView.titleViewDatePicker.date = memoryDate
 
-        titleViewTextField.delegate = self
-        titleViewDatePicker.addTarget(self, action: #selector(selectDate), for: .valueChanged)
+        var attributedTitle = AttributedString(memoryDate.dateToString(type: .simple))
+        attributedTitle.font = UIFont(name: CustomFont.medium, size: 16)
+        mainView.titleViewButton.configuration?.attributedTitle = attributedTitle
+        navigationItem.titleView = mainView.titleViewButton
         
-        //툴바
-        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: mainView.bounds.size.width, height: 40))
-        let toolBarDoneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(doneSelectDate))
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let toolBarCancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(dismissPicker))
-        toolBar.setItems([toolBarCancelButton, flexibleSpace, toolBarDoneButton], animated: true)
-        titleViewTextField.inputAccessoryView = toolBar
-        
+        mainView.titleViewDatePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
+
     }
     
     override func configure() {
@@ -159,7 +142,38 @@ final class WritingViewController: BaseViewController {
         transition(picker, transitionStyle: .presentModally)
     }
     
+    private func setDatePickerSheet() {
+
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let select = UIAlertAction(title: "선택", style: .default) { [weak self] _ in
+            
+            guard let self = self else { return }
+
+            self.memoryDate = self.tempDate
+            
+        }
+        let contentViewController = UIViewController()
+        contentViewController.view = mainView.titleViewDatePicker
+        contentViewController.preferredContentSize.height = 200
+        
+        //selectedDate = "\(Int(Date().dateToString(type: .onlyYear))!)"
+        
+        alert.setValue(contentViewController, forKey: "contentViewController")
+        alert.addAction(select)
+        
+        present(alert, animated: true)
+    }
+    
     //MARK: - @objc
+    
+    @objc private func presentPickerView(_ sender: UIButton) {
+        setDatePickerSheet()
+    }
+    
+    @objc private func dateChanged(_ sender: UIDatePicker) {
+        tempDate = sender.date
+    }
+    
     @objc private func finishWriting() {
         withList.removeAll()
         mainView.petCollectionView.indexPathsForSelectedItems?.forEach {
@@ -221,18 +235,6 @@ final class WritingViewController: BaseViewController {
         } else {
             noHandlerAlert(title: "최대 두 장까지 추가할 수 있습니다.", message: "")
         }
-    }
-    @objc private func selectDate(_ sender: UIDatePicker) {
-        
-        memoryDate = sender.date
-        
-    }
-    @objc private func doneSelectDate() {
-        titleViewTextField.text = memoryDate.dateToString(type: .simple)
-        titleViewTextField.endEditing(true)
-    }
-    @objc private func dismissPicker() {
-        titleViewTextField.endEditing(true)
     }
 }
 
@@ -364,18 +366,6 @@ extension WritingViewController: UITextViewDelegate {
         
         transition(writingContentVC, transitionStyle: .presentNavigationModally)
         return false
-    }
-}
-
-extension WritingViewController: UITextFieldDelegate {
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        titleViewTextField.isUserInteractionEnabled = false
-        
-        return true
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        titleViewTextField.isUserInteractionEnabled = true
     }
 }
 

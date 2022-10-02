@@ -21,17 +21,6 @@ final class MainViewController: BaseViewController {
     
     var tempList: [String] = []
     
-//    var currentYear: String = "" {
-//        didSet {
-//            titleViewTextField.text = currentYear + "년"
-//
-//            tempList = monthList
-//            for i in 0..<monthList.count {
-//                tempList[i] = currentYear + monthList[i]
-//            }
-//        }
-//    }
-    
     var selectedDate = ""
     
     var currentYear: String = "" {
@@ -57,15 +46,6 @@ final class MainViewController: BaseViewController {
     
     let notificationCenter = UNUserNotificationCenter.current()
     
-//    let titleViewTextField: UITextField = {
-//        let textField = UITextField()
-//        textField.font = UIFont(name: CustomFont.medium, size: 16)
-//        textField.textAlignment = .center
-//        textField.tintColor = .clear
-//
-//        return textField
-//    }()
-    
     let pickerView: UIPickerView = {
         let view = UIPickerView()
         return view
@@ -88,7 +68,7 @@ final class MainViewController: BaseViewController {
         //현재 년도 구해서 monthList와 더해주기
         currentYear = Date().dateToString(type: .onlyYear)
                 
-        pickerView.selectRow(Int(Date().dateToString(type: .onlyYear))! - 1990, inComponent: 0, animated: false)
+        //pickerView.selectRow(Int(Date().dateToString(type: .onlyYear))! - 1990, inComponent: 0, animated: false)
         
         countList = []
         
@@ -115,15 +95,8 @@ final class MainViewController: BaseViewController {
         
         mainView.diaryCollectionView.reloadData()
 
-        //navigationItem.titleView = titleViewTextField
         navigationItem.titleView = mainView.titleViewButton
     }
-
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//
-//        titleViewTextField.resignFirstResponder()
-//    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -144,7 +117,6 @@ final class MainViewController: BaseViewController {
         navigationController?.navigationBar.tintColor = .diaryColor
         navigationItem.backButtonTitle = ""
         
-        //navigationItem.titleView = titleViewTextField
     }
     
     override func configure() {
@@ -159,22 +131,6 @@ final class MainViewController: BaseViewController {
         pickerView.delegate = self
         pickerView.dataSource = self
         
-//        titleViewTextField.delegate = self
-//        titleViewTextField.inputView = pickerView
-        
-//        let toolBar = UIToolbar()
-//        toolBar.barStyle = .default
-//        toolBar.isTranslucent = true
-//        toolBar.tintColor = .diaryColor
-//        toolBar.sizeToFit()
-//
-//        let doneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(tapDoneButton))
-//        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-//        let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(tapCancelButton))
-//
-//        toolBar.setItems([cancelButton,flexibleSpace,doneButton], animated: false)
-        
-        //titleViewTextField.inputAccessoryView = toolBar
     }
     private func requestAuthorization() {
         let authorizationOptions = UNAuthorizationOptions(arrayLiteral: .alert, .sound)
@@ -206,6 +162,9 @@ final class MainViewController: BaseViewController {
         contentViewController.view = pickerView
         contentViewController.preferredContentSize.height = 200
         
+        pickerView.selectRow(Int(Date().dateToString(type: .onlyYear))! - 1990, inComponent: 0, animated: false)
+        selectedDate = "\(Int(Date().dateToString(type: .onlyYear))!)"
+        
         alert.setValue(contentViewController, forKey: "contentViewController")
         alert.addAction(select)
         
@@ -214,9 +173,7 @@ final class MainViewController: BaseViewController {
     
     //MARK: - @objc
     @objc private func presentAllMemory() {
-        
-        let petList = repository.fetchPet()
-        
+                
         let allMemoryViewController = AllMemoryViewController()
         transition(allMemoryViewController, transitionStyle: .presentNavigation)
         
@@ -235,30 +192,7 @@ final class MainViewController: BaseViewController {
         let settingViewController = SettingViewController()
         transition(settingViewController, transitionStyle: .push)
     }
-    
-//    @objc private func tapDoneButton() {
-//        let row = pickerView.selectedRow(inComponent: 0)
-//
-//        currentYear = "\(yearList[row])"
-//
-//        countList = []
-//
-//        tempList.forEach { date in
-//            countList.append(tasks.filter("memoryDateString CONTAINS[c] '\(date)'").count)
-//        }
-//
-//        titleViewTextField.text = "\(yearList[row])년"
-//
-//        navigationItem.titleView = titleViewTextField
-//
-//        titleViewTextField.resignFirstResponder()
-//    }
-//
-//    @objc private func tapCancelButton() {
-//        titleViewTextField.resignFirstResponder()
-//    }
-    
-    //MARK: - picker띄우기
+
     @objc private func presentPickerView(_ sender: UIButton) {
         setDatePickerSheet()
     }
@@ -308,15 +242,3 @@ extension MainViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         selectedDate = "\(yearList[row])"
     }
 }
-//
-//extension MainViewController: UITextFieldDelegate {
-//    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-//        pickerView.selectRow(Int(Date().dateToString(type: .onlyYear))! - 1990, inComponent: 0, animated: false)
-//        titleViewTextField.isUserInteractionEnabled = false
-//        return true
-//    }
-//
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//        titleViewTextField.isUserInteractionEnabled = true
-//    }
-//}

@@ -11,6 +11,33 @@ import SnapKit
 
 final class WritingView: BaseView {
 
+    // 타이틀뷰
+    let titleViewButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 160, height: 40))
+        var configuration = UIButton.Configuration.filled()
+        configuration.baseBackgroundColor = .darkGray
+        configuration.image = UIImage(systemName: "chevron.down")
+        configuration.imagePlacement = .trailing
+        configuration.imagePadding = 4
+        configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 10)
+        configuration.baseForegroundColor = .black
+        
+        button.configuration = configuration
+        
+        return button
+    }()
+    
+    let titleViewDatePicker: UIDatePicker = {
+        let datePicker = UIDatePicker()
+        datePicker.backgroundColor = .white
+        datePicker.preferredDatePickerStyle = .wheels
+        datePicker.datePickerMode = .date
+        datePicker.locale = Locale(identifier: "ko-KR")
+        
+        return datePicker
+    }()
+    
+    //뷰
     let scrollView: UIScrollView = {
         let view = UIScrollView()
         return view
