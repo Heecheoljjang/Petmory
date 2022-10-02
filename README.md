@@ -1053,3 +1053,8 @@
         - 아래 화살표 이미지를 넣어줘서 더 알아보기 쉽게 해줌
         - 기존에 텍스트필드와 inputView인 datePicker였지만, 버튼 하나와 PickerView, ActionSheet을 이용하는걸로 변경. 작성 화면에서는 기존과 같이 datePicker사용
     - actionSheet으로 데이트피커를 띄울 때, 취소 버튼 추가
+
+#### 이슈
+
+- datePicker에서 취소버튼을 누르는 경우, 마지막 포지션이 남아있음.
+    - 취소 버튼을 눌렀을 때 현재의 값으로 바꿔주면 될 듯
