@@ -152,7 +152,12 @@ final class WritingViewController: BaseViewController {
             self.memoryDate = self.tempDate
             
         }
-        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        let cancel = UIAlertAction(title: "취소", style: .cancel) { [weak self] _ in
+            guard let self = self else { return }
+            
+            self.mainView.titleViewDatePicker.date = self.memoryDate
+            
+        }
         let contentViewController = UIViewController()
         contentViewController.view = mainView.titleViewDatePicker
         contentViewController.preferredContentSize.height = 200

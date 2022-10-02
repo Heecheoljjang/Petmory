@@ -141,7 +141,12 @@ final class CalendarViewController: BaseViewController {
             
             self.mainView.endEditing(true)
         }
-        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        let cancel = UIAlertAction(title: "취소", style: .cancel) { [weak self] _ in
+            guard let self = self else { return }
+            
+            self.datePicker.date = self.selectDate
+            
+        }
         let contentViewController = UIViewController()
         contentViewController.view = datePicker
         contentViewController.preferredContentSize.height = 200
