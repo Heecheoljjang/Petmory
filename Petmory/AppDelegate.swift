@@ -17,8 +17,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Override point for customization after application launch.
         
         IQKeyboardManager.shared.enable = true
-//        IQKeyboardManager.shared.enableAutoToolbar = false
         IQKeyboardManager.shared.keyboardDistanceFromTextField = 0
+        IQKeyboardManager.shared.toolbarTintColor = .diaryColor
+        IQKeyboardManager.shared.toolbarDoneBarButtonItemText = "완료"
+        IQKeyboardManager.shared.toolbarBarTintColor = .white
+        IQKeyboardManager.shared.previousNextDisplayMode = .alwaysHide
+        IQKeyboardManager.shared.shouldShowToolbarPlaceholder = false
         
         UNUserNotificationCenter.current().delegate = self
         

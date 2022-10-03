@@ -155,6 +155,7 @@ final class RegisterPetViewController: BaseViewController {
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let toolBarCancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(dismissPicker))
         toolBar.setItems([toolBarCancelButton, flexibleSpace, toolBarDoneButton], animated: true)
+        toolBar.tintColor = .diaryColor
         mainView.birthdayTextField.inputAccessoryView = toolBar
         
         //MARK: - 버튼 액션
