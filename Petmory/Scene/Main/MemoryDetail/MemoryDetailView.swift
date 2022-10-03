@@ -46,6 +46,7 @@ final class MemoryDetailView: BaseView {
         let label = UILabel()
         label.font = UIFont(name: CustomFont.medium, size: 20)
         label.textAlignment = .center
+        label.numberOfLines = 0
         
         return label
     }()
@@ -109,19 +110,19 @@ final class MemoryDetailView: BaseView {
             make.centerX.equalTo(imageCollectionView)
             make.top.equalTo(imageCollectionView.snp.bottom).offset(20)
             make.horizontalEdges.equalToSuperview().inset(20)
-            make.height.equalTo(40)
+            //make.height.equalTo(40)
         }
         
         titleTextFieldLineView.snp.makeConstraints { make in
             make.height.equalTo(1)
-            make.top.equalTo(titleLabel.snp.bottom)
+            make.top.equalTo(titleLabel.snp.bottom).offset(4)
             make.horizontalEdges.equalTo(titleLabel)
         }
 
         contentTextView.snp.makeConstraints { make in
             make.horizontalEdges.equalTo(titleLabel)
             make.top.equalTo(titleTextFieldLineView.snp.bottom).offset(20)
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-12)
         }
     }
 }
