@@ -161,9 +161,7 @@ final class WritingViewController: BaseViewController {
         let contentViewController = UIViewController()
         contentViewController.view = mainView.titleViewDatePicker
         contentViewController.preferredContentSize.height = 200
-        
-        //selectedDate = "\(Int(Date().dateToString(type: .onlyYear))!)"
-        
+                
         alert.setValue(contentViewController, forKey: "contentViewController")
         alert.addAction(select)
         alert.addAction(cancel)
@@ -201,11 +199,12 @@ final class WritingViewController: BaseViewController {
                     let task = UserMemory(memoryTitle: mainView.titleTextField.text!, memoryDateString: memoryDate.dateToString(type: .simple), petList: withList, memoryContent: "", imageData: imageList, memoryDate: memoryDate, objectId: "\(Date())")
                     
                     repository.addMemory(item: task)
-                    transition(self, transitionStyle: .dismiss)
+                    showAlert(title: "작성 완료!")
+                    
                 } else {
                     let task = UserMemory(memoryTitle: mainView.titleTextField.text!, memoryDateString: memoryDate.dateToString(type: .simple), petList: withList, memoryContent: mainView.contentTextView.text, imageData: imageList, memoryDate: memoryDate, objectId: "\(Date())")
                     repository.addMemory(item: task)
-                    transition(self, transitionStyle: .dismiss)
+                    showAlert(title: "작성 완료!")
                 }
             } else {
                 //MARK: 편집
@@ -380,7 +379,8 @@ extension WritingViewController: UITextViewDelegate {
 extension WritingViewController {
     private func showAlert(title: String) {
         let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-        let ok = UIAlertAction(title: "확인", style: .cancel) { _ in
+        let ok = UIAlertAction(title: "확인", style: .cancel) { [weak self] _ in
+            guard let self = self else { return }
             self.transition(self, transitionStyle: .dismiss)
         }
         alert.addAction(ok)

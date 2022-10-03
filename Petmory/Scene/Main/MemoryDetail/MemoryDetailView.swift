@@ -110,7 +110,6 @@ final class MemoryDetailView: BaseView {
             make.centerX.equalTo(imageCollectionView)
             make.top.equalTo(imageCollectionView.snp.bottom).offset(20)
             make.horizontalEdges.equalToSuperview().inset(20)
-            //make.height.equalTo(40)
         }
         
         titleTextFieldLineView.snp.makeConstraints { make in
