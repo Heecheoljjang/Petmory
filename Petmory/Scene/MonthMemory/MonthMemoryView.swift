@@ -12,9 +12,12 @@ final class MonthMemoryView: BaseView {
     
     let tableView: UITableView = {
         let view = UITableView()
-        view.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         view.register(MonthMemoryTableViewCell.self, forCellReuseIdentifier: MonthMemoryTableViewCell.identifier)
-        view.separatorStyle = .none
+        view.separatorStyle = .singleLine
+        view.separatorColor = .systemGray6
+        view.separatorInset = UIEdgeInsets(top: 0, left: 28, bottom: 0, right: 28)
+        view.sectionHeaderTopPadding = 0
+        view.tableHeaderView = UIView()
         return view
     }()
     
@@ -46,9 +49,7 @@ final class MonthMemoryView: BaseView {
         super.setUpContraints()
 
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(self.safeAreaLayoutGuide).offset(8)
-            make.horizontalEdges.equalToSuperview()
-            make.bottom.equalTo(self.safeAreaLayoutGuide)
+            make.edges.equalTo(self.safeAreaLayoutGuide)
         }
         noMemoryLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()

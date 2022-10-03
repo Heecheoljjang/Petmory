@@ -22,10 +22,12 @@ final class SearchView: BaseView {
     
     let tableView: UITableView = {
         let view = UITableView()
-        view.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         view.register(SearchResultTableViewCell.self, forCellReuseIdentifier: SearchResultTableViewCell.identifier)
-        view.backgroundColor = .white
         view.keyboardDismissMode = .onDrag
+        view.separatorStyle = .singleLine
+        view.separatorColor = .systemGray6
+        view.separatorInset = UIEdgeInsets(top: 0, left: 28, bottom: 0, right: 28)
+        view.sectionHeaderTopPadding = 0
         return view
     }()
     
