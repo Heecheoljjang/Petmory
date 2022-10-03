@@ -12,7 +12,7 @@ final class MyPetTableViewCell: BaseTableViewCell {
     
     let profileImageView: UIImageView = {
         let view = UIImageView()
-        view.layer.cornerRadius = 50
+        view.layer.cornerRadius = 40
         view.clipsToBounds = true
         view.contentMode = .scaleAspectFill
         return view
@@ -47,7 +47,7 @@ final class MyPetTableViewCell: BaseTableViewCell {
         super.setUpConstraints()
         
         profileImageView.snp.makeConstraints { make in
-            make.size.equalTo(100)
+            make.size.equalTo(80)
             make.leading.equalToSuperview().offset(20)
             make.centerY.equalToSuperview()
         }

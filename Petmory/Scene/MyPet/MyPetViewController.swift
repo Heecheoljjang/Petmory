@@ -119,7 +119,7 @@ extension MyPetViewController: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 1 {
             return 84
         } else {
-            return 120
+            return 100
         }
     }
     //MARK: - @objc
