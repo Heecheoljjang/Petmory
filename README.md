@@ -1058,3 +1058,22 @@
 
 - datePicker에서 취소버튼을 누르는 경우, 마지막 포지션이 남아있음.
     - 취소 버튼을 눌렀을 때 현재의 값으로 바꿔주면 될 듯
+
+### 10/3
+
+#### 내용
+
+- UI 수정
+    - 테이블뷰 separator 추가
+    - 디테일 화면 내용 텍스트뷰 레이아웃 수정
+    - 작성 완료 alert 추가
+    - toolBar tintColor 수정
+    - toolBar done버튼 이름을 완료로 수정
+    - 반려동물 리스트 화면 이미지뷰 크기 줄임
+- 오류
+    - 디테일 화면 타이틀 길면 잘리는 오류 수정
+
+#### 이슈
+
+- MonthMemoryViewController에서는 첫 셀 위에 separator가 거슬렸음
+    - tableHeaderView = UIView() 로 해결
