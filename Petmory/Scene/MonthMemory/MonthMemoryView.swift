@@ -14,7 +14,7 @@ final class MonthMemoryView: BaseView {
         let view = UITableView()
         view.register(MonthMemoryTableViewCell.self, forCellReuseIdentifier: MonthMemoryTableViewCell.identifier)
         view.separatorStyle = .singleLine
-        view.separatorColor = .systemGray6
+        view.separatorColor = .systemGray5
         view.separatorInset = UIEdgeInsets(top: 0, left: 28, bottom: 0, right: 28)
         view.sectionHeaderTopPadding = 0
         view.tableHeaderView = UIView()
