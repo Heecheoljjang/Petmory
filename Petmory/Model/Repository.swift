@@ -101,7 +101,7 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType, Use
         do {
             try localRealm.write {
                 localRealm.add(item)
-//                print(localRealm.configuration.fileURL!)
+                print(localRealm.configuration.fileURL!)
             }
         } catch {
             print("기록 추가 오류")

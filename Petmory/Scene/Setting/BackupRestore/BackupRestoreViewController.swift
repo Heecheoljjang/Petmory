@@ -95,10 +95,10 @@ final class BackupRestoreViewController: BaseViewController {
     }
     @objc private func restore() {
         
-        repository.deleteAllMemory(task: self.memory)
-        repository.deleteAllPet(task: self.petList)
-        repository.deleteAllCalendar(task: self.calendar)
-        
+//        repository.deleteAllMemory(task: self.memory)
+//        repository.deleteAllPet(task: self.petList)
+//        repository.deleteAllCalendar(task: self.calendar)
+//
         do {
             let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.archive], asCopy: true)
             documentPicker.delegate = self
@@ -137,6 +137,9 @@ extension BackupRestoreViewController {
             try saveEncodedMemoryToDocument(data: memory, fileName: BackupFileName.memory)
             try saveEncodedCalendarToDocument(data: calendar, fileName: BackupFileName.calendar)
             try saveEncodedPetToDocument(data: petList, fileName: BackupFileName.pet)
+
+            //백업 체크 파일 생성
+            createBackupCheckFile()
             
             let backupFilePath = try zipBackupFile()
             
@@ -144,6 +147,8 @@ extension BackupRestoreViewController {
             showActivityController(backupUrl: backupFilePath)
             
             backupFileList = fetchZipFile()
+            
+            removeBackupCheckFile()
         } catch {
             hud.dismiss(animated: true)
             noHandlerAlert(title: "압축 실패", message: "다시 확인해주세요.")
@@ -186,6 +191,18 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                     
                     do {
                         try self.unZipBackupFile(fileURL: fileURL)
+                        
+                        let checkValue = self.checkBackupFileExist()
+                        print(checkValue, "체크발류")
+                        if checkValue == false {
+                            self.hud.dismiss(animated: true)
+                            self.noHandlerAlert(title: "Petmory의 백업 파일이 아닙니다.", message: "")
+                            return
+                        }
+                        
+                        self.repository.deleteAllMemory(task: self.memory)
+                        self.repository.deleteAllPet(task: self.petList)
+                        self.repository.deleteAllCalendar(task: self.calendar)
                         
                         do {
                             let memoryData = try self.fetchJsonData(fileName: BackupFileName.memory)
@@ -249,6 +266,16 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                         
                         do {
                             try self.unZipBackupFile(fileURL: fileURL)
+                            let checkValue = self.checkBackupFileExist()
+                            print(checkValue, "체크발류")
+                            if checkValue == false {
+                                self.hud.dismiss(animated: true)
+                                self.noHandlerAlert(title: "Petmory의 백업 파일이 아닙니다.", message: "")
+                                return
+                            }
+                            self.repository.deleteAllMemory(task: self.memory)
+                            self.repository.deleteAllPet(task: self.petList)
+                            self.repository.deleteAllCalendar(task: self.calendar)
                             
                             do {
                                 let memoryData = try self.fetchJsonData(fileName: BackupFileName.memory)

@@ -19,6 +19,37 @@ extension UIViewController {
         
         return documentDirectory
     }
+    
+    //백업 확인용 파일 생성
+    func createBackupCheckFile() {
+        guard let documentDirectory = documentDirectoryPath() else { return }
+        
+        let filePath = documentDirectory.appendingPathComponent("PetmoryBackupCheck.txt")
+        let testString = NSString(string: "Petmory")
+        
+        if !FileManager.default.fileExists(atPath: filePath.path) {
+            do {
+                try testString.write(to: filePath, atomically: true, encoding: String.Encoding.utf8.rawValue)
+            } catch {
+                print("txt작성 실패")
+            }
+        }
+    }
+    
+    //백업 확인용 파일 삭제
+    func removeBackupCheckFile() {
+        guard let documentDirectory = documentDirectoryPath() else { return }
+        
+        let filePath = documentDirectory.appendingPathComponent("PetmoryBackupCheck.txt")
+        
+        if FileManager.default.fileExists(atPath: filePath.path) {
+            do {
+                try FileManager.default.removeItem(atPath: filePath.path)
+            } catch {
+                print("삭제 실패")
+            }
+        }
+    }
 
     //MARK: - 백업/복구
     
@@ -164,12 +195,13 @@ extension UIViewController {
         let memoryURL = documentDirectory.appendingPathComponent(BackupFileName.memory + ".json")
         let calendarURL = documentDirectory.appendingPathComponent(BackupFileName.calendar + ".json")
         let petURL = documentDirectory.appendingPathComponent(BackupFileName.pet + ".json")
+        let backupCheckURL = documentDirectory.appendingPathComponent("PetmoryBackupCheck.txt")
         
-        guard FileManager.default.fileExists(atPath: memoryURL.path) && FileManager.default.fileExists(atPath: calendarURL.path) && FileManager.default.fileExists(atPath: petURL.path) else {
+        guard FileManager.default.fileExists(atPath: memoryURL.path) && FileManager.default.fileExists(atPath: calendarURL.path) && FileManager.default.fileExists(atPath: petURL.path) && FileManager.default.fileExists(atPath: backupCheckURL.path) else {
             throw ErrorType.pathAddingError
         }
         
-        urlPath.append(contentsOf: [memoryURL, calendarURL, petURL])
+        urlPath.append(contentsOf: [memoryURL, calendarURL, petURL, backupCheckURL])
         
         do {
             let zipFilePath = try Zip.quickZipFiles(urlPath, fileName: fileName)
@@ -200,6 +232,19 @@ extension UIViewController {
             return try Data(contentsOf: filePath)
         } catch {
             throw ErrorType.fetchJsonDataError
+        }
+    }
+    
+    //백업 파일
+    func checkBackupFileExist() -> Bool {
+        guard let documentDirectory = documentDirectoryPath() else { return false }
+                
+        let checkFilePath = documentDirectory.appendingPathComponent("PetmoryBackupCheck.txt")
+        
+        if FileManager.default.fileExists(atPath: checkFilePath.path) {
+            return true
+        } else {
+            return false
         }
     }
 

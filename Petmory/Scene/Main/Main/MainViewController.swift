@@ -78,6 +78,9 @@ final class MainViewController: BaseViewController {
         
         mainView.diaryCollectionView.reloadData()
         
+        //백업용 텍스트파일 지우기
+        removeBackupCheckFile()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
