@@ -193,8 +193,9 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                         try self.unZipBackupFile(fileURL: fileURL)
                         
                         let checkValue = self.checkBackupFileExist()
-                        print(checkValue, "체크발류")
                         if checkValue == false {
+                            print(fileURL)
+                            self.removeBackupFile(fileName: fileURL)
                             self.hud.dismiss(animated: true)
                             self.noHandlerAlert(title: "Petmory의 백업 파일이 아닙니다.", message: "")
                             return
@@ -267,8 +268,9 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                         do {
                             try self.unZipBackupFile(fileURL: fileURL)
                             let checkValue = self.checkBackupFileExist()
-                            print(checkValue, "체크발류")
                             if checkValue == false {
+                                print(fileURL)
+                                self.removeBackupFile(fileName: fileURL)
                                 self.hud.dismiss(animated: true)
                                 self.noHandlerAlert(title: "Petmory의 백업 파일이 아닙니다.", message: "")
                                 return

@@ -50,6 +50,18 @@ extension UIViewController {
             }
         }
     }
+    
+    //잘못된 백업파일인 경우 삭제
+    func removeBackupFile(fileName: URL) {
+                
+        if FileManager.default.fileExists(atPath: fileName.path) {
+            do {
+                try FileManager.default.removeItem(atPath: fileName.path)
+            } catch {
+                print("삭제 실패")
+            }
+        }
+    }
 
     //MARK: - 백업/복구
     
