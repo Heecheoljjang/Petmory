@@ -124,8 +124,8 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let label = UILabel(frame: CGRect(x: 20, y: 0, width: mainView.frame.size.width - 40, height: 40))
-        label.font = UIFont(name: CustomFont.bold, size: 20)
+        let label = UILabel(frame: CGRect(x: 20, y: 0, width: mainView.frame.size.width - 40, height: 32))
+        label.font = UIFont(name: CustomFont.bold, size: 18)
         label.text = dateList[section]
         label.textColor = .black
         
@@ -137,7 +137,7 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return 32
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
