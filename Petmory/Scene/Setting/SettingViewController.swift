@@ -27,6 +27,13 @@ final class SettingViewController: BaseViewController {
         return label
     }()
     
+    var version: String? {
+        guard let dictionary = Bundle.main.infoDictionary,
+              let version = dictionary["CFBundleShortVersionString"] as? String else { return nil }
+        
+        return version
+    }
+    
     override func loadView() {
         self.view = mainView
     }
@@ -34,7 +41,9 @@ final class SettingViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        if let version = version {
+            mainView.versionLabel.text = "버전 \(version)"
+        }
     }
 
     override func setUpController() {
@@ -74,8 +83,10 @@ extension SettingViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingTableViewCell.identifier) as? SettingTableViewCell else { return UITableViewCell() }
+        
         cell.titleLabel.text = settingList[indexPath.row]
         cell.cellImage.image = UIImage(systemName: imageList[indexPath.row])
+        
         return cell
     }
     

@@ -22,6 +22,7 @@ enum SettingList {
     static let message = "문의하기"
     static let review = "리뷰 남기기"
     static let openLicense = "오픈소스 라이선스"
+    static let version = "버전 정보"
 }
 
 enum SettingListImage {
@@ -29,6 +30,7 @@ enum SettingListImage {
     static let message = "pencil"
     static let review = "star"
     static let openLicense = "doc"
+    static let version = "info.circle"
 }
 
 enum ErrorType: Error {

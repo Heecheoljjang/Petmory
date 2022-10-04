@@ -20,6 +20,14 @@ final class SettingView: BaseView {
         return view
     }()
     
+    let versionLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: CustomFont.medium, size: 15)
+        label.textColor = .lightGray
+        
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -27,7 +35,9 @@ final class SettingView: BaseView {
     override func configure() {
         super.configure()
         
-        self.addSubview(tableView)
+        [tableView, versionLabel].forEach {
+            addSubview($0)
+        }
         backgroundColor = .white
     }
     
@@ -35,7 +45,14 @@ final class SettingView: BaseView {
         super.setUpContraints()
         
         tableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.horizontalEdges.equalToSuperview()
+            make.top.equalToSuperview()
+            make.bottom.equalTo(versionLabel.snp.top)
+        }
+        
+        versionLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(self.safeAreaLayoutGuide).offset(-20)
+            make.centerX.equalToSuperview()
         }
     }
     
