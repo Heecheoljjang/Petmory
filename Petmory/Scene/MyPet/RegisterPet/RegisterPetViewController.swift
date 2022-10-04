@@ -76,9 +76,7 @@ final class RegisterPetViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        requestAuthorization() //알림 권한 요청
-        
+                
         if currentStatus == CurrentStatus.edit {
             mainView.addButton.configuration?.title = "수정"
             if let task = task {
@@ -179,21 +177,7 @@ final class RegisterPetViewController: BaseViewController {
         picker.delegate = self
         transition(picker, transitionStyle: .presentModally)
     }
-    
-    private func requestAuthorization() {
-        let authorizationOptions = UNAuthorizationOptions(arrayLiteral: .alert, .sound)
-        notificationCenter.requestAuthorization(options: authorizationOptions) { success, error in
-            if let error {
-                self.noHandlerAlert(title: "오류", message: "알림 권한을 확인해주세요.")
-            }
-            if success == true {
-                
-            } else {
-                self.noHandlerAlert(title: "알림을 받으실 수 없습니다.", message: "설정에서 변경하실 수 있습니다.")
-            }
-        }
-    }
-    
+
     private func sendNotification(name: String, date: Date, identifier: String) {
 
         let notificationContent = UNMutableNotificationContent()

@@ -34,7 +34,6 @@ final class AddCalendarViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        requestAuthorization()
         
     }
 
@@ -114,20 +113,6 @@ final class AddCalendarViewController: BaseViewController {
     }
     
     //MARK: - 알림
-    private func requestAuthorization() {
-        let authorizationOptions = UNAuthorizationOptions(arrayLiteral: .alert, .sound)
-        notificationCenter.requestAuthorization(options: authorizationOptions) { success, error in
-            if let error {
-                self.noHandlerAlert(title: "오류", message: "알림 권한을 확인해주세요.")
-            }
-            if success == true {
-                print("허용")
-            } else {
-                self.noHandlerAlert(title: "알림을 받으실 수 없습니다.", message: "설정에서 변경하실 수 있습니다.")
-            }
-        }
-    }
-    
     private func sendNotification(body: String, date: Date, identifier: String) {
  
         let notificationContent = UNMutableNotificationContent()

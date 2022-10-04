@@ -139,7 +139,7 @@ final class MainViewController: BaseViewController {
             if success == true {
                 
             } else {
-                self.noHandlerAlert(title: "알림을 받으실 수 없습니다.", message: "설정에서 변경하실 수 있습니다.")
+                
             }
         }
     }
