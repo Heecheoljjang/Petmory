@@ -48,7 +48,9 @@ final class MemoryDetailViewController: BaseViewController {
             
             if let memoryTask = memoryTask {
                 
-                mainView.titleLabel.text = memoryTask.memoryTitle
+                //mainView.titleLabel.text = memoryTask.memoryTitle
+                mainView.titleLabel.attributedText = setAttributedString(text: memoryTask.memoryTitle)
+                
                 mainView.contentTextView.text = memoryTask.memoryContent
                 
                 titleLabel.text = memoryTask.memoryDateString
@@ -126,7 +128,8 @@ final class MemoryDetailViewController: BaseViewController {
             
             if let memoryTask = self.memoryTask {
                 
-                self.mainView.titleLabel.text = memoryTask.memoryTitle
+                //self.mainView.titleLabel.text = memoryTask.memoryTitle
+                self.mainView.titleLabel.attributedText = self.setAttributedString(text: memoryTask.memoryTitle)
                 self.mainView.contentTextView.text = memoryTask.memoryContent
                 self.titleLabel.text = memoryTask.memoryDateString
                 self.navigationItem.titleView = self.titleLabel
@@ -146,6 +149,17 @@ final class MemoryDetailViewController: BaseViewController {
         transition(editViewController, transitionStyle: .presentNavigation)
         
     }
+    
+    private func setAttributedString(text: String) -> NSMutableAttributedString {
+        let attributedString = NSMutableAttributedString(string: text)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 4
+        paragraphStyle.alignment = .center
+        attributedString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attributedString.length))
+        
+        return attributedString
+    }
+    
     @objc private func deleteMemory() {
         //MARK: 진짜 지울건지 확인하는 alert띄우기
         handlerAlert(title: "삭제하시겠습니까?", message: nil) { _ in
@@ -165,7 +179,8 @@ final class MemoryDetailViewController: BaseViewController {
         
         if let memoryTask = memoryTask {
             
-            mainView.titleLabel.text = memoryTask.memoryTitle
+            //mainView.titleLabel.text = memoryTask.memoryTitle
+            mainView.titleLabel.attributedText = setAttributedString(text: memoryTask.memoryTitle)
             mainView.contentTextView.text = memoryTask.memoryContent
            
         }

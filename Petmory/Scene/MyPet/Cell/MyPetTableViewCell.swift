@@ -56,6 +56,7 @@ final class MyPetTableViewCell: BaseTableViewCell {
             make.leading.equalTo(profileImageView.snp.trailing).offset(40)
             make.trailing.equalToSuperview().offset(-20)
             make.centerY.equalTo(profileImageView)
+            make.height.equalTo(32)
         }
     }
 }

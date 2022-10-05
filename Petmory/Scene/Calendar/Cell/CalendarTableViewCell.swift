@@ -19,7 +19,6 @@ final class CalendarTableViewCell: BaseTableViewCell {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: CustomFont.medium, size: 14)
-        label.sizeToFit()
         return label
     }()
     
@@ -53,7 +52,8 @@ final class CalendarTableViewCell: BaseTableViewCell {
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(colorView)
+            make.top.equalTo(colorView).offset(-4)
+            make.height.equalTo(20)
             make.trailing.lessThanOrEqualToSuperview()
             make.leading.equalTo(colorView.snp.trailing).offset(12)
         }

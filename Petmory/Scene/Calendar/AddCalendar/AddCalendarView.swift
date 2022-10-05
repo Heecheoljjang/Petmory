@@ -104,7 +104,6 @@ final class AddCalendarView: BaseView {
         let textField = UITextField()
         textField.font = UIFont(name: CustomFont.medium, size: 22)
         textField.placeholder = "제목"
-        textField.sizeToFit()
         
         return textField
     }()
@@ -175,7 +174,7 @@ final class AddCalendarView: BaseView {
 
         titleColorView.snp.makeConstraints { make in
             make.top.equalTo(self.safeAreaLayoutGuide).offset(20)
-            make.height.equalTo(titleTextField)
+            make.height.equalTo(24)
             make.leading.equalToSuperview().offset(20)
             make.width.equalTo(4)
         }
@@ -183,10 +182,11 @@ final class AddCalendarView: BaseView {
             make.leading.equalTo(titleColorView.snp.trailing).offset(12)
             make.trailing.equalToSuperview().offset(-20)
             make.centerY.equalTo(titleColorView)
+            make.bottom.equalTo(titleTextFieldLineView.snp.top)
         }
         titleTextFieldLineView.snp.makeConstraints { make in
             make.height.equalTo(1)
-            make.top.equalTo(titleTextField.snp.bottom).offset(12)
+            make.top.equalTo(titleColorView.snp.bottom).offset(8)
             make.horizontalEdges.equalToSuperview().inset(20)
         }
         

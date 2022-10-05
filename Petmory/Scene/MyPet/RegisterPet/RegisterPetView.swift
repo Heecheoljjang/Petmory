@@ -141,7 +141,6 @@ final class RegisterPetView: BaseView {
         textField.font = UIFont(name: CustomFont.medium, size: 18)
         textField.textAlignment = .center
         textField.placeholder = "이름을 입력해주세요."
-
         return textField
     }()
     
@@ -249,7 +248,8 @@ final class RegisterPetView: BaseView {
             make.width.lessThanOrEqualTo(60)
         }
         nameTextField.snp.makeConstraints { make in
-            make.bottom.equalTo(nameLabel)
+            make.bottom.equalTo(nameLineView.snp.top)
+            make.centerY.equalTo(nameLabel)
             make.leading.equalTo(nameLabel.snp.trailing).offset(12)
             make.trailing.equalToSuperview().offset(-20)
         }

@@ -42,10 +42,9 @@ final class MemoryDetailView: BaseView {
         return view
     }()
     
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: CustomFont.medium, size: 20)
-        label.textAlignment = .center
+    let titleLabel: PaddingLabel = {
+        let label = PaddingLabel()
+        label.font = UIFont(name: CustomFont.medium, size: 18)
         label.numberOfLines = 0
         
         return label
@@ -62,7 +61,7 @@ final class MemoryDetailView: BaseView {
         let view = UITextView()
         view.backgroundColor = .systemBackground
         view.isScrollEnabled = false
-        view.font = UIFont(name: CustomFont.medium, size: 15)
+        view.font = UIFont(name: CustomFont.medium, size: 14)
         view.isUserInteractionEnabled = false
         return view
     }()
