@@ -25,7 +25,7 @@ final class CalendarTableViewCell: BaseTableViewCell {
     let dateLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: CustomFont.medium, size: 11)
-        label.sizeToFit()
+        label.textColor = .gray
         return label
     }()
     
