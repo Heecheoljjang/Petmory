@@ -123,6 +123,17 @@ final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType, Use
         }
     }
     
+    //반려동물 리스트 업데이트
+    func updateMemoryPetList(item: UserMemory, petList: List<String>) {
+        do {
+            try localRealm.write {
+                item.petList = petList
+            }
+        } catch {
+            print("반려동물 리스트 수정 오류")
+        }
+    }
+    
     func deleteMemory(item: UserMemory) {
         do {
             try localRealm.write {

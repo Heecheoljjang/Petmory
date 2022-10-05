@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import PhotosUI
 import CropViewController
+import RealmSwift
 
 final class RegisterPetViewController: BaseViewController {
     
@@ -70,12 +71,21 @@ final class RegisterPetViewController: BaseViewController {
         return label
     }()
     
+    var petList: [String] = []
+    
+    var memories: Results<UserMemory>!
+    
+    var currentName: String = ""
+    
     override func loadView() {
         self.view = mainView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        petList = repository.fetchPet().map { $0.petName }
+        memories = repository.fetchAllMemory()
                 
         if currentStatus == CurrentStatus.edit {
             mainView.addButton.configuration?.title = "수정"
@@ -96,6 +106,7 @@ final class RegisterPetViewController: BaseViewController {
                 }
                 //이름
                 mainView.nameTextField.text = task.petName
+                currentName = task.petName
                 //생일
                 if let birthdayDate = task.birthday {
                     self.birthdayDate = birthdayDate
@@ -198,34 +209,7 @@ final class RegisterPetViewController: BaseViewController {
     }
     
     //MARK: - @objc
-    @objc private func finishWriting() {
-        //데이터 저장
-        
-        let currentDate = Date()
-        
-        //MARK: alert띄우기
-        if gender == "" && mainView.nameTextField.text! == "" {
-            noHandlerAlert(title: "이름을 입력해주세요.", message: "")
-        } else if gender == "" && mainView.nameTextField.text! != "" {
-            noHandlerAlert(title: "성별을 입력해주세요.", message: "")
-        } else if gender != "" && mainView.nameTextField.text! == "" {
-            noHandlerAlert(title: "이름을 입력해주세요.", message: "")
-        } else {
-            if mainView.birthdayTextField.text! == "" {
-                //MARK: alert띄워서 확인 누르면 오늘 날짜로 텍스트필드 채우기
-                noHandlerAlert(title: "생일을 입력해주세요.", message: "")
-            } else {
-                if profileImage == nil {
-                    noHandlerAlert(title: "사진을 등록해주세요.", message: "")
-                } else {
-                    let pet = UserPet(profileImage: profileImage, petName: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text, registerDate: currentDate)
-                    repository.addPet(item: pet)
-                    sendNotification(name: mainView.nameTextField.text!, date: birthdayDate, identifier: "\(currentDate)")
-                    transition(self, transitionStyle: .dismiss)
-                }
-            }
-        }
-    }
+
     //MARK: 성별 버튼
     @objc private func tapBoyButton() {
         gender = "남아"
@@ -267,7 +251,8 @@ final class RegisterPetViewController: BaseViewController {
     @objc private func addPet() {
         
         let currentDate = Date()
-        
+                
+        //수정인 경우에는 기존의 이름과 다르다면 메모리들의 반려동물 리스트 전부 수정
         if currentStatus == CurrentStatus.edit {
             //MARK: alert띄우기
             if mainView.nameTextField.text! == "" {
@@ -276,11 +261,40 @@ final class RegisterPetViewController: BaseViewController {
                 if profileImage == nil {
                     noHandlerAlert(title: "사진을 등록해주세요.", message: "")
                 } else {
-                    if let task = task {
-                        repository.updatePet(item: task, profileImage: profileImage, name: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text)
-                        notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(task.registerDate)"])
-                        sendNotification(name: mainView.nameTextField.text!, date: birthdayDate, identifier: "\(task.registerDate)")
-                        transition(self, transitionStyle: .dismiss)
+                    //중복체크. 이름이 바뀌었는지부터 체크하고 안바뀌었다면 바로 수정, 바뀌었다면 중복체크하고 중복되지않는다면 수정하고 반려동물 리스트 업데이트
+                    if mainView.nameTextField.text! == currentName {
+                        if let task = task {
+                            repository.updatePet(item: task, profileImage: profileImage, name: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text)
+                            notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(task.registerDate)"])
+                            sendNotification(name: mainView.nameTextField.text!, date: birthdayDate, identifier: "\(task.registerDate)")
+                            transition(self, transitionStyle: .dismiss)
+                        }
+                    } else {
+                        //이름이 바뀐 것이므로 중복체크
+                        if petList.contains(mainView.nameTextField.text!) {
+                            noHandlerAlert(title: "이미 등록된 이름입니다.", message: "다른 이름을 사용해주세요.")
+                        } else {
+                            //리스트 업데이트하고, 펫도 업데이트. 근데 메모리의 반려동물 리스트안에 currentName이 포함되어 있어야함.
+                            memories.forEach {
+                                if $0.petList.contains(currentName) {
+                                    var tempPetList = List<String>()
+                                    $0.petList.forEach { petName in
+                                        if petName != currentName {
+                                            tempPetList.append(petName)
+                                        }
+                                    }
+                                    tempPetList.append(mainView.nameTextField.text!)
+                                    self.repository.updateMemoryPetList(item: $0, petList: tempPetList)
+                                }
+                            }
+                            
+                            if let task = task {
+                                repository.updatePet(item: task, profileImage: profileImage, name: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text)
+                                notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(task.registerDate)"])
+                                sendNotification(name: mainView.nameTextField.text!, date: birthdayDate, identifier: "\(task.registerDate)")
+                                transition(self, transitionStyle: .dismiss)
+                            }
+                        }
                     }
                 }
             }
@@ -300,10 +314,15 @@ final class RegisterPetViewController: BaseViewController {
                     if profileImage == nil {
                         noHandlerAlert(title: "사진을 등록해주세요.", message: "")
                     } else {
-                        let pet = UserPet(profileImage: profileImage, petName: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text, registerDate: currentDate)
-                        repository.addPet(item: pet)
-                        sendNotification(name: mainView.nameTextField.text!, date: birthdayDate, identifier: "\(currentDate)")
-                        transition(self, transitionStyle: .dismiss)
+                        //이름만 중복체크하기
+                        if petList.contains(mainView.nameTextField.text!) {
+                            noHandlerAlert(title: "이미 등록된 이름입니다.", message: "다른 이름을 사용해주세요.")
+                        } else {
+                            let pet = UserPet(profileImage: profileImage, petName: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text, registerDate: currentDate)
+                            repository.addPet(item: pet)
+                            sendNotification(name: mainView.nameTextField.text!, date: birthdayDate, identifier: "\(currentDate)")
+                            transition(self, transitionStyle: .dismiss)
+                        }
                     }
                 }
                 
