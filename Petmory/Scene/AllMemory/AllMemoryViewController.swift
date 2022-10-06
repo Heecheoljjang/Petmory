@@ -11,23 +11,23 @@ import RealmSwift
 
 final class AllMemoryViewController: BaseViewController {
     
-    var mainView = AllMemoryView()
+    private var mainView = AllMemoryView()
     
-    let repository = UserRepository()
+    private let repository = UserRepository()
     
-    var tasks: Results<UserMemory>! {
+    private var tasks: Results<UserMemory>! {
         didSet {
             dateList = Set(tasks.map { $0.memoryDate.dateToString(type: .yearMonth) }).sorted(by: >)
             mainView.tableView.reloadData()
         }
     }
-    var petList: Results<UserPet>! {
+    private var petList: Results<UserPet>! {
         didSet {
             mainView.collectionView.reloadData()
         }
     }
     
-    var filterPetName: String = "" {
+    private var filterPetName: String = "" {
         didSet {
             if filterPetName == "" {
                 tasks = repository.fetchAllMemory()
@@ -39,16 +39,9 @@ final class AllMemoryViewController: BaseViewController {
         }
     }
     
-    var dateList: [String] = []
+    private var dateList: [String] = []
     
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: CustomFont.medium, size: 16)
-        label.text = "모아보기"
-        label.textAlignment = .center
-        label.textColor = .black
-        return label
-    }()
+    
         
     override func loadView() {
         self.view = mainView
@@ -92,9 +85,7 @@ final class AllMemoryViewController: BaseViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.standardAppearance = appearance
         
-        navigationItem.titleView = titleLabel
-    
-        
+        navigationItem.titleView = mainView.titleLabel
     }
     
     override func configure() {

@@ -18,6 +18,16 @@ final class MyPetView: BaseView {
         return view
     }()
 
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: CustomFont.medium, size: 16)
+        label.text = "나의 반려동물"
+        label.textColor = .black
+        label.textAlignment = .center
+        
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }

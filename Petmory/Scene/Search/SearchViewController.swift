@@ -11,11 +11,11 @@ import RealmSwift
 
 final class SearchViewController: BaseViewController {
     
-    var mainView = SearchView()
+    private var mainView = SearchView()
         
-    let repository = UserRepository()
+    private let repository = UserRepository()
     
-    var tasks: Results<UserMemory>! {
+    private var tasks: Results<UserMemory>! {
         didSet {
             if tasks.count == 0 {
                 mainView.tableView.isHidden = true

@@ -11,23 +11,14 @@ import MessageUI
 
 final class SettingViewController: BaseViewController {
     
-    var mainView = SettingView()
+    private var mainView = SettingView()
 
-    let repository = UserRepository()
+    private let repository = UserRepository()
     
-    let settingList = [SettingList.backupRestore, SettingList.message, SettingList.review]
-    let imageList = [SettingListImage.backupImage, SettingListImage.message, SettingListImage.review]
-    
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: CustomFont.medium, size: 16)
-        label.text = "설정"
-        label.textAlignment = .center
-        label.textColor = .black
-        return label
-    }()
-    
-    var version: String? {
+    private let settingList = [SettingList.backupRestore, SettingList.message, SettingList.review]
+    private let imageList = [SettingListImage.backupImage, SettingListImage.message, SettingListImage.review]
+
+    private var version: String? {
         guard let dictionary = Bundle.main.infoDictionary,
               let version = dictionary["CFBundleShortVersionString"] as? String else { return nil }
         
@@ -55,7 +46,7 @@ final class SettingViewController: BaseViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.standardAppearance = appearance
         
-        navigationItem.titleView = titleLabel
+        navigationItem.titleView = mainView.titleLabel
         
         //바버튼
         let popButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(popView))

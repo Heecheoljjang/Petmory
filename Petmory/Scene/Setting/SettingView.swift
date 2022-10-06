@@ -28,6 +28,15 @@ final class SettingView: BaseView {
         return label
     }()
     
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: CustomFont.medium, size: 16)
+        label.text = "설정"
+        label.textAlignment = .center
+        label.textColor = .black
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }

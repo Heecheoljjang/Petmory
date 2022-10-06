@@ -12,19 +12,19 @@ final class MainViewController: BaseViewController {
     
     private var mainView = MainView()
     
-    let repository = UserRepository()
+    private let repository = UserRepository()
     
-    var tasks: Results<UserMemory>!
+    private var tasks: Results<UserMemory>!
     
-    var petList: Results<UserPet>!
+    private var petList: Results<UserPet>!
     
-    let monthList = [". 01", ". 02", ". 03", ". 04", ". 05", ". 06", ". 07", ". 08", ". 09", ". 10", ". 11", ". 12"]
+    private let monthList = [". 01", ". 02", ". 03", ". 04", ". 05", ". 06", ". 07", ". 08", ". 09", ". 10", ". 11", ". 12"]
     
-    var tempList: [String] = []
+    private var tempList: [String] = []
     
-    var selectedDate = ""
+    private var selectedDate = ""
     
-    var currentYear: String = "" {
+    private var currentYear: String = "" {
         didSet {
             var attributedTitle = AttributedString(currentYear + "년")
             attributedTitle.font = UIFont(name: CustomFont.medium, size: 16)
@@ -37,22 +37,17 @@ final class MainViewController: BaseViewController {
         }
     }
     
-    var countList: [Int] = [] {
+    private var countList: [Int] = [] {
         didSet {
             mainView.diaryCollectionView.reloadData()
         }
     }
     
-    let yearList = [Int](1990...2050)
+    private let yearList = [Int](1990...2050)
     
-    let notificationCenter = UNUserNotificationCenter.current()
+    private let notificationCenter = UNUserNotificationCenter.current()
     
-    let pickerView: UIPickerView = {
-        let view = UIPickerView()
-        return view
-    }()
-    
-    var isFirst = true //컬렉션뷰 스크롤
+    private var isFirst = true //컬렉션뷰 스크롤
     
     override func loadView() {
         self.view = mainView
@@ -74,9 +69,7 @@ final class MainViewController: BaseViewController {
         tempList.forEach { date in
             countList.append(tasks.filter("memoryDateString CONTAINS[c] '\(date)'").count)
         }
-        
-        mainView.diaryCollectionView.reloadData()
-        
+                
         //백업용 텍스트파일 지우기
         removeBackupCheckFile()
         
@@ -135,8 +128,8 @@ final class MainViewController: BaseViewController {
         mainView.writingButton.addTarget(self, action: #selector(presentWritingView), for: .touchUpInside)
         mainView.titleViewButton.addTarget(self, action: #selector(presentPickerView(_ :)), for: .touchUpInside)
         
-        pickerView.delegate = self
-        pickerView.dataSource = self
+        mainView.pickerView.delegate = self
+        mainView.pickerView.dataSource = self
         
     }
     private func requestAuthorization() {
@@ -167,10 +160,10 @@ final class MainViewController: BaseViewController {
         }
         let cancel = UIAlertAction(title: "취소", style: .cancel)
         let contentViewController = UIViewController()
-        contentViewController.view = pickerView
+        contentViewController.view = mainView.pickerView
         contentViewController.preferredContentSize.height = 200
         
-        pickerView.selectRow(Int(Date().dateToString(type: .onlyYear))! - 1990, inComponent: 0, animated: false)
+        mainView.pickerView.selectRow(Int(Date().dateToString(type: .onlyYear))! - 1990, inComponent: 0, animated: false)
         selectedDate = "\(Int(Date().dateToString(type: .onlyYear))!)"
         
         alert.setValue(contentViewController, forKey: "contentViewController")

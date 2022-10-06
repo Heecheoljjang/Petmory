@@ -84,6 +84,16 @@ final class BackupResotreView: BaseView {
         return label
     }()
     
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: CustomFont.medium, size: 16)
+        label.text = "백업 및 복구"
+        label.textColor = .black
+        label.textAlignment = .center
+        
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }

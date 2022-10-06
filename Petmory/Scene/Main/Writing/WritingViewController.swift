@@ -14,13 +14,13 @@ import FirebaseAnalytics
 
 final class WritingViewController: BaseViewController {
     
-    var mainView = WritingView()
+    private var mainView = WritingView()
     
-    let repository = UserRepository()
+    private let repository = UserRepository()
     
-    var petList: Results<UserPet>!
+    private var petList: Results<UserPet>!
     
-    var withList = List<String>()
+    private var withList = List<String>()
 
     var currentStatus = CurrentStatus.new
     
@@ -30,7 +30,7 @@ final class WritingViewController: BaseViewController {
         }
     }
     
-    let placeholderText = "어떤 하루를 보내셨나요?"
+    private let placeholderText = "어떤 하루를 보내셨나요?"
     
     var currentTask: UserMemory?
     
@@ -45,10 +45,10 @@ final class WritingViewController: BaseViewController {
         }
     }
     
-    var tempDate = Date()
+    private var tempDate = Date()
     
     //사진 고를때 잠깐 보이는 시점인지 확인하는 프로퍼티
-    var isSelectingPhoto = false
+    private var isSelectingPhoto = false
     
     var settingDetailView: (() -> ())?
     

@@ -43,6 +43,7 @@ final class WritingImageCollectionViewCell: BaseCollectionViewCell {
         super.prepareForReuse()
         
         deleteButton.removeTarget(nil, action: nil, for: .touchUpInside)
+
     }
     
     override func configure() {

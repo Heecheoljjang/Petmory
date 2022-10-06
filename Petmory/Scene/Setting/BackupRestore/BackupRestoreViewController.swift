@@ -13,38 +13,29 @@ import FirebaseAnalytics
 
 final class BackupRestoreViewController: BaseViewController {
     
-    var mainView = BackupResotreView()
+    private var mainView = BackupResotreView()
     
-    var backupFileList: [String] = [] {
+    private var backupFileList: [String] = [] {
         didSet {
             mainView.tableView.reloadData()
         }
     }
     
-    let repository = UserRepository()
+    private let repository = UserRepository()
     
-    var memory: Results<UserMemory>!
+    private var memory: Results<UserMemory>!
     
-    var calendar: Results<UserCalendar>!
+    private var calendar: Results<UserCalendar>!
     
-    var petList: Results<UserPet>!
+    private var petList: Results<UserPet>!
     
-    let hud: JGProgressHUD = {
+    private let hud: JGProgressHUD = {
         let hud = JGProgressHUD()
         hud.textLabel.text = "Loading"
         
         return hud
     }()
-    
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: CustomFont.medium, size: 16)
-        label.text = "백업 및 복구"
-        label.textColor = .black
-        label.textAlignment = .center
-        
-        return label
-    }()
+
     
     let notificationCenter = UNUserNotificationCenter.current()
     
@@ -75,7 +66,7 @@ final class BackupRestoreViewController: BaseViewController {
     override func setUpController() {
         super.setUpController()
         
-        navigationItem.titleView = titleLabel
+        navigationItem.titleView = mainView.titleLabel
         
         //바버튼
         let popButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(popView))

@@ -70,6 +70,11 @@ final class MainView: BaseView {
         return label
     }()
     
+    let pickerView: UIPickerView = {
+        let view = UIPickerView()
+        return view
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }

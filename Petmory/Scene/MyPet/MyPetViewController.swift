@@ -11,26 +11,15 @@ import RealmSwift
 
 final class MyPetViewController: BaseViewController {
     
-    var mainView = MyPetView()
+    private var mainView = MyPetView()
     
-    let repository = UserRepository()
+    private let repository = UserRepository()
     
-    var tasks: Results<UserPet>! {
+    private var tasks: Results<UserPet>! {
         didSet {
-            print("\(tasks.count)")
             mainView.tableView.reloadData()
         }
     }
-    
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: CustomFont.medium, size: 16)
-        label.text = "나의 반려동물"
-        label.textColor = .black
-        label.textAlignment = .center
-        
-        return label
-    }()
     
     override func loadView() {
         self.view = mainView
@@ -67,7 +56,7 @@ final class MyPetViewController: BaseViewController {
         
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.standardAppearance = appearance
-        navigationItem.titleView = titleLabel
+        navigationItem.titleView = mainView.titleLabel
         navigationItem.backButtonTitle = ""
 
     }

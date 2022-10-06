@@ -10,26 +10,17 @@ import RealmSwift
 
 final class MonthMemoryViewController: BaseViewController {
     
-    var mainView = MonthMemoryView()
+    private var mainView = MonthMemoryView()
     
-    let repository = UserRepository()
+    private let repository = UserRepository()
     
-    var tasks: Results<UserMemory>! {
+    private var tasks: Results<UserMemory>! {
         didSet {
             mainView.tableView.reloadData()
         }
     }
     
     var monthDate: String = ""
-
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: CustomFont.medium, size: 16)
-        label.textAlignment = .center
-        label.textColor = .black
-        
-        return label
-    }()
     
     override func loadView() {
         self.view = mainView
@@ -67,8 +58,8 @@ final class MonthMemoryViewController: BaseViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.standardAppearance = appearance
     
-        titleLabel.text = monthDate
-        navigationItem.titleView = titleLabel
+        mainView.titleLabel.text = monthDate
+        navigationItem.titleView = mainView.titleLabel
         
     }
     

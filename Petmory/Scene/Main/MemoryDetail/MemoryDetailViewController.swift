@@ -10,25 +10,17 @@ import RealmSwift
 
 final class MemoryDetailViewController: BaseViewController {
     
-    var mainView = MemoryDetailView()
+    private var mainView = MemoryDetailView()
     
-    var memoryTask: UserMemory?
+    private var memoryTask: UserMemory?
     
     var objectId: String = ""
     
-    let repository = UserRepository()
+    private let repository = UserRepository()
     
     var imageList: List<Data>?
     
-    var isEditStatus = false
-    
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: CustomFont.medium, size: 16)
-        label.textAlignment = .center
-        label.textColor = .black
-        return label
-    }()
+    private var isEditStatus = false
     
     override func loadView() {
         self.view = mainView
@@ -53,9 +45,9 @@ final class MemoryDetailViewController: BaseViewController {
                 
                 mainView.contentTextView.text = memoryTask.memoryContent
                 
-                titleLabel.text = memoryTask.memoryDateString
+                mainView.navigationTitleViewLabel.text = memoryTask.memoryDateString
                 
-                navigationItem.titleView = titleLabel
+                navigationItem.titleView = mainView.navigationTitleViewLabel
                
             }
             if let imageList = imageList {
@@ -131,8 +123,8 @@ final class MemoryDetailViewController: BaseViewController {
                 //self.mainView.titleLabel.text = memoryTask.memoryTitle
                 self.mainView.titleLabel.attributedText = self.setAttributedString(text: memoryTask.memoryTitle)
                 self.mainView.contentTextView.text = memoryTask.memoryContent
-                self.titleLabel.text = memoryTask.memoryDateString
-                self.navigationItem.titleView = self.titleLabel
+                self.mainView.navigationTitleViewLabel.text = memoryTask.memoryDateString
+                self.navigationItem.titleView = self.mainView.navigationTitleViewLabel
             }
             if let imageList = self.imageList {
                 if imageList.count == 0 {

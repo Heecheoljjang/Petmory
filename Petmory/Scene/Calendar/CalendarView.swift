@@ -87,6 +87,32 @@ final class CalendarView: BaseView {
         
         return button
     }()
+
+    //헤더뷰
+    let customTitleView: UIView = {
+        let view = UIView()
+        
+        return view
+    }()
+
+    let datePicker: UIDatePicker = {
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        datePicker.preferredDatePickerStyle = .wheels
+
+        datePicker.locale = Locale(identifier: "ko-KR")
+        let currentDate = Date()
+        var dateComponents = DateComponents()
+        let calendar = Calendar.init(identifier: .gregorian)
+        dateComponents.year = -50
+        let minDate = calendar.date(byAdding: dateComponents, to: currentDate)
+        dateComponents.year = 30
+        let maxDate = calendar.date(byAdding: dateComponents, to: currentDate)
+        
+        datePicker.minimumDate = minDate
+        datePicker.maximumDate = maxDate
+        return datePicker
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)

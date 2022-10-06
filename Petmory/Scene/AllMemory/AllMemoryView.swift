@@ -54,6 +54,15 @@ final class AllMemoryView: BaseView {
         return label
     }()
     
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: CustomFont.medium, size: 16)
+        label.text = "모아보기"
+        label.textAlignment = .center
+        label.textColor = .black
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }

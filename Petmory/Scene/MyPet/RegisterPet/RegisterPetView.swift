@@ -186,6 +186,28 @@ final class RegisterPetView: BaseView {
         return textView
     }()
     
+    let birthdayDatePicker: UIDatePicker = {
+        let datePicker = UIDatePicker()
+        datePicker.backgroundColor = .white
+        datePicker.preferredDatePickerStyle = .wheels
+        datePicker.datePickerMode = .date
+        datePicker.date = Date()
+        datePicker.locale = Locale(identifier: "ko-KR")
+        datePicker.maximumDate = Date()
+        
+        return datePicker
+    }()
+    
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: CustomFont.medium, size: 16)
+        label.text = "반려동물 등록"
+        label.textAlignment = .center
+        label.textColor = .black
+        
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }

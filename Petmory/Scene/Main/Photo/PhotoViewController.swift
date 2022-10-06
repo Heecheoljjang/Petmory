@@ -10,7 +10,7 @@ import RealmSwift
 
 final class PhotoViewController: BaseViewController {
     
-    var mainView = PhotoView()
+    private var mainView = PhotoView()
     
     var imageList: List<Data>? {
         didSet {

@@ -14,11 +14,11 @@ import FirebaseAnalytics
 
 final class RegisterPetViewController: BaseViewController {
     
-    var mainView = RegisterPetView()
+    private var mainView = RegisterPetView()
     
-    let repository = UserRepository()
+    private let repository = UserRepository()
     
-    var gender: String = "" {
+    private var gender: String = "" {
         didSet {
             if gender == "남아" {
                 mainView.boyButton.layer.borderColor = UIColor.diaryColor.cgColor
@@ -34,7 +34,7 @@ final class RegisterPetViewController: BaseViewController {
         }
     }
     
-    var profileImage: Data? {
+    private var profileImage: Data? {
         didSet {
             if let image = profileImage {
                 mainView.profileImageView.image = UIImage(data: image)
@@ -42,41 +42,19 @@ final class RegisterPetViewController: BaseViewController {
         }
     }
     
-    var birthdayDate = Date()
-    
-    let birthdayDatePicker: UIDatePicker = {
-        let datePicker = UIDatePicker()
-        datePicker.backgroundColor = .white
-        datePicker.preferredDatePickerStyle = .wheels
-        datePicker.datePickerMode = .date
-        datePicker.date = Date()
-        datePicker.locale = Locale(identifier: "ko-KR")
-        datePicker.maximumDate = Date()
-        
-        return datePicker
-    }()
-    
+    private var birthdayDate = Date()
+
     var currentStatus = CurrentStatus.new
     
     var task: UserPet?
         
     let notificationCenter = UNUserNotificationCenter.current()
     
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: CustomFont.medium, size: 16)
-        label.text = "반려동물 등록"
-        label.textAlignment = .center
-        label.textColor = .black
-        
-        return label
-    }()
+    private var petList: [String] = []
     
-    var petList: [String] = []
+    private var memories: Results<UserMemory>!
     
-    var memories: Results<UserMemory>!
-    
-    var currentName: String = ""
+    private var currentName: String = ""
     
     override func loadView() {
         self.view = mainView
@@ -112,7 +90,7 @@ final class RegisterPetViewController: BaseViewController {
                 if let birthdayDate = task.birthday {
                     self.birthdayDate = birthdayDate
                     mainView.birthdayTextField.text = birthdayDate.dateToString(type: .simple)
-                    birthdayDatePicker.date = birthdayDate
+                    mainView.birthdayDatePicker.date = birthdayDate
                 }
                 //메모
                 mainView.memoTextView.text = task.comment
@@ -135,7 +113,7 @@ final class RegisterPetViewController: BaseViewController {
     override func configure() {
         super.configure()
         
-        mainView.birthdayTextField.inputView = birthdayDatePicker
+        mainView.birthdayTextField.inputView = mainView.birthdayDatePicker
         
     }
     
@@ -153,11 +131,11 @@ final class RegisterPetViewController: BaseViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.standardAppearance = appearance
         navigationItem.leftBarButtonItem = dismissButton
-        navigationItem.titleView = titleLabel
+        navigationItem.titleView = mainView.titleLabel
 
         //MARK: - 텍스트필드
         mainView.birthdayTextField.delegate = self
-        birthdayDatePicker.addTarget(self, action: #selector(selectDate), for: .valueChanged)
+        mainView.birthdayDatePicker.addTarget(self, action: #selector(selectDate), for: .valueChanged)
         
         //툴바
         let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: mainView.bounds.size.width, height: 40))

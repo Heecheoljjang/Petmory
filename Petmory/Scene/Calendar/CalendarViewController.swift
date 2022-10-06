@@ -13,11 +13,11 @@ import SnapKit
 
 final class CalendarViewController: BaseViewController {
     
-    var mainView = CalendarView()
+    private var mainView = CalendarView()
     
-    var memories: Results<UserMemory>!
+    private var memories: Results<UserMemory>!
     
-    var calendarTask: Results<UserCalendar>! {
+    private var calendarTask: Results<UserCalendar>! {
         didSet {
             if calendarTask.count == 0 {
                 mainView.tableView.isHidden = true
@@ -30,50 +30,25 @@ final class CalendarViewController: BaseViewController {
         }
     }
     
-    var selectDate = Date() {
+    private var selectDate = Date() {
         didSet {
-            datePicker.date = selectDate
+            mainView.datePicker.date = selectDate
             mainView.dateLabel.text = selectDate.dateToString(type: .simpleDay)
             mainView.tableView.reloadData()
         }
     }
     
-    var tempDate = Date()
+    private var tempDate = Date()
     
-    let repository = UserRepository()
-    
-    //헤더뷰
-    let customTitleView: UIView = {
-        let view = UIView()
-        
-        return view
-    }()
+    private let repository = UserRepository()
+
     
     var dateButtonTitle = Date().dateToString(type: .yearMonth) {
         didSet {
             navigationItem.leftBarButtonItem?.title = dateButtonTitle
         }
     }
-    
-    let datePicker: UIDatePicker = {
-        let datePicker = UIDatePicker()
-        datePicker.datePickerMode = .date
-        datePicker.preferredDatePickerStyle = .wheels
 
-        datePicker.locale = Locale(identifier: "ko-KR")
-        let currentDate = Date()
-        var dateComponents = DateComponents()
-        let calendar = Calendar.init(identifier: .gregorian)
-        dateComponents.year = -50
-        let minDate = calendar.date(byAdding: dateComponents, to: currentDate)
-        dateComponents.year = 30
-        let maxDate = calendar.date(byAdding: dateComponents, to: currentDate)
-        
-        datePicker.minimumDate = minDate
-        datePicker.maximumDate = maxDate
-        return datePicker
-    }()
-    
     override func loadView() {
         self.view = mainView
     }
@@ -122,7 +97,7 @@ final class CalendarViewController: BaseViewController {
         mainView.calendar.dataSource = self
         
         //데이트피커
-        datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
+        mainView.datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
         
         //추가버튼
         mainView.writingButton.addTarget(self, action: #selector(presentAddCalendarView), for: .touchUpInside)
@@ -144,11 +119,11 @@ final class CalendarViewController: BaseViewController {
         let cancel = UIAlertAction(title: "취소", style: .cancel) { [weak self] _ in
             guard let self = self else { return }
             
-            self.datePicker.date = self.selectDate
+            self.mainView.datePicker.date = self.selectDate
             
         }
         let contentViewController = UIViewController()
-        contentViewController.view = datePicker
+        contentViewController.view = mainView.datePicker
         contentViewController.preferredContentSize.height = 200
         
         alert.setValue(contentViewController, forKey: "contentViewController")
@@ -183,6 +158,7 @@ final class CalendarViewController: BaseViewController {
     }
     @objc private func setToday(_ sender: UIButton) {
         selectDate = Date().nearestHour()
+        tempDate = selectDate
         mainView.calendar.select(selectDate, scrollToDate: true)
         
         calendarTask = repository.fetchCalendar(date: selectDate)
