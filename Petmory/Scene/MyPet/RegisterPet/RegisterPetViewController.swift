@@ -10,6 +10,7 @@ import UIKit
 import PhotosUI
 import CropViewController
 import RealmSwift
+import FirebaseAnalytics
 
 final class RegisterPetViewController: BaseViewController {
     
@@ -264,6 +265,9 @@ final class RegisterPetViewController: BaseViewController {
                     //중복체크. 이름이 바뀌었는지부터 체크하고 안바뀌었다면 바로 수정, 바뀌었다면 중복체크하고 중복되지않는다면 수정하고 반려동물 리스트 업데이트
                     if mainView.nameTextField.text! == currentName {
                         if let task = task {
+                            Analytics.logEvent("Update_Pet", parameters: [
+                                "name": "Update Pet NotName",
+                            ])
                             repository.updatePet(item: task, profileImage: profileImage, name: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text)
                             notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(task.registerDate)"])
                             sendNotification(name: mainView.nameTextField.text!, date: birthdayDate, identifier: "\(task.registerDate)")
@@ -289,6 +293,9 @@ final class RegisterPetViewController: BaseViewController {
                             }
                             
                             if let task = task {
+                                Analytics.logEvent("Update_Pet", parameters: [
+                                    "name": "Update Pet Name Too",
+                                ])
                                 repository.updatePet(item: task, profileImage: profileImage, name: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text)
                                 notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(task.registerDate)"])
                                 sendNotification(name: mainView.nameTextField.text!, date: birthdayDate, identifier: "\(task.registerDate)")
@@ -319,6 +326,9 @@ final class RegisterPetViewController: BaseViewController {
                             noHandlerAlert(title: "이미 등록된 이름입니다.", message: "다른 이름을 사용해주세요.")
                         } else {
                             let pet = UserPet(profileImage: profileImage, petName: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text, registerDate: currentDate)
+                            Analytics.logEvent("Add_Pet", parameters: [
+                                "name": "Add Pet",
+                            ])
                             repository.addPet(item: pet)
                             sendNotification(name: mainView.nameTextField.text!, date: birthdayDate, identifier: "\(currentDate)")
                             transition(self, transitionStyle: .dismiss)

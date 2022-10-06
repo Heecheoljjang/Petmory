@@ -8,6 +8,7 @@
 import UIKit
 import FSCalendar
 import RealmSwift
+import FirebaseAnalytics
 
 final class AddCalendarViewController: BaseViewController {
     
@@ -152,6 +153,9 @@ final class AddCalendarViewController: BaseViewController {
         if currentStatus == CurrentStatus.new {
             //데이터 추가
             if mainView.titleTextField.text != "" {
+                Analytics.logEvent("Add_New_Calendar", parameters: [
+                    "name": "New Calendar",
+                ])
                 if mainView.memoTextView.textColor == .placeholderColor {
                     repository.addCalendar(item: UserCalendar(title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple), color: currentColor, comment: "", registerDate: currentDate))
                     if selectedDate! > Date() {
@@ -179,6 +183,9 @@ final class AddCalendarViewController: BaseViewController {
                         //제목 입력하라고 alert
                         noHandlerAlert(title: "제목을 입력해주세요.", message: "")
                     } else {
+                        Analytics.logEvent("Update_Calendar", parameters: [
+                            "name": "Update Calendar",
+                        ])
                         if mainView.memoTextView.textColor == .placeholderColor {
                             repository.updateCalendar(item: task, title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple),color: currentColor, comment: "")
                             //알림 지우고 다시 등록

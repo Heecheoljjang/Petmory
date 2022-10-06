@@ -8,9 +8,9 @@
 import Foundation
 import UIKit
 import RealmSwift
-//import IQKeyboardManagerSwift
 import PhotosUI
 import CropViewController
+import FirebaseAnalytics
 
 final class WritingViewController: BaseViewController {
     
@@ -60,7 +60,6 @@ final class WritingViewController: BaseViewController {
         super.viewDidLoad()
         
         petList = repository.fetchPet()
-        print(#function)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -195,6 +194,9 @@ final class WritingViewController: BaseViewController {
         } else {
             //MARK: 새로 작성
             if currentStatus == CurrentStatus.new {
+                Analytics.logEvent("Add_New_Memory", parameters: [
+                    "name": "New Memory",
+                ])
                 if mainView.contentTextView.textColor == .placeholderColor {
                     let task = UserMemory(memoryTitle: mainView.titleTextField.text!, memoryDateString: memoryDate.dateToString(type: .simple), petList: withList, memoryContent: "", imageData: imageList, memoryDate: memoryDate, objectId: "\(Date())")
                     
@@ -208,6 +210,9 @@ final class WritingViewController: BaseViewController {
                 }
             } else {
                 //MARK: 편집
+                Analytics.logEvent("Edit_Memory", parameters: [
+                    "name": "Edit Memory",
+                ])
                 if mainView.contentTextView.textColor == .placeholderColor {
                     if let task = currentTask {
                         repository.updateMemory(item: task, title: mainView.titleTextField.text!, memoryDateString: memoryDate.dateToString(type: .simple), content: "", petList: withList, imageData: imageList, memoryDate: memoryDate)

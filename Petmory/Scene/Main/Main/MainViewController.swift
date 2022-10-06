@@ -6,6 +6,7 @@
 //
 import UIKit
 import RealmSwift
+import FirebaseAnalytics
 
 final class MainViewController: BaseViewController {
     
@@ -67,9 +68,7 @@ final class MainViewController: BaseViewController {
         
         //현재 년도 구해서 monthList와 더해주기
         currentYear = Date().dateToString(type: .onlyYear)
-                
-        //pickerView.selectRow(Int(Date().dateToString(type: .onlyYear))! - 1990, inComponent: 0, animated: false)
-        
+                        
         countList = []
         
         tempList.forEach { date in
@@ -81,6 +80,11 @@ final class MainViewController: BaseViewController {
         //백업용 텍스트파일 지우기
         removeBackupCheckFile()
         
+        Analytics.logEvent("MainView_viewDidLoad", parameters: [
+            "name": "App Start or Restore",
+            "full_text": "fullText",
+        ])
+
     }
     
     override func viewWillAppear(_ animated: Bool) {

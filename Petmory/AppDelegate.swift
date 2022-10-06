@@ -7,6 +7,8 @@
 
 import UIKit
 import IQKeyboardManagerSwift
+import Firebase
+import FirebaseCore
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -25,6 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         IQKeyboardManager.shared.shouldShowToolbarPlaceholder = false
         
         UNUserNotificationCenter.current().delegate = self
+        
+        FirebaseApp.configure()
         
         return true
     }

@@ -9,6 +9,7 @@ import UIKit
 import RealmSwift
 import MessageUI
 import JGProgressHUD
+import FirebaseAnalytics
 
 final class BackupRestoreViewController: BaseViewController {
     
@@ -94,11 +95,7 @@ final class BackupRestoreViewController: BaseViewController {
         }
     }
     @objc private func restore() {
-        
-//        repository.deleteAllMemory(task: self.memory)
-//        repository.deleteAllPet(task: self.petList)
-//        repository.deleteAllCalendar(task: self.calendar)
-//
+
         do {
             let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.archive], asCopy: true)
             documentPicker.delegate = self
@@ -133,6 +130,9 @@ extension BackupRestoreViewController: UITableViewDelegate, UITableViewDataSourc
 
 extension BackupRestoreViewController {
     private func makeBackupFile() {
+        Analytics.logEvent("Make_Backup_File", parameters: [
+            "name": "Make Backup File",
+        ])
         do {
             try saveEncodedMemoryToDocument(data: memory, fileName: BackupFileName.memory)
             try saveEncodedCalendarToDocument(data: calendar, fileName: BackupFileName.calendar)
@@ -168,6 +168,9 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
             
             guard let self = self else { return }
             if urls.first?.lastPathComponent.split(separator: "_").first! != "Petmory" {
+                Analytics.logEvent("Wrong_Backup_File", parameters: [
+                    "name": "Wrong Backup File Name",
+                ])
                 self.noHandlerAlert(title: "오류", message: "Petmory의 백업 파일이 아닙니다.")
                 return
             } else {
@@ -195,6 +198,9 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                         let checkValue = self.checkBackupFileExist()
                         if checkValue == false {
                             print(fileURL)
+                            Analytics.logEvent("Wrong_Backup_File", parameters: [
+                                "name": "No Pemory txt File",
+                            ])
                             self.removeBackupFile(fileName: fileURL)
                             self.hud.dismiss(animated: true)
                             self.noHandlerAlert(title: "Petmory의 백업 파일이 아닙니다.", message: "")
@@ -237,6 +243,9 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                                 }
                             }
                             self.hud.dismiss(animated: true)
+                            Analytics.logEvent("Restore_Success", parameters: [
+                                "name": "Restore Success",
+                            ])
                             let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
                             let sceneDelegate = windowScene?.delegate as? SceneDelegate
                             
@@ -270,6 +279,9 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                             let checkValue = self.checkBackupFileExist()
                             if checkValue == false {
                                 print(fileURL)
+                                Analytics.logEvent("Wrong_Backup_File", parameters: [
+                                    "name": "No Permory txt File",
+                                ])
                                 self.removeBackupFile(fileName: fileURL)
                                 self.hud.dismiss(animated: true)
                                 self.noHandlerAlert(title: "Petmory의 백업 파일이 아닙니다.", message: "")
@@ -311,6 +323,9 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                                     }
                                 }
                                 self.hud.dismiss(animated: true)
+                                Analytics.logEvent("Restore_Success", parameters: [
+                                    "name": "Restore Success",
+                                ])
                                 let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
                                 let sceneDelegate = windowScene?.delegate as? SceneDelegate
                                 
