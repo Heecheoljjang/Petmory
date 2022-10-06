@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		970089F128EEC39E0069F8FA /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 970089F028EEC39E0069F8FA /* FirebaseAnalyticsWithoutAdIdSupport */; };
+		970089F328EEC39E0069F8FA /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 970089F228EEC39E0069F8FA /* FirebaseCrashlytics */; };
+		970089F528EEC51C0069F8FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 970089F428EEC51C0069F8FA /* GoogleService-Info.plist */; };
 		970826A528D5E1E0000C530E /* MemoryDetailImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970826A428D5E1E0000C530E /* MemoryDetailImageCollectionViewCell.swift */; };
 		970826A728D5E876000C530E /* MemoryDetailPetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970826A628D5E876000C530E /* MemoryDetailPetCollectionViewCell.swift */; };
 		9716A8F828D0E4D600AC62FA /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9716A8F728D0E4D600AC62FA /* IQKeyboardManagerSwift */; };
@@ -90,6 +93,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		970089F428EEC51C0069F8FA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		970826A428D5E1E0000C530E /* MemoryDetailImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryDetailImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		970826A628D5E876000C530E /* MemoryDetailPetCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryDetailPetCollectionViewCell.swift; sourceTree = "<group>"; };
 		9722A2C628DBA422008C3DB7 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
@@ -178,6 +182,8 @@
 				97F5DC7D28E34FE6004A53B3 /* JGProgressHUD in Frameworks */,
 				97CF588528C8C9820062FEB9 /* Realm in Frameworks */,
 				974107A628D0459300617F8F /* CropViewController in Frameworks */,
+				970089F328EEC39E0069F8FA /* FirebaseCrashlytics in Frameworks */,
+				970089F128EEC39E0069F8FA /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				97CF588228C8C9390062FEB9 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -343,6 +349,7 @@
 				9799F84628C7741C00E1C12C /* SceneDelegate.swift */,
 				9799F84D28C7741D00E1C12C /* Assets.xcassets */,
 				9799F84F28C7741D00E1C12C /* LaunchScreen.storyboard */,
+				970089F428EEC51C0069F8FA /* GoogleService-Info.plist */,
 				9799F85228C7741D00E1C12C /* Info.plist */,
 			);
 			path = Petmory;
@@ -531,6 +538,7 @@
 				9799F83D28C7741C00E1C12C /* Sources */,
 				9799F83E28C7741C00E1C12C /* Frameworks */,
 				9799F83F28C7741C00E1C12C /* Resources */,
+				970089F628EEC6800069F8FA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -546,6 +554,8 @@
 				9781F0A628D186EF008E6DBB /* FSCalendar */,
 				9732ABFA28E1C4DC00112962 /* Zip */,
 				97F5DC7C28E34FE6004A53B3 /* JGProgressHUD */,
+				970089F028EEC39E0069F8FA /* FirebaseAnalyticsWithoutAdIdSupport */,
+				970089F228EEC39E0069F8FA /* FirebaseCrashlytics */,
 			);
 			productName = Petmory;
 			productReference = 9799F84128C7741C00E1C12C /* Petmory.app */;
@@ -583,6 +593,7 @@
 				9781F0A528D186EF008E6DBB /* XCRemoteSwiftPackageReference "FSCalendar" */,
 				9732ABF928E1C4DC00112962 /* XCRemoteSwiftPackageReference "Zip" */,
 				97F5DC7B28E34FE5004A53B3 /* XCRemoteSwiftPackageReference "JGProgressHUD" */,
+				970089EF28EEC39E0069F8FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 9799F84228C7741C00E1C12C /* Products */;
 			projectDirPath = "";
@@ -603,10 +614,33 @@
 				97CF589F28CA481F0062FEB9 /* GmarketSansTTFMedium.ttf in Resources */,
 				97CF58A128CA481F0062FEB9 /* GmarketSansTTFBold.ttf in Resources */,
 				97F5DC7A28E3356A004A53B3 /* Assets.xcassets in Resources */,
+				970089F528EEC51C0069F8FA /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		970089F628EEC6800069F8FA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		9799F83D28C7741C00E1C12C /* Sources */ = {
@@ -823,6 +857,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 3C6U386B4C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Petmory/Info.plist;
@@ -838,7 +873,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hee.Petmory;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -873,7 +908,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hee.Petmory;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -909,6 +944,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		970089EF28EEC39E0069F8FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
 		9716A8F628D0E4D600AC62FA /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager.git";
@@ -968,6 +1011,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		970089F028EEC39E0069F8FA /* FirebaseAnalyticsWithoutAdIdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 970089EF28EEC39E0069F8FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsWithoutAdIdSupport;
+		};
+		970089F228EEC39E0069F8FA /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 970089EF28EEC39E0069F8FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
 		9716A8F728D0E4D600AC62FA /* IQKeyboardManagerSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9716A8F628D0E4D600AC62FA /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
