@@ -39,6 +39,7 @@ final class CalendarTableViewCell: BaseTableViewCell {
         [colorView, titleLabel, dateLabel].forEach {
             self.addSubview($0)
         }
+        selectionStyle = .none
     }
     
     override func setUpConstraints() {

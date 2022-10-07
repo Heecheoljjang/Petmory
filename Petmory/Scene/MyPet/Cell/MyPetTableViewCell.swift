@@ -41,7 +41,7 @@ final class MyPetTableViewCell: BaseTableViewCell {
         [profileImageView, nameLabel].forEach {
             self.addSubview($0)
         }
-        
+        selectionStyle = .none
     }
     override func setUpConstraints() {
         super.setUpConstraints()
