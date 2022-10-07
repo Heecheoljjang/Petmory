@@ -36,6 +36,21 @@ extension UIViewController {
         }
     }
     
+    //백업 확인용 디렉토리 생성
+    func createCheckBackupDirectory() {
+        guard let documentDirectory = documentDirectoryPath() else { return }
+        
+        let checkDirectoryPath = documentDirectory.appendingPathComponent("BackupCheck")
+        
+        if !FileManager.default.fileExists(atPath: checkDirectoryPath.path) {
+            do {
+                try FileManager.default.createDirectory(atPath: checkDirectoryPath.path, withIntermediateDirectories: true, attributes: nil)
+            } catch {
+                print("확인 폴더 생성 실패")
+            }
+        }
+    }
+    
     //백업 확인용 파일 삭제
     func removeBackupCheckFile() {
         guard let documentDirectory = documentDirectoryPath() else { return }
@@ -224,13 +239,35 @@ extension UIViewController {
         }
     }
     
-    func unZipBackupFile(fileURL: URL) throws {
-        guard let documentDirectory = documentDirectoryPath() else { throw ErrorType.documentPathError }
-        
+    func unZipBackupFile(fileURL: URL, destination: URL) throws {
+
         do {
-            try Zip.unzipFile(fileURL, destination: documentDirectory, overwrite: true, password: nil, progress: nil, fileOutputHandler: nil)
+            try Zip.unzipFile(fileURL, destination: destination, overwrite: true, password: nil, progress: nil, fileOutputHandler: nil)
         } catch {
             throw ErrorType.unzipError
+        }
+    }
+    
+    //백업 파일 확인
+    func checkBackupFile(fileURL: URL) throws -> Bool {
+        //폴더 생성 후, 그 안에 압축 풀고 realm파일있는지 확인
+        //있으면 alert띄우고 return true, 없으면 return false. 폴더도 지우기
+        createCheckBackupDirectory()
+        
+        guard let documentDirectory = documentDirectoryPath() else { return false }
+        
+        let checkDirectoryPath = documentDirectory.appendingPathComponent("BackupCheck")
+        
+        let backupRealmFilePath = checkDirectoryPath.appendingPathComponent("default.realm")
+        
+        try unZipBackupFile(fileURL: fileURL, destination: checkDirectoryPath)
+        
+        if FileManager.default.fileExists(atPath: backupRealmFilePath.path) {
+            removeBackupFile(fileName: checkDirectoryPath)
+            return true
+        } else {
+            removeBackupFile(fileName: checkDirectoryPath)
+            return false
         }
     }
     

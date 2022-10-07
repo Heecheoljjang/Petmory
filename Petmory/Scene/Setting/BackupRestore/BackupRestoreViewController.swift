@@ -182,9 +182,23 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                     
                     //파일URL
                     let fileURL = documentDirectory.appendingPathComponent(fileName)
+                                        
+                    do {
+                        if try self.checkBackupFile(fileURL: fileURL) == true {
+                            Analytics.logEvent("Wrong_Backup_File", parameters: [
+                                "name": "No Permory txt File",
+                            ])
+                            self.removeBackupFile(fileName: fileURL)
+                            self.hud.dismiss(animated: true)
+                            self.noHandlerAlert(title: "오류", message: "Petmory의 백업 파일이 아닙니다.")
+                            return
+                        }
+                    } catch {
+                        print("에러")
+                    }
                     
                     do {
-                        try self.unZipBackupFile(fileURL: fileURL)
+                        try self.unZipBackupFile(fileURL: fileURL, destination: documentDirectory)
                         
                         let checkValue = self.checkBackupFileExist()
                         if checkValue == false {
@@ -266,7 +280,21 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                         let fileURL = documentDirectory.appendingPathComponent(fileName)
                         
                         do {
-                            try self.unZipBackupFile(fileURL: fileURL)
+                            if try self.checkBackupFile(fileURL: fileURL) == true {
+                                Analytics.logEvent("Wrong_Backup_File", parameters: [
+                                    "name": "No Permory txt File",
+                                ])
+                                self.removeBackupFile(fileName: fileURL)
+                                self.hud.dismiss(animated: true)
+                                self.noHandlerAlert(title: "오류", message: "Petmory의 백업 파일이 아닙니다.")
+                                return
+                            }
+                        } catch {
+                            print("에러")
+                        }
+                        
+                        do {
+                            try self.unZipBackupFile(fileURL: fileURL, destination: documentDirectory)
                             let checkValue = self.checkBackupFileExist()
                             if checkValue == false {
                                 print(fileURL)
