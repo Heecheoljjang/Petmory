@@ -260,9 +260,11 @@ extension UIViewController {
         
         let backupRealmFilePath = checkDirectoryPath.appendingPathComponent("default.realm")
         
+        let petmoryTextFilePath = checkDirectoryPath.appendingPathComponent("PetmoryBackupCheck.txt")
+        
         try unZipBackupFile(fileURL: fileURL, destination: checkDirectoryPath)
         
-        if FileManager.default.fileExists(atPath: backupRealmFilePath.path) {
+        if FileManager.default.fileExists(atPath: backupRealmFilePath.path) || !FileManager.default.fileExists(atPath: petmoryTextFilePath.path){
             removeBackupFile(fileName: checkDirectoryPath)
             return true
         } else {
