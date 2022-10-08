@@ -92,7 +92,7 @@ final class WritingViewController: BaseViewController {
         super.setUpController()
         
         let doneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(finishWriting))
-        let cancelButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(cancelWriting))
+        let cancelButton = UIBarButtonItem(image: UIImage(systemName: ImageName.xmark), style: .plain, target: self, action: #selector(cancelWriting))
         
         navigationController?.navigationBar.tintColor = .diaryColor
         navigationItem.rightBarButtonItem = doneButton

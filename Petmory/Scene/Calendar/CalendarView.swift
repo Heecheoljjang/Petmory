@@ -74,7 +74,7 @@ final class CalendarView: BaseView {
     let writingButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.filled()
-        configuration.image = UIImage(systemName: "plus")
+        configuration.image = UIImage(systemName: ImageName.plus)
         configuration.cornerStyle = .capsule
         configuration.baseForegroundColor = .stringColor
         configuration.baseBackgroundColor = .diaryColor

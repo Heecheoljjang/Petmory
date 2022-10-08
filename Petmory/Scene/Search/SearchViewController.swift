@@ -42,7 +42,7 @@ final class SearchViewController: BaseViewController {
         searchBar.delegate = self
         self.navigationItem.titleView = searchBar
         
-        let popButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(cancelSearch))
+        let popButton = UIBarButtonItem(image: UIImage(systemName: ImageName.chevronLeft), style: .plain, target: self, action: #selector(cancelSearch))
         navigationItem.leftBarButtonItem = popButton
 
     }

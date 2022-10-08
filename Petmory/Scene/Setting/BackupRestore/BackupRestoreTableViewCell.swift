@@ -19,7 +19,7 @@ final class BackupRestoreTableViewCell: BaseTableViewCell {
     
     let fileImage: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(systemName: "doc.text")
+        view.image = UIImage(systemName: ImageName.file)
         view.tintColor = .darkGray
         
         return view

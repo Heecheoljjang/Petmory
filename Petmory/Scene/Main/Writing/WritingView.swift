@@ -15,7 +15,7 @@ final class WritingView: BaseView {
     let titleViewButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 160, height: 40))
         var configuration = UIButton.Configuration.plain()
-        configuration.image = UIImage(systemName: "chevron.down")
+        configuration.image = UIImage(systemName: ImageName.chevronDown)
         configuration.imagePlacement = .trailing
         configuration.imagePadding = 4
         configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 10)
@@ -67,7 +67,7 @@ final class WritingView: BaseView {
         let textField = UITextField()
         textField.backgroundColor = .systemBackground
         textField.font = UIFont(name: CustomFont.medium, size: 20)
-        textField.placeholder = "제목"
+        textField.placeholder = PlaceholderText.title
         textField.textAlignment = .center
         
         return textField

@@ -124,7 +124,7 @@ final class RegisterPetViewController: BaseViewController {
         
         tabBarController?.tabBar.isHidden = true
         
-        let dismissButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(dismissView))
+        let dismissButton = UIBarButtonItem(image: UIImage(systemName: ImageName.xmark), style: .plain, target: self, action: #selector(dismissView))
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .white
         appearance.shadowColor = .clear

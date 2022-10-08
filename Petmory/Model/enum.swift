@@ -51,3 +51,32 @@ enum PlaceholderText {
     static let title = "제목"
     static let memo = "메모"
 }
+
+enum ImageName {
+    //MARK: 탭바 아이콘
+    static let diaryIcon = "DiaryTabBarIcon"
+    static let calendarIcon = "CalendarTabBarIcon"
+    static let petIcon = "PetTabBarIcon"
+    
+    //MARK: 시스템 이미지
+    static let multiSign = "rectangle.fill.on.rectangle.angled.fill"
+    static let chevronDown = "chevron.down"
+    static let chevronLeft = "chevron.left"
+    static let magnifyingglass = "magnifyingglass"
+    static let pencil = "pencil"
+    static let menu = "line.horizontal.3"
+    static let gear = "gearshape"
+    static let xmark = "xmark"
+    static let delete = "trash"
+    static let ellipsis = "ellipsis"
+    static let camera = "camera"
+    static let plus = "plus"
+    static let file = "doc.text"
+    //백업
+    static let backupImage = "cloud"
+    static let message = "pencil"
+    static let review = "star"
+    static let openLicense = "doc"
+    static let version = "info.circle"
+
+}

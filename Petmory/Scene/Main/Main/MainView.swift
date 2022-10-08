@@ -15,7 +15,7 @@ final class MainView: BaseView {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 120, height: 40))
         var configuration = UIButton.Configuration.plain()
 
-        configuration.image = UIImage(systemName: "chevron.down")
+        configuration.image = UIImage(systemName: ImageName.chevronDown)
         configuration.imagePlacement = .trailing
         configuration.imagePadding = 4
         configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 10)
@@ -44,7 +44,7 @@ final class MainView: BaseView {
     let writingButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.filled()
-        configuration.image = UIImage(systemName: "pencil")
+        configuration.image = UIImage(systemName: ImageName.pencil)
         configuration.cornerStyle = .capsule
         configuration.baseForegroundColor = .stringColor
         configuration.baseBackgroundColor = .diaryColor

@@ -49,7 +49,7 @@ final class AllMemoryTableViewCell: BaseTableViewCell {
     
     let multiSign: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(systemName: "rectangle.fill.on.rectangle.angled.fill")
+        view.image = UIImage(systemName: ImageName.multiSign)
         view.backgroundColor = .clear
         view.tintColor = .white
         return view

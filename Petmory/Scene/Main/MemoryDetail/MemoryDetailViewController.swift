@@ -83,18 +83,18 @@ final class MemoryDetailViewController: BaseViewController {
         //바버튼
 
         let menus = [
-            UIAction(title: "수정", image: UIImage(systemName: "pencil")) { [weak self] _ in
+            UIAction(title: "수정", image: UIImage(systemName: ImageName.pencil)) { [weak self] _ in
                 self?.presentEditView()
             },
-            UIAction(title: "삭제", image: UIImage(systemName: "trash"), attributes: .destructive) { [weak self] _ in
+            UIAction(title: "삭제", image: UIImage(systemName: ImageName.delete), attributes: .destructive) { [weak self] _ in
                 self?.deleteMemory()
             }
         ]
 
         let menu = UIMenu(title: "", image: nil, identifier: nil, options: [], children: menus)
 
-        let popButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(popView))
-        let menuButton = UIBarButtonItem(title: nil, image: UIImage(systemName: "ellipsis"), primaryAction: nil, menu: menu)
+        let popButton = UIBarButtonItem(image: UIImage(systemName: ImageName.chevronLeft), style: .plain, target: self, action: #selector(popView))
+        let menuButton = UIBarButtonItem(title: nil, image: UIImage(systemName: ImageName.ellipsis), primaryAction: nil, menu: menu)
         navigationItem.leftBarButtonItem = popButton
         navigationItem.rightBarButtonItem = menuButton
 

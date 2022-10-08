@@ -16,7 +16,7 @@ final class AddPhotoButtonCell: BaseCollectionViewCell {
         configuration.baseForegroundColor = .darkGray
         configuration.baseBackgroundColor = .veryLightGray
         configuration.cornerStyle = .medium
-        configuration.image = UIImage(systemName: "camera")
+        configuration.image = UIImage(systemName: ImageName.camera)
         
         button.configuration = configuration
         button.layer.cornerRadius = 10

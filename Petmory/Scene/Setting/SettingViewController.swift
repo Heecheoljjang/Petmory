@@ -49,7 +49,7 @@ final class SettingViewController: BaseViewController {
         navigationItem.titleView = mainView.titleLabel
         
         //바버튼
-        let popButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(popView))
+        let popButton = UIBarButtonItem(image: UIImage(systemName: ImageName.chevronLeft), style: .plain, target: self, action: #selector(popView))
         navigationItem.leftBarButtonItem = popButton
         
     }

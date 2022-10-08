@@ -73,7 +73,7 @@ final class RegisterPetView: BaseView {
         let button = UIButton()
         var configuration = UIButton.Configuration.filled()
         configuration.cornerStyle = .capsule
-        configuration.image = UIImage(systemName: "camera")
+        configuration.image = UIImage(systemName: ImageName.camera)
         configuration.baseBackgroundColor = .white
         configuration.baseForegroundColor = .diaryColor
         

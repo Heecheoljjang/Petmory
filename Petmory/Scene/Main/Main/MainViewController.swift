@@ -110,8 +110,8 @@ final class MainViewController: BaseViewController {
     
     override func setUpController() {
         
-        let menuButton = UIBarButtonItem(image: UIImage(systemName: "line.horizontal.3"), style: .plain, target: self, action: #selector(presentAllMemory))
-        let settingButton = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(presentSetting))
+        let menuButton = UIBarButtonItem(image: UIImage(systemName: ImageName.menu), style: .plain, target: self, action: #selector(presentAllMemory))
+        let settingButton = UIBarButtonItem(image: UIImage(systemName: ImageName.gear), style: .plain, target: self, action: #selector(presentSetting))
         navigationItem.leftBarButtonItem = menuButton
         navigationItem.rightBarButtonItem = settingButton
         navigationController?.navigationBar.tintColor = .diaryColor

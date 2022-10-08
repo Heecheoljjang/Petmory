@@ -14,7 +14,7 @@ final class WritingImageCollectionViewCell: BaseCollectionViewCell {
     let deleteButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.filled()
-        configuration.image = UIImage(systemName: "xmark")
+        configuration.image = UIImage(systemName: ImageName.xmark)
         configuration.baseForegroundColor = .veryLightGray
         configuration.baseBackgroundColor = .darkGray
         configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 11)

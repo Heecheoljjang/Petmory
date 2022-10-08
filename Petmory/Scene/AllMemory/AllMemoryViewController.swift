@@ -70,14 +70,14 @@ final class AllMemoryViewController: BaseViewController {
     
     override func setUpController() {
         //네비게이션 바버튼
-        let dismissButton = UIBarButtonItem(image: UIImage(systemName: "chevron.down"), style: .plain, target: self, action: #selector(dismissView))
-        let searchButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(pushSearchView))
+        let dismissButton = UIBarButtonItem(image: UIImage(systemName: ImageName.chevronDown), style: .plain, target: self, action: #selector(dismissView))
+        let searchButton = UIBarButtonItem(image: UIImage(systemName: ImageName.magnifyingglass), style: .plain, target: self, action: #selector(pushSearchView))
         navigationItem.leftBarButtonItem = dismissButton
         navigationItem.rightBarButtonItem = searchButton
         
         navigationController?.navigationBar.tintColor = .diaryColor
         navigationItem.backButtonTitle = ""
-        navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(popView))
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(systemName: ImageName.chevronLeft), style: .plain, target: self, action: #selector(popView))
         
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .white

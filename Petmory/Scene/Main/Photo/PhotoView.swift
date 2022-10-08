@@ -37,7 +37,7 @@ final class PhotoView: BaseView {
     let dismissButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.plain()
-        configuration.image = UIImage(systemName: "xmark")
+        configuration.image = UIImage(systemName: ImageName.xmark)
         configuration.baseForegroundColor = .white
         
         button.configuration = configuration
