@@ -237,7 +237,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CalendarTableViewCell.identifier) as? CalendarTableViewCell else { return UITableViewCell() }
         cell.colorView.backgroundColor = .setCustomColor(calendarTask[indexPath.row].color)
-        cell.titleLabel.text = calendarTask[indexPath.row].title
+        cell.titleLabel.text = calendarTask[indexPath.row].title.trimmingCharacters(in: .whitespacesAndNewlines) == "" ? "새로운 일정" : calendarTask[indexPath.row].title
         cell.dateLabel.text = calendarTask[indexPath.row].date.dateToString(type: .onlyTime)
         
         return cell

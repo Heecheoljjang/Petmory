@@ -12,7 +12,7 @@ final class CalendarTableViewCell: BaseTableViewCell {
     
     let colorView: UIView = {
         let view = UIView()
-        view.layer.cornerRadius = 4
+        view.layer.cornerRadius = 2
         return view
     }()
     
@@ -47,7 +47,7 @@ final class CalendarTableViewCell: BaseTableViewCell {
         
         colorView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(8)
-            make.width.equalTo(8)
+            make.width.equalTo(4)
             make.height.equalTo(48)
             make.centerY.equalToSuperview()
         }

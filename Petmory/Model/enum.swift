@@ -46,3 +46,8 @@ enum BackupFileName {
 enum NotificationType {
     case calendar, pet
 }
+
+enum PlaceholderText {
+    static let title = "제목"
+    static let memo = "메모"
+}

@@ -82,12 +82,15 @@ final class AddCalendarViewController: BaseViewController {
         mainView.seventhButton.addTarget(self, action: #selector(changeColorView(_ :)), for: .touchUpInside)
         
         mainView.memoTextView.delegate = self
-
+        mainView.titleTextView.delegate = self
         
         if currentStatus == CurrentStatus.new {
             //날짜 텍스트필드
 
             selectedDate = selectedDate?.nearestHour()
+            
+            mainView.titleTextView.text = PlaceholderText.title
+            mainView.titleTextView.textColor = .placeholderColor
 
             mainView.dateTextField.text = selectedDate!.dateToString(type: .full)
             mainView.datePicker.date = selectedDate!
@@ -98,7 +101,7 @@ final class AddCalendarViewController: BaseViewController {
         } else {
             if let task = task {
                 currentColor = task.color
-                mainView.titleTextField.text = task.title
+                mainView.titleTextView.text = task.title
                 mainView.titleColorView.backgroundColor = .setCustomColor(task.color)
                 mainView.dateTextField.text = task.date.dateToString(type: .full)
                 if task.comment == "" {
@@ -138,7 +141,7 @@ final class AddCalendarViewController: BaseViewController {
     //MARK: - @objc
     @objc private func cancelAddingCalendar() {
         //작성한게 있다면 지울건지 alert
-        if mainView.titleTextField.text?.count != 0 || mainView.memoTextView.textColor != .placeholderColor {
+        if mainView.titleTextView.text?.count != 0 || mainView.memoTextView.textColor != .placeholderColor {
             handlerAlert(title: "취소하시겠습니까?", message: "작성중인 내용은 저장되지 않습니다.") { _ in
                 self.transition(self, transitionStyle: .dismiss)
             }
@@ -152,21 +155,21 @@ final class AddCalendarViewController: BaseViewController {
         
         if currentStatus == CurrentStatus.new {
             //데이터 추가
-            if mainView.titleTextField.text != "" {
+            if mainView.titleTextView.textColor != .placeholderColor || mainView.titleTextView.text != "" {
                 Analytics.logEvent("Add_New_Calendar", parameters: [
                     "name": "New Calendar",
                 ])
                 if mainView.memoTextView.textColor == .placeholderColor {
-                    repository.addCalendar(item: UserCalendar(title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple), color: currentColor, comment: "", registerDate: currentDate))
+                    repository.addCalendar(item: UserCalendar(title: mainView.titleTextView.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple), color: currentColor, comment: "", registerDate: currentDate))
                     if selectedDate! > Date() {
-                        sendNotification(body: mainView.titleTextField.text!, date: selectedDate!, identifier: "\(currentDate)")
+                        sendNotification(body: mainView.titleTextView.text!, date: selectedDate!, identifier: "\(currentDate)")
                     }
                     NotificationCenter.default.post(name: NSNotification.Name.doneButton, object: nil)
                     transition(self, transitionStyle: .dismiss)
                 } else {
-                    repository.addCalendar(item: UserCalendar(title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple), color: currentColor, comment: mainView.memoTextView.text, registerDate: currentDate))
+                    repository.addCalendar(item: UserCalendar(title: mainView.titleTextView.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple), color: currentColor, comment: mainView.memoTextView.text, registerDate: currentDate))
                     if selectedDate! > Date() {
-                        sendNotification(body: mainView.titleTextField.text!, date: selectedDate!, identifier: "\(currentDate)")
+                        sendNotification(body: mainView.titleTextView.text!, date: selectedDate!, identifier: "\(currentDate)")
                     }
                     NotificationCenter.default.post(name: NSNotification.Name.doneButton, object: nil)
                     transition(self, transitionStyle: .dismiss)
@@ -178,8 +181,8 @@ final class AddCalendarViewController: BaseViewController {
         } else {
             //데이터 수정
             if let task = task {
-                if task.title != mainView.titleTextField.text! || task.color != currentColor || task.date != selectedDate! || task.comment != mainView.memoTextView.text {
-                    if mainView.titleTextField.text! == "" {
+                if task.title != mainView.titleTextView.text! || task.color != currentColor || task.date != selectedDate! || task.comment != mainView.memoTextView.text {
+                    if mainView.titleTextView.textColor == .placeholderColor || mainView.titleTextView.text == "" {
                         //제목 입력하라고 alert
                         noHandlerAlert(title: "제목을 입력해주세요.", message: "")
                     } else {
@@ -187,20 +190,20 @@ final class AddCalendarViewController: BaseViewController {
                             "name": "Update Calendar",
                         ])
                         if mainView.memoTextView.textColor == .placeholderColor {
-                            repository.updateCalendar(item: task, title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple),color: currentColor, comment: "")
+                            repository.updateCalendar(item: task, title: mainView.titleTextView.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple),color: currentColor, comment: "")
                             //알림 지우고 다시 등록
                             notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(task.registerDate)"])
                             if selectedDate! > Date() {
-                                sendNotification(body: mainView.titleTextField.text!, date: selectedDate!, identifier: "\(currentDate)")
+                                sendNotification(body: mainView.titleTextView.text!, date: selectedDate!, identifier: "\(currentDate)")
                             }
                             NotificationCenter.default.post(name: NSNotification.Name.doneButton, object: nil)
                             transition(self, transitionStyle: .dismiss)
                         } else {
-                            repository.updateCalendar(item: task, title: mainView.titleTextField.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple),color: currentColor, comment: mainView.memoTextView.text)
+                            repository.updateCalendar(item: task, title: mainView.titleTextView.text!, date: selectedDate!, dateString: selectedDate!.dateToString(type: .simple),color: currentColor, comment: mainView.memoTextView.text)
                             //알림 지우고 다시 등록
                             notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(task.registerDate)"])
                             if selectedDate! > Date() {
-                                sendNotification(body: mainView.titleTextField.text!, date: selectedDate!, identifier: "\(currentDate)")
+                                sendNotification(body: mainView.titleTextView.text!, date: selectedDate!, identifier: "\(currentDate)")
                             }
                             NotificationCenter.default.post(name: NSNotification.Name.doneButton, object: nil)
                             transition(self, transitionStyle: .dismiss)
@@ -282,9 +285,35 @@ extension AddCalendarViewController: UITextViewDelegate {
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text == "" {
-            textView.text = placeholderText
-            textView.textColor = .placeholderColor
+        if textView == mainView.contentView {
+            if textView.text == "" {
+                textView.text = PlaceholderText.memo
+                textView.textColor = .placeholderColor
+            }
+        } else {
+            if textView.text == "" {
+                textView.text = PlaceholderText.title
+                textView.textColor = .placeholderColor
+            }
         }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if textView == mainView.titleTextView {
+            if textView.text.count > 150 {
+                textView.deleteBackward()
+            }
+        }
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if textView == mainView.titleTextView {
+            if text == "\n" {
+                textView.resignFirstResponder()
+                return false
+            }
+            return true
+        }
+        return true
     }
 }
