@@ -67,7 +67,7 @@ final class MainViewController: BaseViewController {
         countList = []
         
         tempList.forEach { date in
-            countList.append(tasks.filter("memoryDateString CONTAINS[c] '\(date)'").count)
+            countList.append(tasks.filter("\(RealmModelColumn.memoryDateString) CONTAINS[c] '\(date)'").count)
         }
                 
         //백업용 텍스트파일 지우기
@@ -90,7 +90,7 @@ final class MainViewController: BaseViewController {
         countList = []
         
         tempList.forEach { date in
-            countList.append(tasks.filter("memoryDateString CONTAINS[c] '\(date)'").count)
+            countList.append(tasks.filter("\(RealmModelColumn.memoryDateString) CONTAINS[c] '\(date)'").count)
         }
         
         mainView.diaryCollectionView.reloadData()
@@ -147,7 +147,7 @@ final class MainViewController: BaseViewController {
     private func setDatePickerSheet() {
 
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let select = UIAlertAction(title: "선택", style: .default) { [weak self] _ in
+        let select = UIAlertAction(title: AlertText.select, style: .default) { [weak self] _ in
             
             guard let self = self else { return }
 
@@ -155,10 +155,10 @@ final class MainViewController: BaseViewController {
             self.countList = []
             
             self.tempList.forEach { date in
-                self.countList.append(self.tasks.filter("memoryDateString CONTAINS[c] '\(date)'").count)
+                self.countList.append(self.tasks.filter("\(RealmModelColumn.memoryDateString) CONTAINS[c] '\(date)'").count)
             }
         }
-        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        let cancel = UIAlertAction(title: AlertText.cancel, style: .cancel)
         let contentViewController = UIViewController()
         contentViewController.view = mainView.pickerView
         contentViewController.preferredContentSize.height = 200
@@ -185,7 +185,7 @@ final class MainViewController: BaseViewController {
         let writingViewController = WritingViewController()
         if petList.count == 0 {
             //MARK: 펫부터 등록하라고 alert띄우고 펫 등록화면 띄우는 방식으로
-            noHandlerAlert(title: "반려동물을 등록해주세요!", message: "")
+            noHandlerAlert(title: AlertTitle.registerPet, message: "")
         } else {
             transition(writingViewController, transitionStyle: .presentNavigation)
         }

@@ -92,7 +92,7 @@ extension SettingViewController: UITableViewDataSource, UITableViewDelegate {
             transition(backupRestoreVC, transitionStyle: .push)
         } else if indexPath.row == 1 {
             if !MFMailComposeViewController.canSendMail() {
-                noHandlerAlert(title: "등록된 메일 계정을 확인해주세요.", message: "")
+                noHandlerAlert(title: AlertTitle.checkEmail, message: "")
             } else {
                 let composeVC = MFMailComposeViewController()
                 composeVC.mailComposeDelegate = self

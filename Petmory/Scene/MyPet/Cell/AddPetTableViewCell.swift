@@ -16,7 +16,7 @@ final class AddPetTableViewCell: BaseTableViewCell {
         configuration.baseForegroundColor = .darkGray
         configuration.baseBackgroundColor = .veryLightGray
 
-        configuration.title = "반려동물 등록하기"
+        configuration.title = ButtonTitle.registerPet
         
         button.configuration = configuration
         button.layer.cornerRadius = 10

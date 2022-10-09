@@ -83,10 +83,10 @@ final class MemoryDetailViewController: BaseViewController {
         //바버튼
 
         let menus = [
-            UIAction(title: "수정", image: UIImage(systemName: ImageName.pencil)) { [weak self] _ in
+            UIAction(title: AlertText.edit, image: UIImage(systemName: ImageName.pencil)) { [weak self] _ in
                 self?.presentEditView()
             },
-            UIAction(title: "삭제", image: UIImage(systemName: ImageName.delete), attributes: .destructive) { [weak self] _ in
+            UIAction(title: AlertText.delete, image: UIImage(systemName: ImageName.delete), attributes: .destructive) { [weak self] _ in
                 self?.deleteMemory()
             }
         ]
@@ -154,7 +154,7 @@ final class MemoryDetailViewController: BaseViewController {
     
     @objc private func deleteMemory() {
         //MARK: 진짜 지울건지 확인하는 alert띄우기
-        handlerAlert(title: "삭제하시겠습니까?", message: nil) { _ in
+        handlerAlert(title: AlertTitle.checkDelete, message: nil) { _ in
             if let memoryTask = self.memoryTask {
                 self.repository.deleteMemory(item: memoryTask)
                 self.transition(self, transitionStyle: .pop)

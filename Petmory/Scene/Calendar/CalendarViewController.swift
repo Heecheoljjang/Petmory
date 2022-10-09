@@ -81,11 +81,11 @@ final class CalendarViewController: BaseViewController {
     override func setUpController() {
         super.setUpController()
         
-        let addButton = UIBarButtonItem(title: "오늘", style: .plain, target: self, action: #selector(setToday))
+        let todayButton = UIBarButtonItem(title: ButtonTitle.today, style: .plain, target: self, action: #selector(setToday))
         let dateButton = UIBarButtonItem(title: dateButtonTitle, style: .plain, target: self, action: #selector(presentDatePicker))
-        dateButton.setTitleTextAttributes([.font : UIFont(name: CustomFont.bold, size: 22)], for: .normal)
-        dateButton.setTitleTextAttributes([.font : UIFont(name: CustomFont.bold, size: 22)], for: .highlighted)
-        navigationItem.rightBarButtonItem = addButton
+        dateButton.setTitleTextAttributes([.font: UIFont(name: CustomFont.bold, size: 22)], for: .normal)
+        dateButton.setTitleTextAttributes([.font: UIFont(name: CustomFont.bold, size: 22)], for: .highlighted)
+        navigationItem.rightBarButtonItem = todayButton
         navigationItem.leftBarButtonItem = dateButton
         dateButton.tintColor = .black
         navigationController?.navigationBar.tintColor = .diaryColor
@@ -106,7 +106,7 @@ final class CalendarViewController: BaseViewController {
     private func setDatePickerSheet() {
 
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let select = UIAlertAction(title: "선택", style: .default) { [weak self] _ in
+        let select = UIAlertAction(title: AlertText.select, style: .default) { [weak self] _ in
             
             guard let self = self else { return }
             
@@ -116,7 +116,7 @@ final class CalendarViewController: BaseViewController {
             
             self.mainView.endEditing(true)
         }
-        let cancel = UIAlertAction(title: "취소", style: .cancel) { [weak self] _ in
+        let cancel = UIAlertAction(title: AlertText.cancel, style: .cancel) { [weak self] _ in
             guard let self = self else { return }
             
             self.mainView.datePicker.date = self.selectDate

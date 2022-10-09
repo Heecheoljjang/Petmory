@@ -23,9 +23,7 @@ final class AddCalendarViewController: BaseViewController {
     var selectedDate: Date?
     
     var task: UserCalendar?
-    
-    private var placeholderText = "메모"
-    
+        
     let notificationCenter = UNUserNotificationCenter.current()
     
     override func loadView() {
@@ -42,9 +40,9 @@ final class AddCalendarViewController: BaseViewController {
         super.setUpController()
         
         //네비게이션 바버튼
-        let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancelAddingCalendar))
-        let doneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(doneAddingCalendar))
-        let deleteButton = UIBarButtonItem(title: "삭제", style: .plain, target: self, action: #selector(deleteCalendar))
+        let cancelButton = UIBarButtonItem(title: ButtonTitle.cancel, style: .plain, target: self, action: #selector(cancelAddingCalendar))
+        let doneButton = UIBarButtonItem(title: ButtonTitle.done, style: .plain, target: self, action: #selector(doneAddingCalendar))
+        let deleteButton = UIBarButtonItem(title: ButtonTitle.delete, style: .plain, target: self, action: #selector(deleteCalendar))
         navigationItem.rightBarButtonItem = doneButton
         
         if currentStatus == CurrentStatus.edit {
@@ -96,7 +94,7 @@ final class AddCalendarViewController: BaseViewController {
             mainView.datePicker.date = selectedDate!
             
             //메모 텍스트뷰
-            mainView.memoTextView.text = placeholderText
+            mainView.memoTextView.text = PlaceholderText.memo
             mainView.memoTextView.textColor = .placeholderColor
         } else {
             if let task = task {
@@ -105,7 +103,7 @@ final class AddCalendarViewController: BaseViewController {
                 mainView.titleColorView.backgroundColor = .setCustomColor(task.color)
                 mainView.dateTextField.text = task.date.dateToString(type: .full)
                 if task.comment == "" {
-                    mainView.memoTextView.text = placeholderText
+                    mainView.memoTextView.text = PlaceholderText.memo
                     mainView.memoTextView.textColor = .placeholderColor
                 } else {
                     mainView.memoTextView.text = task.comment
@@ -121,7 +119,7 @@ final class AddCalendarViewController: BaseViewController {
  
         let notificationContent = UNMutableNotificationContent()
         notificationContent.sound = .default
-        notificationContent.title = "오늘의 일정"
+        notificationContent.title = NotificationContentText.todayCalendar
         notificationContent.body = body
 
         var dateComponents = DateComponents()
@@ -142,7 +140,7 @@ final class AddCalendarViewController: BaseViewController {
     @objc private func cancelAddingCalendar() {
         //작성한게 있다면 지울건지 alert
         if mainView.titleTextView.text?.count != 0 || mainView.memoTextView.textColor != .placeholderColor {
-            handlerAlert(title: "취소하시겠습니까?", message: "작성중인 내용은 저장되지 않습니다.") { _ in
+            handlerAlert(title: AlertTitle.checkCancel, message: AlertMessage.willNotSave) { _ in
                 self.transition(self, transitionStyle: .dismiss)
             }
         } else {
@@ -176,7 +174,7 @@ final class AddCalendarViewController: BaseViewController {
                 }
             } else {
                 //제목 작성하라고 alert
-                noHandlerAlert(title: "제목을 입력해주세요.", message: "")
+                noHandlerAlert(title: AlertMessage.noTitle, message: "")
             }
         } else {
             //데이터 수정
@@ -184,7 +182,7 @@ final class AddCalendarViewController: BaseViewController {
                 if task.title != mainView.titleTextView.text! || task.color != currentColor || task.date != selectedDate! || task.comment != mainView.memoTextView.text {
                     if mainView.titleTextView.textColor == .placeholderColor || mainView.titleTextView.text == "" {
                         //제목 입력하라고 alert
-                        noHandlerAlert(title: "제목을 입력해주세요.", message: "")
+                        noHandlerAlert(title: AlertMessage.noTitle, message: "")
                     } else {
                         Analytics.logEvent("Update_Calendar", parameters: [
                             "name": "Update Calendar",
@@ -248,7 +246,7 @@ final class AddCalendarViewController: BaseViewController {
         selectedDate = sender.date
     }
     @objc private func deleteCalendar() {
-        handlerAlert(title: "일정을 삭제하시겠습니까?", message: "") { [weak self] _ in
+        handlerAlert(title: AlertTitle.checkDelete, message: "") { [weak self] _ in
             
             guard let self = self else { return }
             

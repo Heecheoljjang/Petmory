@@ -65,7 +65,7 @@ final class CalendarView: BaseView {
     let noTaskLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: CustomFont.medium, size: 22)
-        label.text = "일정 없음"
+        label.text = LabelText.noCalendar
         label.textColor = .lightGray
         
         return label

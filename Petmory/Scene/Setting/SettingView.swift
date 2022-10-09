@@ -31,7 +31,7 @@ final class SettingView: BaseView {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: CustomFont.medium, size: 16)
-        label.text = "설정"
+        label.text = NavigationTitleLabel.setting
         label.textAlignment = .center
         label.textColor = .black
         return label

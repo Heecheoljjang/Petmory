@@ -38,7 +38,7 @@ final class SearchViewController: BaseViewController {
         super.setUpController()
         
         let searchBar = UISearchBar()
-        searchBar.placeholder = "제목, 내용 검색"
+        searchBar.placeholder = PlaceholderText.search
         searchBar.delegate = self
         self.navigationItem.titleView = searchBar
         

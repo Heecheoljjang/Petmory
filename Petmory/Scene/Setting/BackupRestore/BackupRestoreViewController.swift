@@ -78,7 +78,7 @@ final class BackupRestoreViewController: BaseViewController {
     }
     
     @objc private func backup() {
-        handlerAlert(title: "백업", message: "백업 파일을 만드시겠습니까?") { [weak self] _ in
+        handlerAlert(title: AlertTitle.backup, message: AlertMessage.makeBackup) { [weak self] _ in
             
             guard let self = self else { return }
             self.hud.show(in: self.mainView)
@@ -142,7 +142,7 @@ extension BackupRestoreViewController {
             removeBackupCheckFile()
         } catch {
             hud.dismiss(animated: true)
-            noHandlerAlert(title: "압축 실패", message: "다시 확인해주세요.")
+            noHandlerAlert(title: AlertTitle.failZip, message: AlertMessage.checkFile)
         }
     }
 }
@@ -155,20 +155,20 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
     }
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         
-        handlerAlert(title: "복구", message: "복구가 진행되면 기존의 데이터는 사라집니다. 복구를 진행하시겠습니까?") { [weak self] _ in
+        handlerAlert(title: AlertTitle.restore, message: AlertMessage.checkRestore) { [weak self] _ in
             
             guard let self = self else { return }
             if urls.first?.lastPathComponent.split(separator: "_").first! != "Petmory" {
                 Analytics.logEvent("Wrong_Backup_File", parameters: [
                     "name": "Wrong Backup File Name",
                 ])
-                self.noHandlerAlert(title: "오류", message: "Petmory의 백업 파일이 아닙니다.")
+                self.noHandlerAlert(title: AlertTitle.error, message: AlertMessage.notPetmoryFile)
                 return
             } else {
                 self.hud.show(in: self.mainView)
                 
                 guard let selectedFile = urls.first else {
-                    self.noHandlerAlert(title: "선택하신 파일을 찾을 수 없습니다.", message: "")
+                    self.noHandlerAlert(title: AlertTitle.noFile, message: "")
                     return
                 }
                 
@@ -190,7 +190,7 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                             ])
                             self.removeBackupFile(fileName: fileURL)
                             self.hud.dismiss(animated: true)
-                            self.noHandlerAlert(title: "오류", message: "Petmory의 백업 파일이 아닙니다.")
+                            self.noHandlerAlert(title: AlertTitle.error, message: AlertMessage.notPetmoryFile)
                             return
                         }
                     } catch {
@@ -208,7 +208,7 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                             ])
                             self.removeBackupFile(fileName: fileURL)
                             self.hud.dismiss(animated: true)
-                            self.noHandlerAlert(title: "Petmory의 백업 파일이 아닙니다.", message: "")
+                            self.noHandlerAlert(title: AlertTitle.error, message: AlertMessage.notPetmoryFile)
                             return
                         }
                         
@@ -237,13 +237,13 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                                 if self.calendar.count != 0 {
                                     self.calendar.forEach {
                                         print($0)
-                                        self.sendNotification(notiTitle: "오늘의 일정", body: $0.title, date: $0.date, identifier: "\($0.registerDate)", type: .calendar)
+                                        self.sendNotification(notiTitle: NotificationContentText.todayCalendar, body: $0.title, date: $0.date, identifier: "\($0.registerDate)", type: .calendar)
                                     }
                                 }
                                 if self.petList.count != 0 {
                                     self.petList.forEach {
                                         print($0)
-                                        self.sendNotification(notiTitle: "\($0.petName) 생일", body: "소중한 하루를 선물해주세요 :)", date: $0.birthday!, identifier: "\($0.registerDate)", type: .pet)
+                                        self.sendNotification(notiTitle: "\($0.petName) 생일", body: NotificationContentText.happyDay, date: $0.birthday!, identifier: "\($0.registerDate)", type: .pet)
                                     }
                                 }
                             }
@@ -267,7 +267,7 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                         }
                     } catch {
                         self.hud.dismiss(animated: true)
-                        self.noHandlerAlert(title: "압축 해제 실패", message: "")
+                        self.noHandlerAlert(title: AlertTitle.failUnzip, message: "")
                     }
                 } else {
                     //앱 내에 없는 경우엔 복사해서 만들어주기
@@ -286,7 +286,7 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                                 ])
                                 self.removeBackupFile(fileName: fileURL)
                                 self.hud.dismiss(animated: true)
-                                self.noHandlerAlert(title: "오류", message: "Petmory의 백업 파일이 아닙니다.")
+                                self.noHandlerAlert(title: AlertTitle.error, message: AlertMessage.notPetmoryFile)
                                 return
                             }
                         } catch {
@@ -303,7 +303,7 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                                 ])
                                 self.removeBackupFile(fileName: fileURL)
                                 self.hud.dismiss(animated: true)
-                                self.noHandlerAlert(title: "Petmory의 백업 파일이 아닙니다.", message: "")
+                                self.noHandlerAlert(title: AlertTitle.error, message: AlertMessage.notPetmoryFile)
                                 return
                             }
                             self.repository.deleteAllMemory(task: self.memory)
@@ -331,13 +331,13 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                                     if self.calendar.count != 0 {
                                         self.calendar.forEach {
                                             print($0)
-                                            self.sendNotification(notiTitle: "오늘의 일정", body: $0.title, date: $0.date, identifier: "\($0.registerDate)", type: .calendar)
+                                            self.sendNotification(notiTitle: NotificationContentText.todayCalendar, body: $0.title, date: $0.date, identifier: "\($0.registerDate)", type: .calendar)
                                         }
                                     }
                                     if self.petList.count != 0 {
                                         self.petList.forEach {
                                             print($0)
-                                            self.sendNotification(notiTitle: "\($0.petName) 생일", body: "소중한 하루를 선물해주세요 :)", date: $0.birthday!, identifier: "\($0.registerDate)", type: .pet)
+                                            self.sendNotification(notiTitle: "\($0.petName) 생일", body: NotificationContentText.happyDay, date: $0.birthday!, identifier: "\($0.registerDate)", type: .pet)
                                         }
                                     }
                                 }
@@ -362,11 +362,11 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                             
                         } catch {
                             self.hud.dismiss(animated: true)
-                            self.noHandlerAlert(title: "압축 해제 실패", message: "")
+                            self.noHandlerAlert(title: AlertTitle.failUnzip, message: "")
                         }
                     } catch {
                         self.hud.dismiss(animated: true)
-                        self.noHandlerAlert(title: "압축 해제 실패", message: "")
+                        self.noHandlerAlert(title: AlertTitle.failUnzip, message: "")
                     }
                 }
             }
@@ -391,7 +391,7 @@ extension BackupRestoreViewController {
     private func showActionSheet(fileName: String) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        let restore = UIAlertAction(title: "내보내기", style: .default) { [weak self] _ in
+        let restore = UIAlertAction(title: AlertTitle.export, style: .default) { [weak self] _ in
             
             guard let self = self else { return }
             
@@ -400,12 +400,12 @@ extension BackupRestoreViewController {
                 if FileManager.default.fileExists(atPath: url.path) {
                     self.showActivityController(backupUrl: url)
                 } else {
-                    self.noHandlerAlert(title: "파일을 찾을 수 없습니다.", message: "")
+                    self.noHandlerAlert(title: AlertTitle.noFile, message: "")
                 }
             }
             
         }
-        let delete = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
+        let delete = UIAlertAction(title: ButtonTitle.delete, style: .destructive) { [weak self] _ in
             
             guard let self = self else { return }
             
@@ -413,7 +413,7 @@ extension BackupRestoreViewController {
             self.backupFileList = self.fetchZipFile()
             self.mainView.tableView.reloadData()
         }
-        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        let cancel = UIAlertAction(title: ButtonTitle.cancel, style: .cancel)
         
         alert.addAction(restore)
         alert.addAction(delete)

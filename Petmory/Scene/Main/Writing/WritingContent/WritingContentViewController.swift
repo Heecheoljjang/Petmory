@@ -30,21 +30,21 @@ final class WritingContentViewController: BaseViewController {
         super.setUpController()
         
         //네비게이션 바버튼
-        let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancelWritingContent))
-        let doneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(doneWritingContent))
+        let cancelButton = UIBarButtonItem(title: ButtonTitle.cancel, style: .plain, target: self, action: #selector(cancelWritingContent))
+        let doneButton = UIBarButtonItem(title: ButtonTitle.done, style: .plain, target: self, action: #selector(doneWritingContent))
         navigationItem.rightBarButtonItem = doneButton
         navigationItem.leftBarButtonItem = cancelButton
         
         navigationController?.navigationBar.tintColor = .diaryColor
         
         //네비게이션 컨트롤러
-        title = "내용"
+        title = NavigationTitleLabel.contents
     }
     
     //MARK: - @objc
     @objc private func cancelWritingContent() {
         if mainView.textView.text != "" {
-            handlerAlert(title: "취소하시겠습니까?", message: "작성중인 내용은 저장되지 않습니다.") { _ in
+            handlerAlert(title: AlertTitle.checkCancel, message: AlertMessage.willNotSave) { _ in
                 self.transition(self, transitionStyle: .dismiss)
             }
         } else {

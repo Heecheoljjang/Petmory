@@ -138,7 +138,7 @@ final class AddCalendarView: BaseView {
     let dateTextField: UITextField = {
         let textField = UITextField()
         textField.font = UIFont(name: CustomFont.medium, size: 17)
-        textField.placeholder = "날짜 및 시간"
+        textField.placeholder = PlaceholderText.dateAndTime
         textField.textAlignment = .center
         textField.tintColor = .clear
         return textField
@@ -194,13 +194,11 @@ final class AddCalendarView: BaseView {
             make.width.equalToSuperview()
             make.centerX.top.equalToSuperview()
             make.bottom.equalTo(scrollView).offset(-10)
-//            make.height.equalTo(300)
         }
         
         titleColorView.snp.makeConstraints { make in
             make.top.equalTo(titleTextView).offset(6)
             make.bottom.equalTo(titleTextView).offset(-6)
-//            make.height.equalTo(titleTextView)
             make.leading.equalToSuperview().offset(20)
             make.width.equalTo(4)
         }

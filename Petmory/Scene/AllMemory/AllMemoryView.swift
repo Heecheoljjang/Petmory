@@ -39,7 +39,7 @@ final class AllMemoryView: BaseView {
         let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.text = "작성한 기록이 없습니다!"
+        label.text = LabelText.noMemory
         label.font = UIFont(name: CustomFont.medium, size: 12)
         label.textColor = .lightGray
         
@@ -48,7 +48,7 @@ final class AllMemoryView: BaseView {
     
     let withLabel: UILabel = {
         let label = UILabel()
-        label.text = "with"
+        label.text = LabelText.with
         label.font = UIFont(name: CustomFont.bold, size: 15)
     
         return label
@@ -57,7 +57,7 @@ final class AllMemoryView: BaseView {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: CustomFont.medium, size: 16)
-        label.text = "모아보기"
+        label.text = NavigationTitleLabel.allMemory
         label.textAlignment = .center
         label.textColor = .black
         return label

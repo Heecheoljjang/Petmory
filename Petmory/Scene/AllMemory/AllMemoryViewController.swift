@@ -132,13 +132,13 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tasks.filter("memoryDateString CONTAINS[c] '\(dateList[section])'").count
+        return tasks.filter("\(RealmModelColumn.memoryDateString) CONTAINS[c] '\(dateList[section])'").count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AllMemoryTableViewCell.identifier, for: indexPath) as? AllMemoryTableViewCell else { return UITableViewCell() }
 
-        let tempTask = tasks.filter("memoryDateString CONTAINS[c] '\(dateList[indexPath.section])'").sorted(byKeyPath: "memoryDate", ascending: false)[indexPath.row]
+        let tempTask = tasks.filter("\(RealmModelColumn.memoryDateString) CONTAINS[c] '\(dateList[indexPath.section])'").sorted(byKeyPath: RealmModelColumn.memoryDate, ascending: false)[indexPath.row]
         
         cell.memoryTitle.text = tempTask.memoryTitle
         cell.memoryContentLabel.text = tempTask.memoryContent
@@ -162,7 +162,7 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let tempTask = tasks.filter("memoryDateString CONTAINS[c] '\(dateList[indexPath.section])'").sorted(byKeyPath: "memoryDate", ascending: false)[indexPath.row]
+        let tempTask = tasks.filter("\(RealmModelColumn.memoryDateString) CONTAINS[c] '\(dateList[indexPath.section])'").sorted(byKeyPath: RealmModelColumn.memoryDate, ascending: false)[indexPath.row]
         
         let memoryDetailViewController = MemoryDetailViewController()
 

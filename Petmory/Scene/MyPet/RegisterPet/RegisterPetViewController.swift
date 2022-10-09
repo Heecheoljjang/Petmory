@@ -20,7 +20,7 @@ final class RegisterPetViewController: BaseViewController {
     
     private var gender: String = "" {
         didSet {
-            if gender == "남아" {
+            if gender == ButtonTitle.boy {
                 mainView.boyButton.layer.borderColor = UIColor.diaryColor.cgColor
                 mainView.boyButton.configuration?.baseForegroundColor = .diaryColor
                 mainView.girlButton.layer.borderColor = UIColor.lightGray.cgColor
@@ -67,14 +67,14 @@ final class RegisterPetViewController: BaseViewController {
         memories = repository.fetchAllMemory()
                 
         if currentStatus == CurrentStatus.edit {
-            mainView.addButton.configuration?.title = "수정"
+            mainView.addButton.configuration?.title = ButtonTitle.edit
             if let task = task {
                 //프로필 이미지 설정
                 if let imageData = task.profileImage {
                     profileImage = imageData
                 }
                 //성별 설정
-                if task.gender == "남아" {
+                if task.gender == ButtonTitle.boy {
                     gender = task.gender
                     mainView.boyButton.configuration?.baseForegroundColor = .diaryColor
                     mainView.boyButton.layer.borderColor = UIColor.diaryColor.cgColor
@@ -97,7 +97,7 @@ final class RegisterPetViewController: BaseViewController {
             }
             mainView.deleteButton.isHidden = false
         } else {
-            mainView.addButton.configuration?.title = "등록"
+            mainView.addButton.configuration?.title = ButtonTitle.register
             mainView.deleteButton.isHidden = true
         }
     }
@@ -139,9 +139,9 @@ final class RegisterPetViewController: BaseViewController {
         
         //툴바
         let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: mainView.bounds.size.width, height: 40))
-        let toolBarDoneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(doneSelectDate))
+        let toolBarDoneButton = UIBarButtonItem(title: ButtonTitle.done, style: .plain, target: self, action: #selector(doneSelectDate))
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let toolBarCancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(dismissPicker))
+        let toolBarCancelButton = UIBarButtonItem(title: ButtonTitle.cancel, style: .plain, target: self, action: #selector(dismissPicker))
         toolBar.setItems([toolBarCancelButton, flexibleSpace, toolBarDoneButton], animated: true)
         toolBar.tintColor = .diaryColor
         mainView.birthdayTextField.inputAccessoryView = toolBar
@@ -173,7 +173,7 @@ final class RegisterPetViewController: BaseViewController {
         let notificationContent = UNMutableNotificationContent()
         notificationContent.sound = .default
         notificationContent.title = "\(name) 생일"
-        notificationContent.body = "소중한 하루를 선물해주세요 :)"
+        notificationContent.body = NotificationContentText.happyDay
 
         var dateComponents = DateComponents()
         dateComponents.month = date.dateComponentFromDate(component: DateComponent.month.rawValue)
@@ -191,11 +191,11 @@ final class RegisterPetViewController: BaseViewController {
 
     //MARK: 성별 버튼
     @objc private func tapBoyButton() {
-        gender = "남아"
+        gender = ButtonTitle.boy
     }
     
     @objc private func tapGirlButton() {
-        gender = "여아"
+        gender = ButtonTitle.girl
     }
     
     //MARK: 사진 버튼
@@ -218,7 +218,7 @@ final class RegisterPetViewController: BaseViewController {
     }
     @objc private func deletePet() {
         //지울건지 alert띄우고
-        handlerAlert(title: "삭제하시겠습니까?", message: "") { [weak self] _ in
+        handlerAlert(title: AlertTitle.checkDelete, message: "") { [weak self] _ in
             guard let self = self else { return }
             if let task = self.task {
                 self.notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(task.registerDate)"])
@@ -235,10 +235,10 @@ final class RegisterPetViewController: BaseViewController {
         if currentStatus == CurrentStatus.edit {
             //MARK: alert띄우기
             if mainView.nameTextField.text! == "" {
-                noHandlerAlert(title: "이름을 입력해주세요.", message: "")
+                noHandlerAlert(title: AlertTitle.noPetName, message: "")
             } else {
                 if profileImage == nil {
-                    noHandlerAlert(title: "사진을 등록해주세요.", message: "")
+                    noHandlerAlert(title: AlertTitle.noPetProfilePhoto, message: "")
                 } else {
                     //중복체크. 이름이 바뀌었는지부터 체크하고 안바뀌었다면 바로 수정, 바뀌었다면 중복체크하고 중복되지않는다면 수정하고 반려동물 리스트 업데이트
                     if mainView.nameTextField.text! == currentName {
@@ -254,7 +254,7 @@ final class RegisterPetViewController: BaseViewController {
                     } else {
                         //이름이 바뀐 것이므로 중복체크
                         if petList.contains(mainView.nameTextField.text!) {
-                            noHandlerAlert(title: "이미 등록된 이름입니다.", message: "다른 이름을 사용해주세요.")
+                            noHandlerAlert(title: AlertTitle.alreadyRegisteredName, message: AlertMessage.anotherName)
                         } else {
                             //리스트 업데이트하고, 펫도 업데이트. 근데 메모리의 반려동물 리스트안에 currentName이 포함되어 있어야함.
                             memories.forEach {
@@ -286,22 +286,22 @@ final class RegisterPetViewController: BaseViewController {
         } else {
             //MARK: alert띄우기
             if gender == "" && mainView.nameTextField.text! == "" {
-                noHandlerAlert(title: "이름을 입력해주세요.", message: "")
+                noHandlerAlert(title: AlertTitle.noPetName, message: "")
             } else if gender == "" && mainView.nameTextField.text! != "" {
-                noHandlerAlert(title: "성별을 선택해주세요.", message: "")
+                noHandlerAlert(title: AlertTitle.noPetGender, message: "")
             } else if gender != "" && mainView.nameTextField.text! == "" {
-                noHandlerAlert(title: "이름을 입력해주세요.", message: "")
+                noHandlerAlert(title: AlertTitle.noPetName, message: "")
             } else {
                 if mainView.birthdayTextField.text! == "" {
                     //MARK: alert띄워서 확인 누르면 오늘 날짜로 텍스트필드 채우기
-                    noHandlerAlert(title: "생일을 입력해주세요.", message: "")
+                    noHandlerAlert(title: AlertTitle.noPetBirthday, message: "")
                 } else {
                     if profileImage == nil {
-                        noHandlerAlert(title: "사진을 등록해주세요.", message: "")
+                        noHandlerAlert(title: AlertTitle.noPetProfilePhoto, message: "")
                     } else {
                         //이름만 중복체크하기
                         if petList.contains(mainView.nameTextField.text!) {
-                            noHandlerAlert(title: "이미 등록된 이름입니다.", message: "다른 이름을 사용해주세요.")
+                            noHandlerAlert(title: AlertTitle.alreadyRegisteredName, message: AlertMessage.anotherName)
                         } else {
                             let pet = UserPet(profileImage: profileImage, petName: mainView.nameTextField.text!, birthday: birthdayDate, gender: gender, comment: mainView.memoTextView.text, registerDate: currentDate)
                             Analytics.logEvent("Add_Pet", parameters: [
@@ -319,7 +319,7 @@ final class RegisterPetViewController: BaseViewController {
     }
     @objc private func dismissView() {
         if gender != "" || mainView.nameTextField.text! != "" || mainView.birthdayTextField.text! != "" || mainView.memoTextView.text! != "" || mainView.profileImageView.image != nil {
-            handlerAlert(title: "취소하시겠습니까?", message: "작성중인 내용은 저장되지 않습니다.") { _ in
+            handlerAlert(title: AlertTitle.checkCancel, message: AlertMessage.willNotSave) { _ in
                 self.transition(self, transitionStyle: .dismiss)
             }
         } else {
@@ -343,8 +343,8 @@ extension RegisterPetViewController: PHPickerViewControllerDelegate {
                 cropViewController.delegate = self
                 cropViewController.doneButtonColor = .stringColor
                 cropViewController.cancelButtonColor = .stringColor
-                cropViewController.doneButtonTitle = "완료"
-                cropViewController.cancelButtonTitle = "취소"
+                cropViewController.doneButtonTitle = ButtonTitle.done
+                cropViewController.cancelButtonTitle = ButtonTitle.cancel
                 self.transition(cropViewController, transitionStyle: .present)
 
             }

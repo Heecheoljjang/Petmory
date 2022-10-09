@@ -113,7 +113,7 @@ final class WritingView: BaseView {
     
     let withLabel: UILabel = {
         let label = UILabel()
-        label.text = "with"
+        label.text = LabelText.with
         label.font = UIFont(name: CustomFont.bold, size: 15)
     
         return label

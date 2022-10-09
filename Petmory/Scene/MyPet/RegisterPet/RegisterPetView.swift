@@ -32,7 +32,7 @@ final class RegisterPetView: BaseView {
     let deleteButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.filled()
-        configuration.title = "삭제"
+        configuration.title = ButtonTitle.delete
         configuration.baseForegroundColor = .diaryColor
         configuration.baseBackgroundColor = .white
         
@@ -47,7 +47,7 @@ final class RegisterPetView: BaseView {
     let addButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.filled()
-        configuration.title = "등록"
+        configuration.title = ButtonTitle.register
         configuration.baseForegroundColor = .white
         configuration.baseBackgroundColor = .diaryColor
         
@@ -87,7 +87,7 @@ final class RegisterPetView: BaseView {
     
     let memoLabel: UILabel = {
         let label = UILabel()
-        label.text = "메모"
+        label.text = LabelText.memo
         label.font = UIFont(name: CustomFont.medium, size: 14)
         return label
     }()
@@ -95,7 +95,7 @@ final class RegisterPetView: BaseView {
     let boyButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.plain()
-        configuration.title = "남아"
+        configuration.title = ButtonTitle.boy
         configuration.baseForegroundColor = .lightGray
         configuration.cornerStyle = .capsule
         
@@ -110,7 +110,7 @@ final class RegisterPetView: BaseView {
     let girlButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.plain()
-        configuration.title = "여아"
+        configuration.title = ButtonTitle.girl
         configuration.baseForegroundColor = .lightGray
         configuration.cornerStyle = .capsule
         
@@ -123,7 +123,7 @@ final class RegisterPetView: BaseView {
     
     let nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "이름 :"
+        label.text = LabelText.nameWithColon
         label.font = UIFont(name: CustomFont.medium, size: 18)
         
         return label
@@ -140,13 +140,13 @@ final class RegisterPetView: BaseView {
         let textField = UITextField()
         textField.font = UIFont(name: CustomFont.medium, size: 18)
         textField.textAlignment = .center
-        textField.placeholder = "이름을 입력해주세요."
+        textField.placeholder = PlaceholderText.writeName
         return textField
     }()
     
     let birthdayLabel: UILabel = {
         let label = UILabel()
-        label.text = "생일 :"
+        label.text = LabelText.birthDayWithColon
         label.font = UIFont(name: CustomFont.medium, size: 18)
 
         return label
@@ -157,7 +157,7 @@ final class RegisterPetView: BaseView {
         textField.font = UIFont(name: CustomFont.medium, size: 18)
         textField.textAlignment = .center
         textField.tintColor = .clear
-        textField.placeholder = "생일을 선택해주세요."
+        textField.placeholder = PlaceholderText.selectBirthday
         return textField
     }()
     
@@ -170,7 +170,7 @@ final class RegisterPetView: BaseView {
     
     let genderLabel: UILabel = {
         let label = UILabel()
-        label.text = "성별"
+        label.text = LabelText.gender
         label.font = UIFont(name: CustomFont.medium, size: 14)
         return label
     }()
@@ -201,7 +201,7 @@ final class RegisterPetView: BaseView {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: CustomFont.medium, size: 16)
-        label.text = "반려동물 등록"
+        label.text = NavigationTitleLabel.registerPet
         label.textAlignment = .center
         label.textColor = .black
         

@@ -21,7 +21,7 @@ final class MyPetView: BaseView {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: CustomFont.medium, size: 16)
-        label.text = "나의 반려동물"
+        label.text = NavigationTitleLabel.myPet
         label.textColor = .black
         label.textAlignment = .center
         

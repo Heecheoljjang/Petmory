@@ -12,7 +12,7 @@ final class BackupResotreView: BaseView {
     let messageTextView: UITextView = {
         let view = UITextView()
         view.font = UIFont(name: CustomFont.medium, size: 11)
-        view.text = "앱 삭제 시 백업 파일도 함께 삭제되기 때문에 파일 앱 등에 따로 저장해두는 것을 권장합니다.\n\n또한 파일 이름을 기준으로 복구를 진행하기 때문에 앞의 'Petmory_' 부분은 유지해주시길 바랍니다."
+        view.text = BackupLabel.backupMessage
         view.textColor = .lightGray
         view.backgroundColor = .white
         view.isUserInteractionEnabled = false
@@ -49,7 +49,7 @@ final class BackupResotreView: BaseView {
         configuration.baseForegroundColor = .darkGray
         configuration.baseBackgroundColor = .veryLightGray
         
-        var attributedTitle = AttributedString.init("백업 파일 생성")
+        var attributedTitle = AttributedString.init(ButtonTitle.makeBackupFile)
         attributedTitle.font = UIFont(name: CustomFont.medium, size: 14)
         configuration.attributedTitle = attributedTitle
         
@@ -65,7 +65,7 @@ final class BackupResotreView: BaseView {
         configuration.baseForegroundColor = .darkGray
         configuration.baseBackgroundColor = .veryLightGray
         
-        var attributedTitle = AttributedString.init("복구")
+        var attributedTitle = AttributedString.init(ButtonTitle.restore)
         attributedTitle.font = UIFont(name: CustomFont.medium, size: 14)
         configuration.attributedTitle = attributedTitle
         
@@ -78,7 +78,7 @@ final class BackupResotreView: BaseView {
     
     let backupFileLabel: UILabel = {
         let label = UILabel()
-        label.text = "백업 파일"
+        label.text = LabelText.backupFile
         label.textColor = .lightGray
         label.font = UIFont(name: CustomFont.medium, size: 10)
         return label
@@ -87,7 +87,7 @@ final class BackupResotreView: BaseView {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: CustomFont.medium, size: 16)
-        label.text = "백업 및 복구"
+        label.text = NavigationTitleLabel.backupRestore
         label.textColor = .black
         label.textAlignment = .center
         

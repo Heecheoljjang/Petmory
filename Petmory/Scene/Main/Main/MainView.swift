@@ -63,7 +63,7 @@ final class MainView: BaseView {
         let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.text = "사랑하는 반려동물과의\n\n소중한 하루를 기록해보세요 :)"
+        label.text = LabelText.zeroMemory
         label.font = UIFont(name: CustomFont.medium, size: 13)
         label.textColor = .lightGray
         

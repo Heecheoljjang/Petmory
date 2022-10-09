@@ -25,7 +25,7 @@ final class MonthMemoryView: BaseView {
         let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.text = "작성한 기록이 없습니다!"
+        label.text = LabelText.noMemory
         label.font = UIFont(name: CustomFont.medium, size: 12)
         label.textColor = .lightGray
         

@@ -29,9 +29,7 @@ final class WritingViewController: BaseViewController {
             mainView.imageCollectionView.reloadData()
         }
     }
-    
-    private let placeholderText = "어떤 하루를 보내셨나요?"
-    
+        
     var currentTask: UserMemory?
     
     var memoryDate = Date() {
@@ -73,7 +71,7 @@ final class WritingViewController: BaseViewController {
             if mainView.contentTextView.text != "" {
                 mainView.contentTextView.textColor = .black
             } else {
-                mainView.contentTextView.text = placeholderText
+                mainView.contentTextView.text = PlaceholderText.askToday
                 mainView.contentTextView.textColor = .placeholderColor
             }
         }
@@ -91,7 +89,7 @@ final class WritingViewController: BaseViewController {
     override func setUpController() {
         super.setUpController()
         
-        let doneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(finishWriting))
+        let doneButton = UIBarButtonItem(title: ButtonTitle.done, style: .plain, target: self, action: #selector(finishWriting))
         let cancelButton = UIBarButtonItem(image: UIImage(systemName: ImageName.xmark), style: .plain, target: self, action: #selector(cancelWriting))
         
         navigationController?.navigationBar.tintColor = .diaryColor
@@ -105,7 +103,7 @@ final class WritingViewController: BaseViewController {
         navigationController?.navigationBar.standardAppearance = appearance
 
         //MARK: 텍스트뷰
-        mainView.contentTextView.text = placeholderText
+        mainView.contentTextView.text = PlaceholderText.askToday
         mainView.contentTextView.textColor = .placeholderColor
                 
         //MARK: 네비게이션 타이틀 뷰
@@ -144,14 +142,14 @@ final class WritingViewController: BaseViewController {
     private func setDatePickerSheet() {
 
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let select = UIAlertAction(title: "선택", style: .default) { [weak self] _ in
+        let select = UIAlertAction(title: AlertText.select, style: .default) { [weak self] _ in
             
             guard let self = self else { return }
 
             self.memoryDate = self.tempDate
             
         }
-        let cancel = UIAlertAction(title: "취소", style: .cancel) { [weak self] _ in
+        let cancel = UIAlertAction(title: AlertText.cancel, style: .cancel) { [weak self] _ in
             guard let self = self else { return }
             
             self.mainView.titleViewDatePicker.date = self.memoryDate
@@ -186,11 +184,11 @@ final class WritingViewController: BaseViewController {
         
         //MARK: 선택된 펫이 없는 경우, 제목이 없는 경우에 alert
         if withList.count == 0 && mainView.titleTextField.text! == "" {
-            noHandlerAlert(title: "", message: "제목을 입력해주세요.")
+            noHandlerAlert(title: "", message: AlertMessage.noTitle)
         } else if withList.count != 0 && mainView.titleTextField.text! == "" {
-            noHandlerAlert(title: "", message: "제목을 입력해주세요.")
+            noHandlerAlert(title: "", message: AlertMessage.noTitle)
         } else if withList.count == 0 && mainView.titleTextField.text! != "" {
-            noHandlerAlert(title: "", message: "함께한 반려동물을 선택해주세요.")
+            noHandlerAlert(title: "", message: AlertMessage.selectPet)
         } else {
             //MARK: 새로 작성
             if currentStatus == CurrentStatus.new {
@@ -201,12 +199,12 @@ final class WritingViewController: BaseViewController {
                     let task = UserMemory(memoryTitle: mainView.titleTextField.text!, memoryDateString: memoryDate.dateToString(type: .simple), petList: withList, memoryContent: "", imageData: imageList, memoryDate: memoryDate, objectId: "\(Date())")
                     
                     repository.addMemory(item: task)
-                    showAlert(title: "작성 완료!")
+                    showAlert(title: AlertTitle.doneWriting)
                     
                 } else {
                     let task = UserMemory(memoryTitle: mainView.titleTextField.text!, memoryDateString: memoryDate.dateToString(type: .simple), petList: withList, memoryContent: mainView.contentTextView.text, imageData: imageList, memoryDate: memoryDate, objectId: "\(Date())")
                     repository.addMemory(item: task)
-                    showAlert(title: "작성 완료!")
+                    showAlert(title: AlertTitle.doneWriting)
                 }
             } else {
                 //MARK: 편집
@@ -218,13 +216,13 @@ final class WritingViewController: BaseViewController {
                         repository.updateMemory(item: task, title: mainView.titleTextField.text!, memoryDateString: memoryDate.dateToString(type: .simple), content: "", petList: withList, imageData: imageList, memoryDate: memoryDate)
                     }
                     settingDetailView?()
-                    showAlert(title: "수정 완료!")
+                    showAlert(title: AlertTitle.doneEditing)
                 } else {
                     if let task = currentTask {
                         repository.updateMemory(item: task, title: mainView.titleTextField.text!, memoryDateString: memoryDate.dateToString(type: .simple), content: mainView.contentTextView.text, petList: withList, imageData: imageList, memoryDate: memoryDate)
                     }
                     settingDetailView?()
-                    showAlert(title: "수정 완료!")
+                    showAlert(title: AlertTitle.doneEditing)
                 }
             }
         }
@@ -233,7 +231,7 @@ final class WritingViewController: BaseViewController {
     @objc private func cancelWriting() {
         //alert띄워서 지울지말지 확인
         if mainView.titleTextField.text?.count != 0 || mainView.contentTextView.textColor != .placeholderColor || imageList.count != 0 {
-            handlerAlert(title: "취소하시겠습니까?", message: "작성중인 내용은 저장되지 않습니다.") { _ in
+            handlerAlert(title: AlertTitle.checkCancel, message: AlertMessage.willNotSave) { _ in
                 self.transition(self, transitionStyle: .dismiss)
             }
         } else {
@@ -244,7 +242,7 @@ final class WritingViewController: BaseViewController {
         if imageList.count <= 1 {
             presentPHPickerViewController()
         } else {
-            noHandlerAlert(title: "최대 두 장까지 추가할 수 있습니다.", message: "")
+            noHandlerAlert(title: AlertTitle.maximumPhoto, message: "")
         }
     }
 }
@@ -334,8 +332,8 @@ extension WritingViewController: PHPickerViewControllerDelegate {
                 cropViewController.delegate = self
                 cropViewController.doneButtonColor = .stringColor
                 cropViewController.cancelButtonColor = .stringColor
-                cropViewController.doneButtonTitle = "완료"
-                cropViewController.cancelButtonTitle = "취소"
+                cropViewController.doneButtonTitle = ButtonTitle.done
+                cropViewController.cancelButtonTitle = ButtonTitle.cancel
                 self.transition(cropViewController, transitionStyle: .present)
 
             }
@@ -362,7 +360,7 @@ extension WritingViewController: UITextViewDelegate {
         
         writingContentVC.sendContentText = { text in
             if text == "" {
-                self.mainView.contentTextView.text = "오늘 하루를 어떻게 보내셨나요?"
+                self.mainView.contentTextView.text = PlaceholderText.askToday
                 self.mainView.contentTextView.textColor = .placeholderColor
             } else {
                 self.mainView.contentTextView.text = text
@@ -384,7 +382,7 @@ extension WritingViewController: UITextViewDelegate {
 extension WritingViewController {
     private func showAlert(title: String) {
         let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-        let ok = UIAlertAction(title: "확인", style: .cancel) { [weak self] _ in
+        let ok = UIAlertAction(title: AlertText.ok, style: .cancel) { [weak self] _ in
             guard let self = self else { return }
             self.transition(self, transitionStyle: .dismiss)
         }
