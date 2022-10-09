@@ -76,12 +76,10 @@ final class RegisterPetViewController: BaseViewController {
                 //성별 설정
                 if task.gender == ButtonTitle.boy {
                     gender = task.gender
-//                    mainView.boyButton.configuration?.baseForegroundColor = .diaryColor
-//                    mainView.boyButton.layer.borderColor = UIColor.diaryColor.cgColor
+
                 } else {
                     gender = task.gender
-//                    mainView.girlButton.configuration?.baseForegroundColor = .diaryColor
-//                    mainView.girlButton.layer.borderColor = UIColor.diaryColor.cgColor
+
                 }
                 //이름
                 mainView.nameTextField.text = task.petName

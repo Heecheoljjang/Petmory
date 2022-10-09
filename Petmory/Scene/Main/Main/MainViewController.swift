@@ -56,20 +56,10 @@ final class MainViewController: BaseViewController {
         super.viewDidLoad()
 
         requestAuthorization()
-        
-//        tasks = repository.fetchAllMemory()
-//
-//        petList = repository.fetchPet()
-//
+
         //현재 년도 구해서 monthList와 더해주기
         currentYear = Date().dateToString(type: .onlyYear)
-                        
-//        countList = []
-        
-//        tempList.forEach { date in
-//            countList.append(tasks.filter("\(RealmModelColumn.memoryDateString) CONTAINS[c] '\(date)'").count)
-//        }
-                
+
         //백업용 텍스트파일 지우기
         removeBackupCheckFile()
         
@@ -93,8 +83,6 @@ final class MainViewController: BaseViewController {
             countList.append(tasks.filter("\(RealmModelColumn.memoryDateString) CONTAINS[c] '\(date)'").count)
         }
         
-//        mainView.diaryCollectionView.reloadData()
-
         navigationItem.titleView = mainView.titleViewButton
     }
     

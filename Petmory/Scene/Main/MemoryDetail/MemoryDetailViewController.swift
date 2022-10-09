@@ -120,7 +120,6 @@ final class MemoryDetailViewController: BaseViewController {
             
             if let memoryTask = self.memoryTask {
                 
-                //self.mainView.titleLabel.text = memoryTask.memoryTitle
                 self.mainView.titleLabel.attributedText = self.setAttributedString(text: memoryTask.memoryTitle)
                 self.mainView.contentTextView.text = memoryTask.memoryContent
                 self.mainView.navigationTitleViewLabel.text = memoryTask.memoryDateString

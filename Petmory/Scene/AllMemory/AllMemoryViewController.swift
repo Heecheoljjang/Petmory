@@ -31,10 +31,8 @@ final class AllMemoryViewController: BaseViewController {
         didSet {
             if filterPetName == "" {
                 tasks = repository.fetchAllMemory()
-                //mainView.tableView.reloadData()
             } else {
                 tasks = repository.fetchFiltered(name: filterPetName)
-                //mainView.tableView.reloadData()
             }
         }
     }
@@ -62,7 +60,6 @@ final class AllMemoryViewController: BaseViewController {
             mainView.noMemoryLabel.isHidden = true
         }
         
-        //dateList = Set(tasks.map { $0.memoryDate.dateToString(type: .yearMonth) }).sorted(by: >)
     }
     
     override func setUpController() {

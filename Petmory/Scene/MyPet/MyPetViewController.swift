@@ -34,7 +34,6 @@ final class MyPetViewController: BaseViewController {
         
         tasks = repository.fetchPet()
 
-//        mainView.tableView.reloadData()
     }
     
     override func configure() {

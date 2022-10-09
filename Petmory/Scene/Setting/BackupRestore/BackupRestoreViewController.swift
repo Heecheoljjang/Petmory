@@ -197,15 +197,7 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
         backupHandlerAlert(title: AlertTitle.restore, message: AlertMessage.checkRestore) { [weak self] _ in
             
             guard let self = self else { return }
-            //            if urls.first?.lastPathComponent.split(separator: "_").first! != "Petmory" {
-            //                Analytics.logEvent("Wrong_Backup_File", parameters: [
-            //                    "name": "Wrong Backup File Name",
-            //                ])
-            //                self.hud.dismiss(animated: true)
-            //                self.noHandlerAlert(title: AlertTitle.error, message: AlertMessage.notPetmoryFile)
-            //                return
-            //            } else {
-            //
+
             guard let selectedFile = urls.first else {
                 self.hud.dismiss(animated: true)
                 self.noHandlerAlert(title: AlertTitle.noFile, message: "")
@@ -250,10 +242,7 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                         self.noHandlerAlert(title: AlertTitle.error, message: AlertMessage.notPetmoryFile)
                         return
                     }
-                    
-                    //                        self.repository.deleteAllMemory(task: self.memory)
-                    //                        self.repository.deleteAllPet(task: self.petList)
-                    //                        self.repository.deleteAllCalendar(task: self.calendar)
+                
                     self.repository.deleteAll(memory: self.memory, calendar: self.calendar, pet: self.petList)
                     
                     do {
@@ -263,30 +252,10 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                         
                         try self.repository.localRealm.write {
                             guard let memoryData = try self.decodeMemoryData(data: memoryData), let calendarData = try self.decodeCalendarData(data: calendarData), let petListData = try self.decodePetData(data: petData) else { return }
-                            //                                guard let calendarData = try self.decodeCalendarData(data: calendarData) else { return }
-                            //                                guard let petListData = try self.decodePetData(data: petData) else { return }
-                            
-                            //                                self.repository.localRealm.add(memoryData)
-                            //                                self.repository.localRealm.add(calendarData)
-                            //                                self.repository.localRealm.add(petListData)
-                            
+
                             //데이터 전부 추가
                             self.repository.addAll(memory: memoryData, calendar: calendarData, pet: petListData)
-                            
-                            //알림 다시
-//                            self.calendar = self.repository.fetchAllCalendar()
-//                            self.petList = self.repository.fetchPet()
-//
-//                            if self.calendar.count != 0 {
-//                                self.calendar.forEach {
-//                                    self.sendNotification(notiTitle: NotificationContentText.todayCalendar, body: $0.title, date: $0.date, identifier: "\($0.registerDate)", type: .calendar)
-//                                }
-//                            }
-//                            if self.petList.count != 0 {
-//                                self.petList.forEach {
-//                                    self.sendNotification(notiTitle: "\($0.petName) 생일", body: NotificationContentText.happyDay, date: $0.birthday!, identifier: "\($0.registerDate)", type: .pet)
-//                                }
-//                            }
+
                             self.sendNotificationAgain()
                         }
                         self.hud.dismiss(animated: true)
@@ -341,9 +310,7 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                             self.noHandlerAlert(title: AlertTitle.error, message: AlertMessage.notPetmoryFile)
                             return
                         }
-//                        self.repository.deleteAllMemory(task: self.memory)
-//                        self.repository.deleteAllPet(task: self.petList)
-//                        self.repository.deleteAllCalendar(task: self.calendar)
+                        
                         self.repository.deleteAll(memory: self.memory, calendar: self.calendar, pet: self.petList)
                         
                         do {
@@ -352,30 +319,11 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                             let petData = try self.fetchJsonData(fileName: BackupFileName.pet)
                             
                             try self.repository.localRealm.write {
-//                                guard let memoryData = try self.decodeMemoryData(data: memoryData) else { return }
-//                                guard let calendarData = try self.decodeCalendarData(data: calendarData) else { return }
-//                                guard let petListData = try self.decodePetData(data: petData) else { return }
+
                                 guard let memoryData = try self.decodeMemoryData(data: memoryData), let calendarData = try self.decodeCalendarData(data: calendarData), let petListData = try self.decodePetData(data: petData) else { return }
-                                
-//                                self.repository.localRealm.add(memoryData)
-//                                self.repository.localRealm.add(calendarData)
-//                                self.repository.localRealm.add(petListData)
+
                                 self.repository.addAll(memory: memoryData, calendar: calendarData, pet: petListData)
-                                
-                                //알림 다시
-//                                self.calendar = self.repository.fetchAllCalendar()
-//                                self.petList = self.repository.fetchPet()
-//
-//                                if self.calendar.count != 0 {
-//                                    self.calendar.forEach {
-//                                        self.sendNotification(notiTitle: NotificationContentText.todayCalendar, body: $0.title, date: $0.date, identifier: "\($0.registerDate)", type: .calendar)
-//                                    }
-//                                }
-//                                if self.petList.count != 0 {
-//                                    self.petList.forEach {
-//                                        self.sendNotification(notiTitle: "\($0.petName) 생일", body: NotificationContentText.happyDay, date: $0.birthday!, identifier: "\($0.registerDate)", type: .pet)
-//                                    }
-//                                }
+
                                 self.sendNotificationAgain()
                             }
                             self.hud.dismiss(animated: true)

@@ -79,13 +79,7 @@ final class WritingViewController: BaseViewController {
         mainView.imageCollectionView.reloadData()
         
     }
-//
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//
-//        settingDetailView?()
-//    }
-    
+
     override func setUpController() {
         super.setUpController()
         
