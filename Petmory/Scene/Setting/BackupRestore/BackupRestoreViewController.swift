@@ -35,7 +35,7 @@ final class BackupRestoreViewController: BaseViewController {
         
         return hud
     }()
-
+    
     
     let notificationCenter = UNUserNotificationCenter.current()
     
@@ -78,22 +78,20 @@ final class BackupRestoreViewController: BaseViewController {
     }
     
     @objc private func backup() {
-        handlerAlert(title: AlertTitle.backup, message: AlertMessage.makeBackup) { [weak self] _ in
+        hud.show(in: mainView)
+        backupHandlerAlert(title: AlertTitle.backup, message: AlertMessage.makeBackup) { [weak self] _ in
             
             guard let self = self else { return }
-            self.hud.show(in: self.mainView)
             self.makeBackupFile()
         }
     }
     @objc private func restore() {
-
-        do {
-            let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.archive], asCopy: true)
-            documentPicker.delegate = self
-            documentPicker.allowsMultipleSelection = false
-            self.present(documentPicker, animated: true)
-            
-        }
+        
+        let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.archive], asCopy: true)
+        documentPicker.delegate = self
+        documentPicker.allowsMultipleSelection = false
+        self.present(documentPicker, animated: true)
+        
     }
 }
 
@@ -128,7 +126,7 @@ extension BackupRestoreViewController {
             try saveEncodedMemoryToDocument(data: memory, fileName: BackupFileName.memory)
             try saveEncodedCalendarToDocument(data: calendar, fileName: BackupFileName.calendar)
             try saveEncodedPetToDocument(data: petList, fileName: BackupFileName.pet)
-
+            
             //백업 체크 파일 생성
             createBackupCheckFile()
             
@@ -145,6 +143,45 @@ extension BackupRestoreViewController {
             noHandlerAlert(title: AlertTitle.failZip, message: AlertMessage.checkFile)
         }
     }
+    private func backupHandlerAlert(title: String, message: String?, handler: ((UIAlertAction) -> Void)?) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "확인", style: .default, handler: handler)
+        let cancel = UIAlertAction(title: "취소", style: .cancel) { [weak self] _ in
+            self?.hud.dismiss(animated: true)
+        }
+        alert.addAction(ok)
+        alert.addAction(cancel)
+        present(alert, animated: true)
+    }
+    
+    private func restartApp() {
+        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        let sceneDelegate = windowScene?.delegate as? SceneDelegate
+        
+        let transition = CATransition()
+        transition.type = .fade
+        transition.duration = 0.3
+        sceneDelegate?.window?.layer.add(transition, forKey: kCATransition)
+        
+        sceneDelegate?.window?.rootViewController = TabBarController()
+        sceneDelegate?.window?.makeKeyAndVisible()
+    }
+    
+    private func sendNotificationAgain() {
+        let calendar = repository.fetchAllCalendar()
+        let petList = repository.fetchPet()
+        
+        if calendar.count != 0 {
+            calendar.forEach {
+                sendNotification(notiTitle: NotificationContentText.todayCalendar, body: $0.title, date: $0.date, identifier: "\($0.registerDate)", type: .calendar)
+            }
+        }
+        if petList.count != 0 {
+            petList.forEach {
+                sendNotification(notiTitle: "\($0.petName) 생일", body: NotificationContentText.happyDay, date: $0.birthday!, identifier: "\($0.registerDate)", type: .pet)
+            }
+        }
+    }
 }
 
 //MARK: - DocumentPicker
@@ -155,34 +192,128 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
     }
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         
-        handlerAlert(title: AlertTitle.restore, message: AlertMessage.checkRestore) { [weak self] _ in
+        hud.show(in: mainView)
+        
+        backupHandlerAlert(title: AlertTitle.restore, message: AlertMessage.checkRestore) { [weak self] _ in
             
             guard let self = self else { return }
-            if urls.first?.lastPathComponent.split(separator: "_").first! != "Petmory" {
-                Analytics.logEvent("Wrong_Backup_File", parameters: [
-                    "name": "Wrong Backup File Name",
-                ])
-                self.noHandlerAlert(title: AlertTitle.error, message: AlertMessage.notPetmoryFile)
+            //            if urls.first?.lastPathComponent.split(separator: "_").first! != "Petmory" {
+            //                Analytics.logEvent("Wrong_Backup_File", parameters: [
+            //                    "name": "Wrong Backup File Name",
+            //                ])
+            //                self.hud.dismiss(animated: true)
+            //                self.noHandlerAlert(title: AlertTitle.error, message: AlertMessage.notPetmoryFile)
+            //                return
+            //            } else {
+            //
+            guard let selectedFile = urls.first else {
+                self.hud.dismiss(animated: true)
+                self.noHandlerAlert(title: AlertTitle.noFile, message: "")
                 return
-            } else {
-                self.hud.show(in: self.mainView)
+            }
+            
+            guard let documentDirectory = self.documentDirectoryPath() else { return }
+            
+            let sandboxURL = documentDirectory.appendingPathComponent(selectedFile.lastPathComponent)
+            
+            if FileManager.default.fileExists(atPath: sandboxURL.path) {
                 
-                guard let selectedFile = urls.first else {
-                    self.noHandlerAlert(title: AlertTitle.noFile, message: "")
-                    return
+                let fileName = selectedFile.lastPathComponent
+                
+                //파일URL
+                let fileURL = documentDirectory.appendingPathComponent(fileName)
+                
+                do {
+                    if try self.checkBackupFile(fileURL: fileURL) == true {
+                        Analytics.logEvent("Wrong_Backup_File", parameters: [
+                            "name": "No Permory txt File",
+                        ])
+                        self.removeBackupFile(fileName: fileURL)
+                        self.hud.dismiss(animated: true)
+                        self.noHandlerAlert(title: AlertTitle.error, message: AlertMessage.notPetmoryFile)
+                        return
+                    }
+                } catch {
+                    self.hud.dismiss(animated: true)
                 }
                 
-                guard let documentDirectory = self.documentDirectoryPath() else { return }
-                
-                let sandboxURL = documentDirectory.appendingPathComponent(selectedFile.lastPathComponent)
-                
-                if FileManager.default.fileExists(atPath: sandboxURL.path) {
+                do {
+                    try self.unZipBackupFile(fileURL: fileURL, destination: documentDirectory)
                     
+                    let checkValue = self.checkBackupFileExist()
+                    if checkValue == false {
+                        Analytics.logEvent("Wrong_Backup_File", parameters: [
+                            "name": "No Pemory txt File",
+                        ])
+                        self.removeBackupFile(fileName: fileURL)
+                        self.hud.dismiss(animated: true)
+                        self.noHandlerAlert(title: AlertTitle.error, message: AlertMessage.notPetmoryFile)
+                        return
+                    }
+                    
+                    //                        self.repository.deleteAllMemory(task: self.memory)
+                    //                        self.repository.deleteAllPet(task: self.petList)
+                    //                        self.repository.deleteAllCalendar(task: self.calendar)
+                    self.repository.deleteAll(memory: self.memory, calendar: self.calendar, pet: self.petList)
+                    
+                    do {
+                        let memoryData = try self.fetchJsonData(fileName: BackupFileName.memory)
+                        let calendarData = try self.fetchJsonData(fileName: BackupFileName.calendar)
+                        let petData = try self.fetchJsonData(fileName: BackupFileName.pet)
+                        
+                        try self.repository.localRealm.write {
+                            guard let memoryData = try self.decodeMemoryData(data: memoryData), let calendarData = try self.decodeCalendarData(data: calendarData), let petListData = try self.decodePetData(data: petData) else { return }
+                            //                                guard let calendarData = try self.decodeCalendarData(data: calendarData) else { return }
+                            //                                guard let petListData = try self.decodePetData(data: petData) else { return }
+                            
+                            //                                self.repository.localRealm.add(memoryData)
+                            //                                self.repository.localRealm.add(calendarData)
+                            //                                self.repository.localRealm.add(petListData)
+                            
+                            //데이터 전부 추가
+                            self.repository.addAll(memory: memoryData, calendar: calendarData, pet: petListData)
+                            
+                            //알림 다시
+//                            self.calendar = self.repository.fetchAllCalendar()
+//                            self.petList = self.repository.fetchPet()
+//
+//                            if self.calendar.count != 0 {
+//                                self.calendar.forEach {
+//                                    self.sendNotification(notiTitle: NotificationContentText.todayCalendar, body: $0.title, date: $0.date, identifier: "\($0.registerDate)", type: .calendar)
+//                                }
+//                            }
+//                            if self.petList.count != 0 {
+//                                self.petList.forEach {
+//                                    self.sendNotification(notiTitle: "\($0.petName) 생일", body: NotificationContentText.happyDay, date: $0.birthday!, identifier: "\($0.registerDate)", type: .pet)
+//                                }
+//                            }
+                            self.sendNotificationAgain()
+                        }
+                        self.hud.dismiss(animated: true)
+                        Analytics.logEvent("Restore_Success", parameters: [
+                            "name": "Restore Success",
+                        ])
+                        
+                        self.restartApp()
+                        
+                    } catch {
+                        self.hud.dismiss(animated: true)
+                        throw ErrorType.fetchJsonDataError
+                    }
+                } catch {
+                    self.hud.dismiss(animated: true)
+                    self.noHandlerAlert(title: AlertTitle.failUnzip, message: "")
+                }
+            } else {
+                //앱 내에 없는 경우엔 복사해서 만들어주기
+                
+                do {
+                    try FileManager.default.copyItem(at: selectedFile, to: sandboxURL)
                     let fileName = selectedFile.lastPathComponent
                     
                     //파일URL
                     let fileURL = documentDirectory.appendingPathComponent(fileName)
-                                        
+                    
                     do {
                         if try self.checkBackupFile(fileURL: fileURL) == true {
                             Analytics.logEvent("Wrong_Backup_File", parameters: [
@@ -194,27 +325,26 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                             return
                         }
                     } catch {
+                        self.hud.dismiss(animated: true)
                         print("에러")
                     }
                     
                     do {
                         try self.unZipBackupFile(fileURL: fileURL, destination: documentDirectory)
-                        
                         let checkValue = self.checkBackupFileExist()
                         if checkValue == false {
-                            print(fileURL)
                             Analytics.logEvent("Wrong_Backup_File", parameters: [
-                                "name": "No Pemory txt File",
+                                "name": "No Permory txt File",
                             ])
                             self.removeBackupFile(fileName: fileURL)
                             self.hud.dismiss(animated: true)
                             self.noHandlerAlert(title: AlertTitle.error, message: AlertMessage.notPetmoryFile)
                             return
                         }
-                        
-                        self.repository.deleteAllMemory(task: self.memory)
-                        self.repository.deleteAllPet(task: self.petList)
-                        self.repository.deleteAllCalendar(task: self.calendar)
+//                        self.repository.deleteAllMemory(task: self.memory)
+//                        self.repository.deleteAllPet(task: self.petList)
+//                        self.repository.deleteAllCalendar(task: self.calendar)
+                        self.repository.deleteAll(memory: self.memory, calendar: self.calendar, pet: self.petList)
                         
                         do {
                             let memoryData = try self.fetchJsonData(fileName: BackupFileName.memory)
@@ -222,157 +352,55 @@ extension BackupRestoreViewController: UIDocumentPickerDelegate {
                             let petData = try self.fetchJsonData(fileName: BackupFileName.pet)
                             
                             try self.repository.localRealm.write {
-                                guard let memoryData = try self.decodeMemoryData(data: memoryData) else { return }
-                                guard let calendarData = try self.decodeCalendarData(data: calendarData) else { return }
-                                guard let petListData = try self.decodePetData(data: petData) else { return }
+//                                guard let memoryData = try self.decodeMemoryData(data: memoryData) else { return }
+//                                guard let calendarData = try self.decodeCalendarData(data: calendarData) else { return }
+//                                guard let petListData = try self.decodePetData(data: petData) else { return }
+                                guard let memoryData = try self.decodeMemoryData(data: memoryData), let calendarData = try self.decodeCalendarData(data: calendarData), let petListData = try self.decodePetData(data: petData) else { return }
                                 
-                                self.repository.localRealm.add(memoryData)
-                                self.repository.localRealm.add(calendarData)
-                                self.repository.localRealm.add(petListData)
-
+//                                self.repository.localRealm.add(memoryData)
+//                                self.repository.localRealm.add(calendarData)
+//                                self.repository.localRealm.add(petListData)
+                                self.repository.addAll(memory: memoryData, calendar: calendarData, pet: petListData)
+                                
                                 //알림 다시
-                                self.calendar = self.repository.fetchAllCalendar()
-                                self.petList = self.repository.fetchPet()
-                                
-                                if self.calendar.count != 0 {
-                                    self.calendar.forEach {
-                                        print($0)
-                                        self.sendNotification(notiTitle: NotificationContentText.todayCalendar, body: $0.title, date: $0.date, identifier: "\($0.registerDate)", type: .calendar)
-                                    }
-                                }
-                                if self.petList.count != 0 {
-                                    self.petList.forEach {
-                                        print($0)
-                                        self.sendNotification(notiTitle: "\($0.petName) 생일", body: NotificationContentText.happyDay, date: $0.birthday!, identifier: "\($0.registerDate)", type: .pet)
-                                    }
-                                }
+//                                self.calendar = self.repository.fetchAllCalendar()
+//                                self.petList = self.repository.fetchPet()
+//
+//                                if self.calendar.count != 0 {
+//                                    self.calendar.forEach {
+//                                        self.sendNotification(notiTitle: NotificationContentText.todayCalendar, body: $0.title, date: $0.date, identifier: "\($0.registerDate)", type: .calendar)
+//                                    }
+//                                }
+//                                if self.petList.count != 0 {
+//                                    self.petList.forEach {
+//                                        self.sendNotification(notiTitle: "\($0.petName) 생일", body: NotificationContentText.happyDay, date: $0.birthday!, identifier: "\($0.registerDate)", type: .pet)
+//                                    }
+//                                }
+                                self.sendNotificationAgain()
                             }
                             self.hud.dismiss(animated: true)
                             Analytics.logEvent("Restore_Success", parameters: [
                                 "name": "Restore Success",
                             ])
-                            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-                            let sceneDelegate = windowScene?.delegate as? SceneDelegate
-                            
-                            let transition = CATransition()
-                            transition.type = .fade
-                            transition.duration = 0.3
-                            sceneDelegate?.window?.layer.add(transition, forKey: kCATransition)
-                            
-                            sceneDelegate?.window?.rootViewController = TabBarController()
-                            sceneDelegate?.window?.makeKeyAndVisible()
+                            self.restartApp()
                         } catch {
                             self.hud.dismiss(animated: true)
                             throw ErrorType.fetchJsonDataError
                         }
+                        
                     } catch {
                         self.hud.dismiss(animated: true)
                         self.noHandlerAlert(title: AlertTitle.failUnzip, message: "")
                     }
-                } else {
-                    //앱 내에 없는 경우엔 복사해서 만들어주기
-                    
-                    do {
-                        try FileManager.default.copyItem(at: selectedFile, to: sandboxURL)
-                        let fileName = selectedFile.lastPathComponent
-                        
-                        //파일URL
-                        let fileURL = documentDirectory.appendingPathComponent(fileName)
-                        
-                        do {
-                            if try self.checkBackupFile(fileURL: fileURL) == true {
-                                Analytics.logEvent("Wrong_Backup_File", parameters: [
-                                    "name": "No Permory txt File",
-                                ])
-                                self.removeBackupFile(fileName: fileURL)
-                                self.hud.dismiss(animated: true)
-                                self.noHandlerAlert(title: AlertTitle.error, message: AlertMessage.notPetmoryFile)
-                                return
-                            }
-                        } catch {
-                            print("에러")
-                        }
-                        
-                        do {
-                            try self.unZipBackupFile(fileURL: fileURL, destination: documentDirectory)
-                            let checkValue = self.checkBackupFileExist()
-                            if checkValue == false {
-                                print(fileURL)
-                                Analytics.logEvent("Wrong_Backup_File", parameters: [
-                                    "name": "No Permory txt File",
-                                ])
-                                self.removeBackupFile(fileName: fileURL)
-                                self.hud.dismiss(animated: true)
-                                self.noHandlerAlert(title: AlertTitle.error, message: AlertMessage.notPetmoryFile)
-                                return
-                            }
-                            self.repository.deleteAllMemory(task: self.memory)
-                            self.repository.deleteAllPet(task: self.petList)
-                            self.repository.deleteAllCalendar(task: self.calendar)
-                            
-                            do {
-                                let memoryData = try self.fetchJsonData(fileName: BackupFileName.memory)
-                                let calendarData = try self.fetchJsonData(fileName: BackupFileName.calendar)
-                                let petData = try self.fetchJsonData(fileName: BackupFileName.pet)
-                                
-                                try self.repository.localRealm.write {
-                                    guard let memoryData = try self.decodeMemoryData(data: memoryData) else { return }
-                                    guard let calendarData = try self.decodeCalendarData(data: calendarData) else { return }
-                                    guard let petListData = try self.decodePetData(data: petData) else { return }
-                                    
-                                    self.repository.localRealm.add(memoryData)
-                                    self.repository.localRealm.add(calendarData)
-                                    self.repository.localRealm.add(petListData)
-                                    
-                                    //알림 다시
-                                    self.calendar = self.repository.fetchAllCalendar()
-                                    self.petList = self.repository.fetchPet()
-                                    
-                                    if self.calendar.count != 0 {
-                                        self.calendar.forEach {
-                                            print($0)
-                                            self.sendNotification(notiTitle: NotificationContentText.todayCalendar, body: $0.title, date: $0.date, identifier: "\($0.registerDate)", type: .calendar)
-                                        }
-                                    }
-                                    if self.petList.count != 0 {
-                                        self.petList.forEach {
-                                            print($0)
-                                            self.sendNotification(notiTitle: "\($0.petName) 생일", body: NotificationContentText.happyDay, date: $0.birthday!, identifier: "\($0.registerDate)", type: .pet)
-                                        }
-                                    }
-                                }
-                                self.hud.dismiss(animated: true)
-                                Analytics.logEvent("Restore_Success", parameters: [
-                                    "name": "Restore Success",
-                                ])
-                                let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-                                let sceneDelegate = windowScene?.delegate as? SceneDelegate
-                                
-                                let transition = CATransition()
-                                transition.type = .fade
-                                transition.duration = 0.3
-                                sceneDelegate?.window?.layer.add(transition, forKey: kCATransition)
-                                
-                                sceneDelegate?.window?.rootViewController = TabBarController()
-                                sceneDelegate?.window?.makeKeyAndVisible()
-                            } catch {
-                                self.hud.dismiss(animated: true)
-                                throw ErrorType.fetchJsonDataError
-                            }
-                            
-                        } catch {
-                            self.hud.dismiss(animated: true)
-                            self.noHandlerAlert(title: AlertTitle.failUnzip, message: "")
-                        }
-                    } catch {
-                        self.hud.dismiss(animated: true)
-                        self.noHandlerAlert(title: AlertTitle.failUnzip, message: "")
-                    }
+                } catch {
+                    self.hud.dismiss(animated: true)
+                    self.noHandlerAlert(title: AlertTitle.failUnzip, message: "")
                 }
             }
-            
         }
+        
     }
+    
 }
 
 //MARK: - MFMailCompose
@@ -426,7 +454,7 @@ extension BackupRestoreViewController {
 
 extension BackupRestoreViewController {
     private func sendNotification(notiTitle: String, body: String, date: Date, identifier: String, type: NotificationType) {
- 
+        
         let notificationContent = UNMutableNotificationContent()
         notificationContent.sound = .default
         notificationContent.title = notiTitle

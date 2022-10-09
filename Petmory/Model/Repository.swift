@@ -59,9 +59,33 @@ protocol UserCalendarRepositoryType {
     func deleteAllCalendar(task: Results<UserCalendar>)
 }
 
-final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType, UserCalendarRepositoryType {
+protocol CommonRepositoryType {
+    
+    func deleteAll(memory: Results<UserMemory>, calendar: Results<UserCalendar>, pet: Results<UserPet>)
+    
+    func addAll(memory: [UserMemory], calendar: [UserCalendar], pet: [UserPet])
+    
+}
+
+final class UserRepository: UserMemoryRepositoryType, UserPetRepositoryType, UserCalendarRepositoryType, CommonRepositoryType {
     
     let localRealm = try! Realm()
+    
+    //MARK: - Common
+    
+    func deleteAll(memory: Results<UserMemory>, calendar: Results<UserCalendar>, pet: Results<UserPet>) {
+        
+        deleteAllMemory(task: memory)
+        deleteAllCalendar(task: calendar)
+        deleteAllPet(task: pet)
+    }
+    
+    func addAll(memory: [UserMemory], calendar: [UserCalendar], pet: [UserPet]) {
+        
+        localRealm.add(memory)
+        localRealm.add(calendar)
+        localRealm.add(pet)
+    }
     
     //MARK: - Memory
     
