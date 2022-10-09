@@ -57,18 +57,18 @@ final class MainViewController: BaseViewController {
 
         requestAuthorization()
         
-        tasks = repository.fetchAllMemory()
-        
-        petList = repository.fetchPet()
-        
+//        tasks = repository.fetchAllMemory()
+//
+//        petList = repository.fetchPet()
+//
         //현재 년도 구해서 monthList와 더해주기
         currentYear = Date().dateToString(type: .onlyYear)
                         
-        countList = []
+//        countList = []
         
-        tempList.forEach { date in
-            countList.append(tasks.filter("\(RealmModelColumn.memoryDateString) CONTAINS[c] '\(date)'").count)
-        }
+//        tempList.forEach { date in
+//            countList.append(tasks.filter("\(RealmModelColumn.memoryDateString) CONTAINS[c] '\(date)'").count)
+//        }
                 
         //백업용 텍스트파일 지우기
         removeBackupCheckFile()
@@ -93,7 +93,7 @@ final class MainViewController: BaseViewController {
             countList.append(tasks.filter("\(RealmModelColumn.memoryDateString) CONTAINS[c] '\(date)'").count)
         }
         
-        mainView.diaryCollectionView.reloadData()
+//        mainView.diaryCollectionView.reloadData()
 
         navigationItem.titleView = mainView.titleViewButton
     }
@@ -137,9 +137,9 @@ final class MainViewController: BaseViewController {
         notificationCenter.requestAuthorization(options: authorizationOptions) { success, error in
 
             if success == true {
-                
+                print("성공")
             } else {
-                
+                print("실패")
             }
         }
     }

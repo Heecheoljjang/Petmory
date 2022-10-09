@@ -79,12 +79,12 @@ final class WritingViewController: BaseViewController {
         mainView.imageCollectionView.reloadData()
         
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        settingDetailView?()
-    }
+//
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//
+//        settingDetailView?()
+//    }
     
     override func setUpController() {
         super.setUpController()
@@ -258,7 +258,6 @@ extension WritingViewController: UICollectionViewDelegate, UICollectionViewDataS
         }
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print(#function)
         if collectionView == mainView.petCollectionView {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WritingPetCollectionViewCell.identifier, for: indexPath) as? WritingPetCollectionViewCell else { return UICollectionViewCell() }
             cell.nameLabel.text = petList[indexPath.item].petName
@@ -307,7 +306,6 @@ extension WritingViewController: UICollectionViewDelegate, UICollectionViewDataS
         }
     }
     @objc private func deleteImage(_ sender: UIButton) {
-        //MARK: 지울건지 alert띄우기
         
         imageList.remove(at: sender.tag)
         mainView.imageCollectionView.reloadData()

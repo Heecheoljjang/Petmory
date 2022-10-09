@@ -164,29 +164,6 @@ final class MemoryDetailViewController: BaseViewController {
     @objc private func popView() {
         transition(self, transitionStyle: .pop)
     }
-    
-    @objc private func settingTask(_ notification: NSNotification) {
-        
-        memoryTask = repository.fetchWithObjectId(objectId: objectId).first
-        
-        if let memoryTask = memoryTask {
-            
-            //mainView.titleLabel.text = memoryTask.memoryTitle
-            mainView.titleLabel.attributedText = setAttributedString(text: memoryTask.memoryTitle)
-            mainView.contentTextView.text = memoryTask.memoryContent
-           
-        }
-        if let imageList = imageList {
-            if imageList.count == 0 {
-                mainView.imageCollectionView.isHidden = true
-            } else {
-                mainView.imageCollectionView.isHidden = false
-            }
-        }
-    }
-    @objc private func reloadCollectionView(_ notification: NSNotification) {
-        mainView.imageCollectionView.reloadData()
-    }
 }
 
 extension MemoryDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {

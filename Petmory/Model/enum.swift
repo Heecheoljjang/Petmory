@@ -173,5 +173,5 @@ enum NotificationContentText {
 }
 
 enum BackupLabel {
-    static let backupMessage = "앱 삭제 시 백업 파일도 함께 삭제되기 때문에 파일 앱 등에 따로 저장해두는 것을 권장합니다.\n\n또한 파일 이름을 기준으로 복구를 진행하기 때문에 앞의 'Petmory_' 부분은 유지해주시길 바랍니다."
+    static let backupMessage = "앱 삭제 시 백업 파일도 함께 삭제되기 때문에 파일 앱 등에 따로 저장해두는 것을 권장합니다."
 }
