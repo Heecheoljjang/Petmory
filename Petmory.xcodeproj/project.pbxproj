@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		970089F128EEC39E0069F8FA /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 970089F028EEC39E0069F8FA /* FirebaseAnalyticsWithoutAdIdSupport */; };
-		970089F328EEC39E0069F8FA /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 970089F228EEC39E0069F8FA /* FirebaseCrashlytics */; };
 		970089F528EEC51C0069F8FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 970089F428EEC51C0069F8FA /* GoogleService-Info.plist */; };
 		970826A528D5E1E0000C530E /* MemoryDetailImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970826A428D5E1E0000C530E /* MemoryDetailImageCollectionViewCell.swift */; };
 		970826A728D5E876000C530E /* MemoryDetailPetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970826A628D5E876000C530E /* MemoryDetailPetCollectionViewCell.swift */; };
@@ -24,6 +22,9 @@
 		9740D05028E45C380018680C /* MonthMemoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9740D04F28E45C380018680C /* MonthMemoryCollectionViewCell.swift */; };
 		974107A628D0459300617F8F /* CropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = 974107A528D0459300617F8F /* CropViewController */; };
 		9767A58B28D8DBF400304F6C /* AddPetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767A58A28D8DBF400304F6C /* AddPetTableViewCell.swift */; };
+		9769226428F500A300896547 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 9769226328F500A300896547 /* FirebaseAnalyticsWithoutAdIdSupport */; };
+		9769226628F500A300896547 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 9769226528F500A300896547 /* FirebaseCrashlytics */; };
+		9769226828F500A300896547 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 9769226728F500A300896547 /* FirebaseMessaging */; };
 		976FF40028E2E57D007185BE /* BackupRestoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976FF3FF28E2E57D007185BE /* BackupRestoreView.swift */; };
 		976FF40228E2E58B007185BE /* BackupRestoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976FF40128E2E58B007185BE /* BackupRestoreViewController.swift */; };
 		97785C8E28E5E4F900D058FB /* AddPhotoButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97785C8D28E5E4F900D058FB /* AddPhotoButtonCell.swift */; };
@@ -105,6 +106,7 @@
 		9740D04D28E45C1B0018680C /* MonthMemoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthMemoryTableViewCell.swift; sourceTree = "<group>"; };
 		9740D04F28E45C380018680C /* MonthMemoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthMemoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		9767A58A28D8DBF400304F6C /* AddPetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetTableViewCell.swift; sourceTree = "<group>"; };
+		9769226128F4FA4B00896547 /* Petmory.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Petmory.entitlements; sourceTree = "<group>"; };
 		976FF3FF28E2E57D007185BE /* BackupRestoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRestoreView.swift; sourceTree = "<group>"; };
 		976FF40128E2E58B007185BE /* BackupRestoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRestoreViewController.swift; sourceTree = "<group>"; };
 		97785C8D28E5E4F900D058FB /* AddPhotoButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoButtonCell.swift; sourceTree = "<group>"; };
@@ -182,8 +184,9 @@
 				97F5DC7D28E34FE6004A53B3 /* JGProgressHUD in Frameworks */,
 				97CF588528C8C9820062FEB9 /* Realm in Frameworks */,
 				974107A628D0459300617F8F /* CropViewController in Frameworks */,
-				970089F328EEC39E0069F8FA /* FirebaseCrashlytics in Frameworks */,
-				970089F128EEC39E0069F8FA /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
+				9769226628F500A300896547 /* FirebaseCrashlytics in Frameworks */,
+				9769226428F500A300896547 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
+				9769226828F500A300896547 /* FirebaseMessaging in Frameworks */,
 				97CF588228C8C9390062FEB9 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -340,6 +343,7 @@
 		9799F84328C7741C00E1C12C /* Petmory */ = {
 			isa = PBXGroup;
 			children = (
+				9769226128F4FA4B00896547 /* Petmory.entitlements */,
 				9799F85B28C7BCE600E1C12C /* Resource */,
 				97CF589828CA336F0062FEB9 /* Extension */,
 				9799F85A28C7BBDE00E1C12C /* Utility */,
@@ -554,8 +558,9 @@
 				9781F0A628D186EF008E6DBB /* FSCalendar */,
 				9732ABFA28E1C4DC00112962 /* Zip */,
 				97F5DC7C28E34FE6004A53B3 /* JGProgressHUD */,
-				970089F028EEC39E0069F8FA /* FirebaseAnalyticsWithoutAdIdSupport */,
-				970089F228EEC39E0069F8FA /* FirebaseCrashlytics */,
+				9769226328F500A300896547 /* FirebaseAnalyticsWithoutAdIdSupport */,
+				9769226528F500A300896547 /* FirebaseCrashlytics */,
+				9769226728F500A300896547 /* FirebaseMessaging */,
 			);
 			productName = Petmory;
 			productReference = 9799F84128C7741C00E1C12C /* Petmory.app */;
@@ -593,7 +598,7 @@
 				9781F0A528D186EF008E6DBB /* XCRemoteSwiftPackageReference "FSCalendar" */,
 				9732ABF928E1C4DC00112962 /* XCRemoteSwiftPackageReference "Zip" */,
 				97F5DC7B28E34FE5004A53B3 /* XCRemoteSwiftPackageReference "JGProgressHUD" */,
-				970089EF28EEC39E0069F8FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				9769226228F500A300896547 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 9799F84228C7741C00E1C12C /* Products */;
 			projectDirPath = "";
@@ -855,6 +860,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Petmory/Petmory.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -891,6 +897,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Petmory/Petmory.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3C6U386B4C;
@@ -944,14 +951,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		970089EF28EEC39E0069F8FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 9.0.0;
-			};
-		};
 		9716A8F628D0E4D600AC62FA /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager.git";
@@ -974,6 +973,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.0.0;
+			};
+		};
+		9769226228F500A300896547 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
 			};
 		};
 		9781F0A528D186EF008E6DBB /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
@@ -1011,16 +1018,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		970089F028EEC39E0069F8FA /* FirebaseAnalyticsWithoutAdIdSupport */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 970089EF28EEC39E0069F8FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalyticsWithoutAdIdSupport;
-		};
-		970089F228EEC39E0069F8FA /* FirebaseCrashlytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 970089EF28EEC39E0069F8FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseCrashlytics;
-		};
 		9716A8F728D0E4D600AC62FA /* IQKeyboardManagerSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9716A8F628D0E4D600AC62FA /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
@@ -1035,6 +1032,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 974107A428D0459300617F8F /* XCRemoteSwiftPackageReference "TOCropViewController" */;
 			productName = CropViewController;
+		};
+		9769226328F500A300896547 /* FirebaseAnalyticsWithoutAdIdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9769226228F500A300896547 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsWithoutAdIdSupport;
+		};
+		9769226528F500A300896547 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9769226228F500A300896547 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		9769226728F500A300896547 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9769226228F500A300896547 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
 		};
 		9781F0A628D186EF008E6DBB /* FSCalendar */ = {
 			isa = XCSwiftPackageProductDependency;
