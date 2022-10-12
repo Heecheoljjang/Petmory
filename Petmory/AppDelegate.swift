@@ -78,7 +78,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     //포그라운드 알림 수신, 화면마다 푸시마다 설정할 수도 있음(카카오톡처럼)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.sound, .list, .banner])
+        
+        guard let topViewController = (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.window?.rootViewController?.topViewController else { return }
+        
+        if topViewController is CalendarViewController {
+            completionHandler([.badge])
+        } else {
+            completionHandler([.sound, .list, .banner])
+        }
     }
     //푸시 클릭: 화면 전환같은 것도 가능
     //유저가 푸시를 클릭했을때에만 수신 확인 가능
@@ -88,12 +95,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         print(response.notification.request.content.body) // 바디는 알림메세지의 내용
         print(response.notification.request.content.userInfo)// 파이어베이스에서 등록했던 키 밸류
         
+        guard let topViewController = (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.window?.rootViewController?.topViewController else { return }
+        
+        print("현재 최상단 뷰컨트롤러: \(topViewController)")
+        
         let userInfo = response.notification.request.content.userInfo
         
-        if userInfo[AnyHashable("Petmory")] as? String == "heecheol" {
-            print("성공")
+        if userInfo[AnyHashable("Calendar")] as? String == "true" {
+            print("일정화면 띄우기")
+            if topViewController is MainViewController || topViewController is MyPetViewController {
+                topViewController.tabBarController?.selectedIndex = 1
+            }
         } else {
-            print("실패")
+            print("이상한 알림임")
         }
     }
     
