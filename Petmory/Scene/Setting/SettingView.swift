@@ -10,23 +10,23 @@ import SnapKit
 
 final class SettingView: BaseView {
     
-//    let tableView: UITableView = {
-//        let view = UITableView(frame: CGRect.zero, style: .plain)
-//        view.separatorStyle = .none
-//        view.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-//        view.register(SettingTableViewCell.self, forCellReuseIdentifier: SettingTableViewCell.identifier)
-//        view.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-//        view.isScrollEnabled = false
-//        return view
-//    }()
-    let collectionView: UICollectionView = {
-        let configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
-        let layout = UICollectionViewCompositionalLayout.list(using: configuration)
-        
-        let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+    let tableView: UITableView = {
+        let view = UITableView(frame: CGRect.zero, style: .plain)
+        view.separatorStyle = .none
+        view.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        view.register(SettingTableViewCell.self, forCellReuseIdentifier: SettingTableViewCell.identifier)
+        view.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         view.isScrollEnabled = false
         return view
     }()
+//    let collectionView: UICollectionView = {
+//        let configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+//        let layout = UICollectionViewCompositionalLayout.list(using: configuration)
+//
+//        let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+//        view.isScrollEnabled = false
+//        return view
+//    }()
     
     let versionLabel: UILabel = {
         let label = UILabel()
@@ -52,28 +52,28 @@ final class SettingView: BaseView {
     override func configure() {
         super.configure()
         
-//        [tableView, versionLabel].forEach {
-//            addSubview($0)
-//        }
-        [collectionView, versionLabel].forEach {
+        [tableView, versionLabel].forEach {
             addSubview($0)
         }
+//        [collectionView, versionLabel].forEach {
+//            addSubview($0)
+//        }
         backgroundColor = .white
     }
     
     override func setUpContraints() {
         super.setUpContraints()
         
-//        tableView.snp.makeConstraints { make in
-//            make.horizontalEdges.equalToSuperview()
-//            make.top.equalToSuperview()
-//            make.bottom.equalTo(versionLabel.snp.top)
-//        }
-        collectionView.snp.makeConstraints { make in
+        tableView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
             make.top.equalToSuperview()
             make.bottom.equalTo(versionLabel.snp.top)
         }
+//        collectionView.snp.makeConstraints { make in
+//            make.horizontalEdges.equalToSuperview()
+//            make.top.equalToSuperview()
+//            make.bottom.equalTo(versionLabel.snp.top)
+//        }
         
         versionLabel.snp.makeConstraints { make in
             make.bottom.equalTo(self.safeAreaLayoutGuide).offset(-20)
