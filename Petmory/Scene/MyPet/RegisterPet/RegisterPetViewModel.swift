@@ -13,27 +13,28 @@ final class RegisterPetViewModel {
     
     let repository = UserRepository()
     
+    let notificationCenter = UNUserNotificationCenter.current()
+
     var gender: Observable<String> = Observable("")
     
     var profileImage: Observable<Data?> = Observable(nil)
     
-    var birthdayDate = Date()
-    
-    var currentStatus = CurrentStatus.new
-    
-    var task: UserPet?
-    
-    let notificationCenter = UNUserNotificationCenter.current()
-    
-    var petList: [String] = []
-    var memories: Results<UserMemory>!
-    var currentName = ""
-    
-    func fetchPetAndMemory() {
-        petList = repository.fetchPet().map { $0.petName }
-        memories = repository.fetchAllMemory()
+    //MARK: - 펫리스트 가져오기
+    func fetchPetList() -> [String] {
+        repository.fetchPet().map { $0.petName }
     }
     
+    //MARK: - 펫 삭제
+    func deletePet(item: UserPet) {
+        repository.deletePet(item: item)
+    }
+    
+    //MARK: - 기록 가져오기
+    func fetchMemories() -> Results<UserMemory>! {
+        repository.fetchAllMemory()
+    }
+    
+    //MARK: - 노티보내기
     func sendNotification(name: String, date: Date, identifier: String) {
         let notificationContent = UNMutableNotificationContent()
         notificationContent.sound = .default
@@ -51,39 +52,72 @@ final class RegisterPetViewModel {
         let request = UNNotificationRequest(identifier: identifier, content: notificationContent, trigger: trigger)
         notificationCenter.add(request)
     }
-        
-    func setUpView(view: RegisterPetView, task: UserPet) {
-        fetchPetAndMemory()
-        view.addButton.configuration?.title = ButtonTitle.edit
-        if let imageData = task.profileImage {
-            profileImage.value = imageData
-        }
-        if task.gender == ButtonTitle.boy {
-            gender.value = task.gender
-        } else {
-            gender.value = task.gender
-        }
-        view.nameTextField.text = task.petName
-        currentName = task.petName
-        
-        if let birthdayDate = task.birthday {
-            
+
+    //MARK: - 노티 지우기
+    func removeNoti(identifier: String) {
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: [identifier])
+    }
+    
+    //MARK: 이름
+    //이름 비어있는지
+    func checkName(name: String, text: String) -> Bool {
+        return name == text ? true : false
+    }
+    
+    //이름 겹치는지
+    func checkNameEqual(petList: [String], name: String) -> Bool {
+        return petList.contains(name) ? true : false
+    }
+    
+    //MARK: 성별
+    //성별 선택안했는지
+    func checkGenderEmpty(gender: String) -> Bool {
+        return gender == "" ? true : false
+    }
+    
+    //MARK: 생일
+    //생일입력안함
+    func checkBirthdayEmpty(birthday: String) -> Bool {
+        return birthday == "" ? true : false
+    }
+    
+    //MARK: 사진
+    //사진등록안함
+    func checkProfileImageNil(image: Data?) -> Bool {
+        return image == nil ? true : false
+    }
+    
+    //MARK: - memory 펫 리스트 업데이트
+    func updateMemoryPetList(memories: Results<UserMemory>, currentName: String, newName: String) {
+        memories.filter { $0.petList.contains(currentName) }.forEach {
+            let tempPetList = List<String>()
+            $0.petList.filter { $0 != currentName }.forEach { petName in
+                tempPetList.append(petName)
+            }
+            tempPetList.append(newName)
+            repository.updateMemoryPetList(item: $0, petList: tempPetList)
         }
     }
     
-    func checkNameTextField(view: RegisterPetView, text: String) -> Bool {
-        if view.nameTextField.text! == text {
+    
+    //MARK: - UpdatePetInfo
+    func updatePet(task: UserPet, profileImage: Data, name: String, birthday: Date, gender: String, comment: String) {
+        repository.updatePet(item: task, profileImage: profileImage, name: name, birthday: birthday, gender: gender, comment: comment)
+    }
+    
+    //MARK: - AddPet
+    func addPet(item: UserPet) {
+        repository.addPet(item: item)
+    }
+    
+    //MARK: - dismissViewCheck
+    func checkDismiss(gender: String, name: String, birthday: String, memo: String, image: Data?) -> Bool {
+        
+        if gender != "" || name != "" || birthday != "" || memo != "" || image != nil {
             return true
         } else {
             return false
         }
     }
     
-    func checkProfileImageNil(view: RegisterPetView) -> Bool {
-        if profileImage.value == nil {
-            return true
-        } else {
-            return false
-        }
-    }
 }
