@@ -13,27 +13,29 @@ final class MyPetViewController: BaseViewController {
     
     private var mainView = MyPetView()
     
-    private let repository = UserRepository()
-    
-    private var tasks: Results<UserPet>! {
-        didSet {
-            mainView.tableView.reloadData()
-        }
-    }
-    
+    private let viewModel = MyPetViewModel()
+
     override func loadView() {
         self.view = mainView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        tasks = repository.fetchPet()
+        viewModel.fetchPet()
 
+    }
+    
+    private func bind() {
+        viewModel.tasks.bind { [weak self] _ in
+            self?.mainView.tableView.reloadData()
+        }
     }
     
     override func configure() {
@@ -69,7 +71,7 @@ extension MyPetViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return tasks.count
+            return viewModel.fetchTaskCount()
         } else {
             return 1
         }
@@ -84,10 +86,10 @@ extension MyPetViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MyPetTableViewCell.identifier) as? MyPetTableViewCell else { return UITableViewCell() }
-            if let imageData = tasks[indexPath.row].profileImage {
+            if let imageData = viewModel.tasks.value?[indexPath.row].profileImage {
                 cell.profileImageView.image = UIImage(data: imageData)
             }
-            cell.nameLabel.text = tasks[indexPath.row].petName
+            cell.nameLabel.text = viewModel.tasks.value?[indexPath.row].petName
             
             return cell
         }
@@ -98,7 +100,7 @@ extension MyPetViewController: UITableViewDelegate, UITableViewDataSource {
             //데이터 전달해서 작성 화면 채우기.(push)
             let registerPetVC = RegisterPetViewController()
             registerPetVC.currentStatus = CurrentStatus.edit
-            registerPetVC.task = tasks[indexPath.row]
+            registerPetVC.task = viewModel.tasks.value?[indexPath.row]
             transition(registerPetVC, transitionStyle: .presentNavigation)
         }
     }
