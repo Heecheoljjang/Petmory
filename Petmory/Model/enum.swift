@@ -175,3 +175,11 @@ enum NotificationContentText {
 enum BackupLabel {
     static let backupMessage = "앱 삭제 시 백업 파일도 함께 삭제되기 때문에 파일 앱 등에 따로 저장해두는 것을 권장합니다."
 }
+
+enum CompareType {
+    case equal, greater
+}
+
+enum CellTextType {
+    case title, content, date
+}

@@ -13,46 +13,25 @@ final class AllMemoryViewController: BaseViewController {
     
     private var mainView = AllMemoryView()
     
-    private let repository = UserRepository()
-    
-    private var tasks: Results<UserMemory>! {
-        didSet {
-            dateList = Set(tasks.map { $0.memoryDate.dateToString(type: .yearMonth) }).sorted(by: >)
-            mainView.tableView.reloadData()
-        }
-    }
-    private var petList: Results<UserPet>! {
-        didSet {
-            mainView.collectionView.reloadData()
-        }
-    }
-    
-    private var filterPetName: String = "" {
-        didSet {
-            if filterPetName == "" {
-                tasks = repository.fetchAllMemory()
-            } else {
-                tasks = repository.fetchFiltered(name: filterPetName)
-            }
-        }
-    }
-    
-    private var dateList: [String] = []
-    
+    private let viewModel = AllMemoryViewModel()
+
     override func loadView() {
         self.view = mainView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tasks = repository.fetchAllMemory()
-        petList = repository.fetchPet()
         
-        if tasks.count == 0 {
+        viewModel.fetchAllMemory()
+        viewModel.fetchPetList()
+        
+        if viewModel.checkTasksCount() {
             mainView.tableView.isHidden = true
             mainView.noMemoryLabel.isHidden = false
         } else {
@@ -60,6 +39,31 @@ final class AllMemoryViewController: BaseViewController {
             mainView.noMemoryLabel.isHidden = true
         }
         
+    }
+    
+    private func bind() {
+        
+        viewModel.tasks.bind { [weak self] value in
+            
+            guard let value = value else { return }
+            self?.viewModel.dateList.value = Set(value.map{ $0.memoryDate.dateToString(type: .yearMonth) }).sorted(by: >)
+        }
+        
+        viewModel.petList.bind { [weak self] _ in
+            self?.mainView.collectionView.reloadData()
+        }
+        
+        viewModel.filterPetName.bind { [weak self] value in
+            if value == "" {
+                self?.viewModel.fetchAllMemory()
+            } else {
+                self?.viewModel.fetchFiltered(name: value)
+            }
+        }
+        
+        viewModel.dateList.bind { [weak self] _ in
+            self?.mainView.tableView.reloadData()
+        }
     }
     
     override func setUpController() {
@@ -105,13 +109,13 @@ final class AllMemoryViewController: BaseViewController {
 extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return dateList.count
+        return viewModel.dateList.value.count
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel(frame: CGRect(x: 20, y: 0, width: mainView.frame.size.width - 40, height: 32))
         label.font = UIFont(name: CustomFont.bold, size: 18)
-        label.text = dateList[section]
+        label.text = viewModel.dateList.value[section]
         label.textColor = .black
         
         let view = UIView()
@@ -126,26 +130,26 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tasks.filter("\(RealmModelColumn.memoryDateString) CONTAINS[c] '\(dateList[section])'").count
+
+        return viewModel.numberOfRows(section: section)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: AllMemoryTableViewCell.identifier, for: indexPath) as? AllMemoryTableViewCell else { return UITableViewCell() }
-
-        let tempTask = tasks.filter("\(RealmModelColumn.memoryDateString) CONTAINS[c] '\(dateList[indexPath.section])'").sorted(byKeyPath: RealmModelColumn.memoryDate, ascending: false)[indexPath.row]
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: AllMemoryTableViewCell.identifier, for: indexPath) as? AllMemoryTableViewCell, let tempTask = viewModel.tableViewCellTask(section: indexPath.section, row: indexPath.row) else { return UITableViewCell() }
         
-        cell.memoryTitle.text = tempTask.memoryTitle
-        cell.memoryContentLabel.text = tempTask.memoryContent
+        cell.memoryTitle.text = viewModel.cellText(task: tempTask, type: .title)
+        cell.memoryContentLabel.text = viewModel.cellText(task: tempTask, type: .content)
         
-        if tempTask.imageData.count == 0 {
+        if viewModel.checkImageDataCount(task: tempTask, compareType: .equal) {
             cell.thumbnailImageView.isHidden = true
         } else {
             cell.thumbnailImageView.isHidden = false
             cell.thumbnailImageView.image = UIImage(data: tempTask.imageData.first!)
         }
-        cell.dateLabel.text = tempTask.memoryDate.dateToString(type: .monthDay)
         
-        if tempTask.imageData.count > 1 {
+        cell.dateLabel.text = viewModel.cellText(task: tempTask, type: .date)
+        
+        if viewModel.checkImageDataCount(task: tempTask, compareType: .greater) {
             cell.multiSign.isHidden = false
         } else {
             cell.multiSign.isHidden = true
@@ -156,7 +160,7 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let tempTask = tasks.filter("\(RealmModelColumn.memoryDateString) CONTAINS[c] '\(dateList[indexPath.section])'").sorted(byKeyPath: RealmModelColumn.memoryDate, ascending: false)[indexPath.row]
+        guard let tempTask = viewModel.tableViewCellTask(section: indexPath.section, row: indexPath.row) else { return }
         
         let memoryDetailViewController = MemoryDetailViewController()
 
@@ -175,13 +179,13 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
 extension AllMemoryViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return petList.count
+        return viewModel.numberOfItems()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AllMemoryCollectionViewCell.identifier, for: indexPath) as? AllMemoryCollectionViewCell else { return UICollectionViewCell() }
         
-        cell.nameLabel.text = petList[indexPath.item].petName
+        cell.nameLabel.text = viewModel.petList.value?[indexPath.item].petName
         
         return cell
     }
@@ -191,19 +195,21 @@ extension AllMemoryViewController: UICollectionViewDelegate, UICollectionViewDat
 
         if cell.isSelected == true {
             collectionView.deselectItem(at: indexPath, animated: true)
-            filterPetName = ""
+            viewModel.setFilterPetName(name: "")
             return false
         } else {
             collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
-            filterPetName = petList[indexPath.item].petName
+            viewModel.setFilterPetName(name: viewModel.petList.value?[indexPath.item].petName ?? "")
             return true
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
-        if petList[indexPath.item].petName.count > 1 {
-            let cellSize = CGSize(width: petList[indexPath.item].petName.size(withAttributes: [.font : UIFont(name: CustomFont.medium, size: 13)!]).width + 32, height: 52)
+        if viewModel.checkPetListCount(item: indexPath.item) {
+            
+            let cellSize = CGSize(width: viewModel.fetchPetName(item: indexPath.item).size(withAttributes: [.font : UIFont(name: CustomFont.medium, size: 13)!]).width + 32, height: 52)
+            
             return cellSize
         } else {
             let cellSize = CGSize(width: 52, height: 52)
