@@ -12,6 +12,9 @@
 		970826A728D5E876000C530E /* MemoryDetailPetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970826A628D5E876000C530E /* MemoryDetailPetCollectionViewCell.swift */; };
 		9716A8F828D0E4D600AC62FA /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9716A8F728D0E4D600AC62FA /* IQKeyboardManagerSwift */; };
 		9722A2C728DBA422008C3DB7 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9722A2C628DBA422008C3DB7 /* SettingTableViewCell.swift */; };
+		9729B5BA290C1F2200D54E23 /* MyPetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9729B5B9290C1F2200D54E23 /* MyPetViewModel.swift */; };
+		9729B5BC290C253400D54E23 /* AllMemoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9729B5BB290C253400D54E23 /* AllMemoryViewModel.swift */; };
+		9729B5BE290C482F00D54E23 /* MonthMemoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9729B5BD290C482F00D54E23 /* MonthMemoryViewModel.swift */; };
 		9732ABFB28E1C4DC00112962 /* Zip in Frameworks */ = {isa = PBXBuildFile; productRef = 9732ABFA28E1C4DC00112962 /* Zip */; };
 		97332AA128D95D220015ECE8 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97332AA028D95D220015ECE8 /* SettingView.swift */; };
 		97332AA328D95D2D0015ECE8 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97332AA228D95D2D0015ECE8 /* SettingViewController.swift */; };
@@ -102,6 +105,9 @@
 		970826A428D5E1E0000C530E /* MemoryDetailImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryDetailImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		970826A628D5E876000C530E /* MemoryDetailPetCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryDetailPetCollectionViewCell.swift; sourceTree = "<group>"; };
 		9722A2C628DBA422008C3DB7 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
+		9729B5B9290C1F2200D54E23 /* MyPetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPetViewModel.swift; sourceTree = "<group>"; };
+		9729B5BB290C253400D54E23 /* AllMemoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllMemoryViewModel.swift; sourceTree = "<group>"; };
+		9729B5BD290C482F00D54E23 /* MonthMemoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthMemoryViewModel.swift; sourceTree = "<group>"; };
 		97332AA028D95D220015ECE8 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		97332AA228D95D2D0015ECE8 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		9736007628D8463300FD9285 /* MyPetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPetTableViewCell.swift; sourceTree = "<group>"; };
@@ -220,6 +226,7 @@
 				9740D05128E45C7F0018680C /* Cell */,
 				9740D04928E45C020018680C /* MonthMemoryView.swift */,
 				9740D04B28E45C0D0018680C /* MonthMemoryViewController.swift */,
+				9729B5BD290C482F00D54E23 /* MonthMemoryViewModel.swift */,
 			);
 			path = MonthMemory;
 			sourceTree = "<group>";
@@ -467,6 +474,7 @@
 				97C7CBC228CD895A007743FF /* RegisterPet */,
 				9786305C28CC5A8F0042C2E2 /* MyPetView.swift */,
 				9786305E28CC5A980042C2E2 /* MyPetViewController.swift */,
+				9729B5B9290C1F2200D54E23 /* MyPetViewModel.swift */,
 				9767A58928D8DBCB00304F6C /* Cell */,
 			);
 			path = MyPet;
@@ -502,6 +510,7 @@
 				97CF58B028CB4C630062FEB9 /* Cell */,
 				97CF58AC28CB02F60062FEB9 /* AllMemoryView.swift */,
 				97CF58AE28CB03010062FEB9 /* AllMemoryViewController.swift */,
+				9729B5BB290C253400D54E23 /* AllMemoryViewModel.swift */,
 			);
 			path = AllMemory;
 			sourceTree = "<group>";
@@ -666,6 +675,7 @@
 			files = (
 				9781F0A328D16029008E6DBB /* MemoryDetailViewController.swift in Sources */,
 				97C7CBC428CD8974007743FF /* RegisterPetView.swift in Sources */,
+				9729B5BE290C482F00D54E23 /* MonthMemoryViewModel.swift in Sources */,
 				97CF58B228CB4C6E0062FEB9 /* AllMemoryTableViewCell.swift in Sources */,
 				97CF58BB28CB5EBF0062FEB9 /* SearchView.swift in Sources */,
 				970826A528D5E1E0000C530E /* MemoryDetailImageCollectionViewCell.swift in Sources */,
@@ -678,6 +688,7 @@
 				9740D04C28E45C0D0018680C /* MonthMemoryViewController.swift in Sources */,
 				9786305F28CC5A980042C2E2 /* MyPetViewController.swift in Sources */,
 				97CF58CB28CBA03D0062FEB9 /* AllMemoryCollectionViewCell.swift in Sources */,
+				9729B5BC290C253400D54E23 /* AllMemoryViewModel.swift in Sources */,
 				97CF58A328CAC6D70062FEB9 /* MainView.swift in Sources */,
 				97CF58B428CB4DF10062FEB9 /* UITableViewCell+Extension.swift in Sources */,
 				97D19CDB28D1FB6D0074226C /* AddCalendarViewController.swift in Sources */,
@@ -706,6 +717,7 @@
 				9722A2C728DBA422008C3DB7 /* SettingTableViewCell.swift in Sources */,
 				97CF588E28C8CC020062FEB9 /* BaseViewController.swift in Sources */,
 				97C7CBD228CE4560007743FF /* WritingImageCollectionViewCell.swift in Sources */,
+				9729B5BA290C1F2200D54E23 /* MyPetViewModel.swift in Sources */,
 				9740D05028E45C380018680C /* MonthMemoryCollectionViewCell.swift in Sources */,
 				978E3E8728E0C120007F59D6 /* PhotoCollectionViewCell.swift in Sources */,
 				977CB69028D45418001342E9 /* WritingContentViewController.swift in Sources */,
