@@ -194,7 +194,7 @@ extension MemoryDetailViewController: UICollectionViewDelegate, UICollectionView
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let photoViewController = PhotoViewController()
         if imageList?.count != 0 {
-            photoViewController.imageList = imageList
+            photoViewController.viewModel.imageList.value = imageList
             transition(photoViewController, transitionStyle: .present)
         }
     }

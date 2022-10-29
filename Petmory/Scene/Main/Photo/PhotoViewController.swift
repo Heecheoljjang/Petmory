@@ -12,14 +12,8 @@ final class PhotoViewController: BaseViewController {
     
     private var mainView = PhotoView()
     
-    var imageList: List<Data>? {
-        didSet {
-            if let imageList = imageList {
-                mainView.pageControl.numberOfPages = imageList.count
-            }
-        }
-    }
-    
+    let viewModel = PhotoViewModel()
+
     override func loadView() {
         view = mainView
     }
@@ -27,8 +21,19 @@ final class PhotoViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        bind()
+        
     }
 
+    private func bind() {
+        viewModel.imageList.bind { [weak self] value in
+            
+            guard let imageList = value else { return }
+            
+            self?.mainView.pageControl.numberOfPages = imageList.count
+        }
+    }
+    
     override func configure() {
         super.configure()
     
@@ -53,18 +58,13 @@ extension PhotoViewController: UICollectionViewDelegate, UICollectionViewDataSou
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        guard let imageList = imageList else { return 0 }
-        
-        return imageList.count
+        return viewModel.fetchImageListCount()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else { return UICollectionViewCell() }
-    
-        if let imageList = imageList {
-            cell.photoImageView.image = UIImage(data: imageList[indexPath.item])
-        }
-        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell, let imageList = viewModel.imageList.value else { return UICollectionViewCell() }
+
+        cell.photoImageView.image = UIImage(data: imageList[indexPath.item])
         
         return cell
     }
@@ -74,6 +74,6 @@ extension PhotoViewController: UICollectionViewDelegate, UICollectionViewDataSou
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let width = scrollView.frame.width
-        mainView.pageControl.currentPage = Int(scrollView.contentOffset.x / width)
+        mainView.pageControl.currentPage = viewModel.pageControlPage(xOffset: scrollView.contentOffset.x, width: width)
     }
 }
