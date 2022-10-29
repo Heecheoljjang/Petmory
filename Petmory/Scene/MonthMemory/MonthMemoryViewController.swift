@@ -12,16 +12,8 @@ final class MonthMemoryViewController: BaseViewController {
     
     private var mainView = MonthMemoryView()
     
-    private let repository = UserRepository()
-    
-    private var tasks: Results<UserMemory>! {
-        didSet {
-            mainView.tableView.reloadData()
-        }
-    }
-    
-    var monthDate: String = ""
-    
+    let viewModel = MonthMemoryViewModel()
+
     override func loadView() {
         self.view = mainView
     }
@@ -29,19 +21,31 @@ final class MonthMemoryViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        tasks = repository.fetchDateFiltered(dateString: monthDate)
+        viewModel.fetchDateFiltered()
         
-        if tasks.count == 0 {
+        if viewModel.checkTasksCount() {
             mainView.tableView.isHidden = true
             mainView.noMemoryLabel.isHidden = false
         } else {
             mainView.tableView.isHidden = false
             mainView.noMemoryLabel.isHidden = true
+        }
+    }
+    
+    private func bind() {
+        viewModel.tasks.bind { [weak self] _ in
+            self?.mainView.tableView.reloadData()
+        }
+        
+        viewModel.monthDate.bind { [weak self] value in
+            self?.viewModel.fetchDateFiltered()
+            self?.mainView.titleLabel.text = value
         }
     }
     
@@ -58,7 +62,6 @@ final class MonthMemoryViewController: BaseViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.standardAppearance = appearance
     
-        mainView.titleLabel.text = monthDate
         navigationItem.titleView = mainView.titleLabel
         
     }
@@ -80,22 +83,22 @@ final class MonthMemoryViewController: BaseViewController {
 extension MonthMemoryViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tasks.count
+        return viewModel.fetchTasksCount()
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: MonthMemoryTableViewCell.identifier) as? MonthMemoryTableViewCell else { return UITableViewCell() }
-
-        cell.memoryTitle.text = tasks[indexPath.row].memoryTitle
-        cell.memoryContentLabel.text = tasks[indexPath.row].memoryContent
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: MonthMemoryTableViewCell.identifier) as? MonthMemoryTableViewCell, let task = viewModel.tasks.value?[indexPath.row] else { return UITableViewCell() }
+    
+        cell.memoryTitle.text = viewModel.cellText(task: task, type: .title)
+        cell.memoryContentLabel.text = viewModel.cellText(task: task, type: .content)
         
-        if tasks[indexPath.row].imageData.count == 0 {
+        if viewModel.checkImageDataCount(task: task, compareType: .equal) {
             cell.thumbnailImageView.isHidden = true
         } else {
             cell.thumbnailImageView.isHidden = false
-            cell.thumbnailImageView.image = UIImage(data: tasks[indexPath.row].imageData.first!)
+            cell.thumbnailImageView.image = UIImage(data: task.imageData.first!)
         }
-        cell.dateLabel.text = tasks[indexPath.row].memoryDate.dateToString(type: .monthDay)
-        if tasks[indexPath.row].imageData.count > 1 {
+        cell.dateLabel.text = viewModel.cellText(task: task, type: .date)
+        if viewModel.checkImageDataCount(task: task, compareType: .greater) {
             cell.multiSign.isHidden = false
         } else {
             cell.multiSign.isHidden = true
@@ -106,8 +109,10 @@ extension MonthMemoryViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let memoryDetailViewController = MemoryDetailViewController()
-        memoryDetailViewController.objectId = tasks[indexPath.row].objectId
-        memoryDetailViewController.imageList = tasks[indexPath.row].imageData
+        guard let task = viewModel.tasks.value?[indexPath.row] else { return }
+                
+        memoryDetailViewController.objectId = task.objectId
+        memoryDetailViewController.imageList = task.imageData
         transition(memoryDetailViewController, transitionStyle: .push)
     }
     

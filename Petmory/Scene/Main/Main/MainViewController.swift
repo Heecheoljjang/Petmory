@@ -204,7 +204,8 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let monthMemoryVC = MonthMemoryViewController()
-        monthMemoryVC.monthDate = tempList[indexPath.item]
+//        monthMemoryVC.monthDate = tempList[indexPath.item]
+        monthMemoryVC.viewModel.monthDate.value = tempList[indexPath.item]
         
         transition(monthMemoryVC, transitionStyle: .push)
     }
