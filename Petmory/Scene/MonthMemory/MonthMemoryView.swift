@@ -18,6 +18,7 @@ final class MonthMemoryView: BaseView {
         view.separatorInset = UIEdgeInsets(top: 0, left: 28, bottom: 0, right: 28)
         view.sectionHeaderTopPadding = 0
         view.tableHeaderView = UIView()
+        view.rowHeight = 88
         return view
     }()
     
