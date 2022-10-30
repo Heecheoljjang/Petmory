@@ -4,8 +4,6 @@
 //
 //  Created by HeecheolYoon on 2022/09/11.
 //
-
-import Foundation
 import UIKit
 import PhotosUI
 import CropViewController
@@ -215,6 +213,14 @@ final class RegisterPetViewController: BaseViewController {
         
         let currentDate = Date()
         
+        switch currentStatus {
+        case CurrentStatus.edit:
+            
+        case CurrentStatus.new:
+            
+        }
+        
+        //switch -> 가독형
         if currentStatus == CurrentStatus.edit {
             
             guard let task = task else { return }
@@ -228,6 +234,7 @@ final class RegisterPetViewController: BaseViewController {
 
             if viewModel.checkName(name: mainView.nameTextField.text!, text: currentName) {
                 updatePetInfo(task)
+                return
             }
             
             //추가된 이름들과 겹치는지

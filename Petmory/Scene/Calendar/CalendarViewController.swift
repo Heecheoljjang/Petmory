@@ -4,8 +4,6 @@
 //
 //  Created by HeecheolYoon on 2022/09/10.
 //
-
-import Foundation
 import UIKit
 import FSCalendar
 import RealmSwift
