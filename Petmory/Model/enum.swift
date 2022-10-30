@@ -9,8 +9,9 @@ import Foundation
 
 //MARK: - 새 작성 / 수정 구분
 enum CurrentStatus {
-    static let edit = false
-    static let new = true
+//    static let edit = false
+//    static let new = true
+    case edit, new
 }
 
 enum DateComponent: String {
