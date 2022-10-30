@@ -58,11 +58,8 @@ final class WritingViewController: BaseViewController {
         super.viewDidLoad()
         
         petList = repository.fetchPet()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
+        
+        //MARK: 문제 없는지 확인
         if currentStatus == CurrentStatus.edit {
             if let currentTask = currentTask {
                 mainView.titleTextField.text = currentTask.memoryTitle
@@ -75,7 +72,12 @@ final class WritingViewController: BaseViewController {
                 mainView.contentTextView.textColor = .placeholderColor
             }
         }
-        
+    }
+
+    //새로 작성, 사진 고를 때 호출
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
         mainView.imageCollectionView.reloadData()
         
     }
