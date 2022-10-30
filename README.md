@@ -1204,3 +1204,34 @@
     - MVVM으로 변환
 - 모아보기 화면
     - MVVM으로 변환
+
+### 10/29
+
+#### 내용
+
+- MonthMemory 화면
+    - MVVM으로 변환
+- Photo 화면
+    - MVVM으로 변환
+    
+### 10/30
+
+#### 내용
+
+- Main 화면
+    - MVVM으로 변환
+- MonthMemory 화면
+    - Rx 적용
+- 안쓰는 프레임워크나 라이브러리 import 제거
+- CurrentStatus switch문으로 사용하기 위해 static let으로 선언했던거 case로 변경
+
+    
+#### 이슈
+
+- MonthMemory에서 Rx를 적용해보는데 Results타입이 Sequence를 채택하지 않아서 RxSwift와 RxCocoa로만 사용하기 어려움
+    - tasks를 Results타입이 아니라 매핑해서 [UserMemory]타입으로 해보기로함
+        - 이렇게 하면 뷰컨트롤러에서 RealmSwift를 import하지않아도됨.
+
+- Writing화면에서 타이틀 수정하고 사진 고르는 뷰 갔다오면 초기화
+    - viewWillAppear에서 데이터가 설정돼서그럼
+        - viewDidLoad로 이동했는데 왜 viewWillAppear에 했었는지 기억안남
