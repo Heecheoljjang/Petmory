@@ -95,6 +95,10 @@
 		97D19CDB28D1FB6D0074226C /* AddCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D19CDA28D1FB6D0074226C /* AddCalendarViewController.swift */; };
 		97D8AF7428E409CA00F7C233 /* MainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D8AF7328E409CA00F7C233 /* MainCollectionViewCell.swift */; };
 		97D8AF7628E40BB900F7C233 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D8AF7528E40BB900F7C233 /* BaseCollectionViewCell.swift */; };
+		97E8E573290D6553002614F3 /* PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E8E572290D6553002614F3 /* PhotoViewModel.swift */; };
+		97E8E576290D7D7F002614F3 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 97E8E575290D7D7F002614F3 /* RxCocoa */; };
+		97E8E578290D7D7F002614F3 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 97E8E577290D7D7F002614F3 /* RxSwift */; };
+		97E8E57A290E4FE1002614F3 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E8E579290E4FE1002614F3 /* MainViewModel.swift */; };
 		97EA95F129054FEC00397D5F /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EA95F029054FEC00397D5F /* Setting.swift */; };
 		97F5DC7A28E3356A004A53B3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9799F84D28C7741D00E1C12C /* Assets.xcassets */; };
 		97F5DC7D28E34FE6004A53B3 /* JGProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 97F5DC7C28E34FE6004A53B3 /* JGProgressHUD */; };
@@ -183,6 +187,8 @@
 		97D19CDA28D1FB6D0074226C /* AddCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCalendarViewController.swift; sourceTree = "<group>"; };
 		97D8AF7328E409CA00F7C233 /* MainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewCell.swift; sourceTree = "<group>"; };
 		97D8AF7528E40BB900F7C233 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
+		97E8E572290D6553002614F3 /* PhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewModel.swift; sourceTree = "<group>"; };
+		97E8E579290E4FE1002614F3 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		97EA95F029054FEC00397D5F /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -197,6 +203,8 @@
 				97CF588728C8C9820062FEB9 /* RealmSwift in Frameworks */,
 				97F5DC7D28E34FE6004A53B3 /* JGProgressHUD in Frameworks */,
 				97CF588528C8C9820062FEB9 /* Realm in Frameworks */,
+				97E8E578290D7D7F002614F3 /* RxSwift in Frameworks */,
+				97E8E576290D7D7F002614F3 /* RxCocoa in Frameworks */,
 				974107A628D0459300617F8F /* CropViewController in Frameworks */,
 				9769226628F500A300896547 /* FirebaseCrashlytics in Frameworks */,
 				9769226428F500A300896547 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
@@ -328,6 +336,7 @@
 				978E3E8528E0C0FE007F59D6 /* Cell */,
 				978E3E8128E0B98C007F59D6 /* PhotoView.swift */,
 				978E3E8328E0B994007F59D6 /* PhotoViewController.swift */,
+				97E8E572290D6553002614F3 /* PhotoViewModel.swift */,
 			);
 			path = Photo;
 			sourceTree = "<group>";
@@ -549,6 +558,7 @@
 				97CF58A228CAC6D70062FEB9 /* MainView.swift */,
 				97CF58A428CAC6E00062FEB9 /* MainViewController.swift */,
 				97D8AF7328E409CA00F7C233 /* MainCollectionViewCell.swift */,
+				97E8E579290E4FE1002614F3 /* MainViewModel.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -582,6 +592,8 @@
 				9769226328F500A300896547 /* FirebaseAnalyticsWithoutAdIdSupport */,
 				9769226528F500A300896547 /* FirebaseCrashlytics */,
 				9769226728F500A300896547 /* FirebaseMessaging */,
+				97E8E575290D7D7F002614F3 /* RxCocoa */,
+				97E8E577290D7D7F002614F3 /* RxSwift */,
 			);
 			productName = Petmory;
 			productReference = 9799F84128C7741C00E1C12C /* Petmory.app */;
@@ -620,6 +632,7 @@
 				9732ABF928E1C4DC00112962 /* XCRemoteSwiftPackageReference "Zip" */,
 				97F5DC7B28E34FE5004A53B3 /* XCRemoteSwiftPackageReference "JGProgressHUD" */,
 				9769226228F500A300896547 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				97E8E574290D7D7F002614F3 /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = 9799F84228C7741C00E1C12C /* Products */;
 			projectDirPath = "";
@@ -677,6 +690,7 @@
 				97C7CBC428CD8974007743FF /* RegisterPetView.swift in Sources */,
 				9729B5BE290C482F00D54E23 /* MonthMemoryViewModel.swift in Sources */,
 				97CF58B228CB4C6E0062FEB9 /* AllMemoryTableViewCell.swift in Sources */,
+				97E8E573290D6553002614F3 /* PhotoViewModel.swift in Sources */,
 				97CF58BB28CB5EBF0062FEB9 /* SearchView.swift in Sources */,
 				970826A528D5E1E0000C530E /* MemoryDetailImageCollectionViewCell.swift in Sources */,
 				97C7CBC828CDC3D7007743FF /* Date+Extension.swift in Sources */,
@@ -723,6 +737,7 @@
 				977CB69028D45418001342E9 /* WritingContentViewController.swift in Sources */,
 				97D19CD828D1FB560074226C /* AddCalendarView.swift in Sources */,
 				9736007728D8463300FD9285 /* MyPetTableViewCell.swift in Sources */,
+				97E8E57A290E4FE1002614F3 /* MainViewModel.swift in Sources */,
 				97CF589028C8CC0B0062FEB9 /* BaseView.swift in Sources */,
 				977CB68E28D4540D001342E9 /* WritingContentView.swift in Sources */,
 				9767A58B28D8DBF400304F6C /* AddPetTableViewCell.swift in Sources */,
@@ -1035,6 +1050,14 @@
 				minimumVersion = 10.0.0;
 			};
 		};
+		97E8E574290D7D7F002614F3 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
 		97F5DC7B28E34FE5004A53B3 /* XCRemoteSwiftPackageReference "JGProgressHUD" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/JonasGessner/JGProgressHUD.git";
@@ -1095,6 +1118,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 97CF588328C8C9820062FEB9 /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
+		};
+		97E8E575290D7D7F002614F3 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97E8E574290D7D7F002614F3 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		97E8E577290D7D7F002614F3 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97E8E574290D7D7F002614F3 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
 		};
 		97F5DC7C28E34FE6004A53B3 /* JGProgressHUD */ = {
 			isa = XCSwiftPackageProductDependency;
