@@ -12,42 +12,44 @@ final class MainViewController: BaseViewController {
     
     private var mainView = MainView()
     
-    private let repository = UserRepository()
+    let viewModel = MainViewModel()
     
-    private var tasks: Results<UserMemory>!
+//    private let repository = UserRepository()
     
-    private var petList: Results<UserPet>!
+//    private var tasks: Results<UserMemory>!
     
-    private let monthList = [". 01", ". 02", ". 03", ". 04", ". 05", ". 06", ". 07", ". 08", ". 09", ". 10", ". 11", ". 12"]
+//    private var petList: Results<UserPet>!
     
-    private var tempList: [String] = []
+//    private let monthList = [". 01", ". 02", ". 03", ". 04", ". 05", ". 06", ". 07", ". 08", ". 09", ". 10", ". 11", ". 12"]
     
-    private var selectedDate = ""
+//    private var tempList: [String] = []
     
-    private var currentYear: String = "" {
-        didSet {
-            var attributedTitle = AttributedString(currentYear + "년")
-            attributedTitle.font = UIFont(name: CustomFont.medium, size: 16)
-            mainView.titleViewButton.configuration?.attributedTitle = attributedTitle
-            
-            tempList = monthList
-            for i in 0..<monthList.count {
-                tempList[i] = currentYear + monthList[i]
-            }
-        }
-    }
+//    private var selectedDate = ""
     
-    private var countList: [Int] = [] {
-        didSet {
-            mainView.diaryCollectionView.reloadData()
-        }
-    }
-    
-    private let yearList = [Int](1990...2050)
-    
-    private let notificationCenter = UNUserNotificationCenter.current()
-    
-    private var isFirst = true //컬렉션뷰 스크롤
+//    private var currentYear: String = "" {
+//        didSet {
+//            var attributedTitle = AttributedString(currentYear + "년")
+//            attributedTitle.font = UIFont(name: CustomFont.medium, size: 16)
+//            mainView.titleViewButton.configuration?.attributedTitle = attributedTitle
+//
+//            tempList = monthList
+//            for i in 0..<monthList.count {
+//                tempList[i] = currentYear + monthList[i]
+//            }
+//        }
+//    }
+//
+//    private var countList: [Int] = [] {
+//        didSet {
+//            mainView.diaryCollectionView.reloadData()
+//        }
+//    }
+//
+//    private let yearList = [Int](1990...2050)
+//
+//    private let notificationCenter = UNUserNotificationCenter.current()
+//
+//    private var isFirst = true //컬렉션뷰 스크롤
     
     override func loadView() {
         self.view = mainView
@@ -55,10 +57,13 @@ final class MainViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        requestAuthorization()
+        bind()
+        
+        viewModel.requestAuthorization()
 
         //현재 년도 구해서 monthList와 더해주기
-        currentYear = Date().dateToString(type: .onlyYear)
+//        currentYear = Date().dateToString(type: .onlyYear)
+        viewModel.setCurrentYear()
 
         //백업용 텍스트파일 지우기
         removeBackupCheckFile()
@@ -73,26 +78,40 @@ final class MainViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        tasks = repository.fetchAllMemory()
+        viewModel.fetchAllMemory()
         
-        petList = repository.fetchPet()
+        viewModel.fetchPet()
         
-        countList = []
-        
-        tempList.forEach { date in
-            countList.append(tasks.filter("\(RealmModelColumn.memoryDateString) CONTAINS[c] '\(date)'").count)
-        }
+        viewModel.setCountList()
+//
+//        tempList.forEach { date in
+//            countList.append(tasks.filter("\(RealmModelColumn.memoryDateString) CONTAINS[c] '\(date)'").count)
+//        }
         
         navigationItem.titleView = mainView.titleViewButton
+    }
+    
+    private func bind() {
+        viewModel.currentYear.bind { [weak self] value in
+            var attributedTitle = AttributedString(value + "년")
+            attributedTitle.font = UIFont(name: CustomFont.medium, size: 16)
+            self?.mainView.titleViewButton.configuration?.attributedTitle = attributedTitle
+            
+            self?.viewModel.setTempList()
+        }
+        
+        viewModel.countList.bind { [weak self] _ in
+            self?.mainView.diaryCollectionView.reloadData()
+        }
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        if isFirst == true {
+        if viewModel.isFirst.value {
             let indexPath = IndexPath(item: Int(Date().dateToString(type: .onlyMonth))! - 1, section: 0)
             mainView.diaryCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
-            isFirst = false
+            viewModel.isFirst.value = !viewModel.isFirst.value
         }
     }
     
@@ -120,17 +139,17 @@ final class MainViewController: BaseViewController {
         mainView.pickerView.dataSource = self
         
     }
-    private func requestAuthorization() {
-        let authorizationOptions = UNAuthorizationOptions(arrayLiteral: .alert, .sound)
-        notificationCenter.requestAuthorization(options: authorizationOptions) { success, error in
-
-            if success == true {
-                print("성공")
-            } else {
-                print("실패")
-            }
-        }
-    }
+//    private func requestAuthorization() {
+//        let authorizationOptions = UNAuthorizationOptions(arrayLiteral: .alert, .sound)
+//        notificationCenter.requestAuthorization(options: authorizationOptions) { success, error in
+//
+//            if success == true {
+//                print("성공")
+//            } else {
+//                print("실패")
+//            }
+//        }
+//    }
     
     private func setDatePickerSheet() {
 
@@ -138,13 +157,9 @@ final class MainViewController: BaseViewController {
         let select = UIAlertAction(title: AlertText.select, style: .default) { [weak self] _ in
             
             guard let self = self else { return }
-
-            self.currentYear = self.selectedDate
-            self.countList = []
             
-            self.tempList.forEach { date in
-                self.countList.append(self.tasks.filter("\(RealmModelColumn.memoryDateString) CONTAINS[c] '\(date)'").count)
-            }
+            self.viewModel.currentYear.value = self.viewModel.selectedDate.value
+            self.viewModel.setCountList()
         }
         let cancel = UIAlertAction(title: AlertText.cancel, style: .cancel)
         let contentViewController = UIViewController()
@@ -152,7 +167,7 @@ final class MainViewController: BaseViewController {
         contentViewController.preferredContentSize.height = 200
         
         mainView.pickerView.selectRow(Int(Date().dateToString(type: .onlyYear))! - 1990, inComponent: 0, animated: false)
-        selectedDate = "\(Int(Date().dateToString(type: .onlyYear))!)"
+        viewModel.setSelectedDate(date: "\(Int(Date().dateToString(type: .onlyYear))!)")
         
         alert.setValue(contentViewController, forKey: "contentViewController")
         alert.addAction(select)
@@ -171,8 +186,7 @@ final class MainViewController: BaseViewController {
 
     @objc private func presentWritingView() {
         let writingViewController = WritingViewController()
-        if petList.count == 0 {
-            //MARK: 펫부터 등록하라고 alert띄우고 펫 등록화면 띄우는 방식으로
+        if viewModel.checkPetCount() {
             noHandlerAlert(title: AlertTitle.registerPet, message: "")
         } else {
             transition(writingViewController, transitionStyle: .presentNavigation)
@@ -191,13 +205,13 @@ final class MainViewController: BaseViewController {
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return monthList.count
+        return viewModel.monthList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainCollectionViewCell.identifier, for: indexPath) as? MainCollectionViewCell else { return UICollectionViewCell() }
-        cell.dateLabel.text = tempList[indexPath.item]
-        cell.pageLabel.text = "\(countList[indexPath.item]) 페이지"
+        cell.dateLabel.text = viewModel.tempList.value[indexPath.item]
+        cell.pageLabel.text = "\(viewModel.countList.value[indexPath.item]) 페이지"
         
         return cell
     }
@@ -205,7 +219,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let monthMemoryVC = MonthMemoryViewController()
 //        monthMemoryVC.monthDate = tempList[indexPath.item]
-        monthMemoryVC.viewModel.monthDate.value = tempList[indexPath.item]
+        monthMemoryVC.viewModel.monthDate.value = viewModel.tempList.value[indexPath.item]
         
         transition(monthMemoryVC, transitionStyle: .push)
     }
@@ -222,14 +236,15 @@ extension MainViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return yearList.count
+//        return yearList.count
+        return viewModel.yearList.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return "\(yearList[row])년"
+        return "\(viewModel.yearList[row])년"
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        selectedDate = "\(yearList[row])"
+        viewModel.selectedDate.value = "\(viewModel.yearList[row])"
     }
 }
