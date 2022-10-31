@@ -19,6 +19,19 @@ final class RegisterPetViewModel {
     
     var profileImage: Observable<Data?> = Observable(nil)
     
+    var birthdayDate: Date = Date()
+    
+    var currentStatus: CurrentStatus = CurrentStatus.new
+    
+    var task: UserPet? = nil
+    
+    var petList: [String] = []
+    
+    //MARK: 매핑해서 넣기
+    var memories: [UserMemory] = []
+    
+    var currentName: String = ""
+    
     //MARK: - 펫리스트 가져오기
     func fetchPetList() -> [String] {
         repository.fetchPet().map { $0.petName }
@@ -30,8 +43,8 @@ final class RegisterPetViewModel {
     }
     
     //MARK: - 기록 가져오기
-    func fetchMemories() -> Results<UserMemory>! {
-        repository.fetchAllMemory()
+    func fetchMemories() -> [UserMemory] {
+        repository.fetchAllMemory().map { $0 }
     }
     
     //MARK: - 노티보내기
@@ -53,6 +66,11 @@ final class RegisterPetViewModel {
         notificationCenter.add(request)
     }
 
+    //MARK: - date to string
+    func dateToString(date: Date, type: DateFormatterType) -> String {
+        return date.dateToString(type: type)
+    }
+    
     //MARK: - 노티 지우기
     func removeNoti(identifier: String) {
         notificationCenter.removePendingNotificationRequests(withIdentifiers: [identifier])
@@ -88,7 +106,7 @@ final class RegisterPetViewModel {
     }
     
     //MARK: - memory 펫 리스트 업데이트
-    func updateMemoryPetList(memories: Results<UserMemory>, currentName: String, newName: String) {
+    func updateMemoryPetList(memories: [UserMemory], currentName: String, newName: String) {
         memories.filter { $0.petList.contains(currentName) }.forEach {
             let tempPetList = List<String>()
             $0.petList.filter { $0 != currentName }.forEach { petName in

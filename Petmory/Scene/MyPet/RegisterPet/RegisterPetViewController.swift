@@ -14,19 +14,7 @@ final class RegisterPetViewController: BaseViewController {
     
     private var mainView = RegisterPetView()
     
-    private var birthdayDate = Date()
-    
-    var currentStatus = CurrentStatus.new
-    
-    var task: UserPet?
-        
-    private var petList: [String] = []
-    
-    private var memories: Results<UserMemory>!
-    
-    private var currentName: String = ""
-    
-    private var viewModel = RegisterPetViewModel()
+    let viewModel = RegisterPetViewModel()
     
     override func loadView() {
         self.view = mainView
@@ -37,12 +25,17 @@ final class RegisterPetViewController: BaseViewController {
         
         bind()
 
-        petList = viewModel.fetchPetList()
-        memories = viewModel.fetchMemories()
+        viewModel.petList = viewModel.fetchPetList()
+        viewModel.memories = viewModel.fetchMemories()
         
-        if currentStatus == CurrentStatus.edit {
+        switch viewModel.currentStatus {
             
-            guard let task = task, let imageData = task.profileImage, let birthday = task.birthday else { return }
+        case .new:
+            mainView.addButton.configuration?.title = ButtonTitle.register
+            mainView.deleteButton.isHidden = true
+            
+        case .edit:
+            guard let task = viewModel.task, let imageData = task.profileImage, let birthday = task.birthday else { return }
             
             mainView.addButton.configuration?.title = ButtonTitle.edit
             
@@ -54,21 +47,16 @@ final class RegisterPetViewController: BaseViewController {
             
             //MARK: 이름
             mainView.nameTextField.text = task.petName
-            currentName = task.petName
+            viewModel.currentName = task.petName
             
             //MARK: 생일
-            birthdayDate = birthday
+            viewModel.birthdayDate = birthday
             mainView.birthdayTextField.text = birthday.dateToString(type: .simple)
             mainView.birthdayDatePicker.date = birthday
             
             //MARK: 메모
             mainView.memoTextView.text = task.comment
             mainView.deleteButton.isHidden = false
-                        
-        } else {
-            
-            mainView.addButton.configuration?.title = ButtonTitle.register
-            mainView.deleteButton.isHidden = true
         }
     }
     
@@ -187,11 +175,11 @@ final class RegisterPetViewController: BaseViewController {
     
     //MARK: 날짜 선택
     @objc private func selectDate(_ sender: UIDatePicker) {
-        birthdayDate = sender.date
+        viewModel.birthdayDate = sender.date
     }
     @objc private func doneSelectDate() {
         
-        mainView.birthdayTextField.text = birthdayDate.dateToString(type: .simple)
+        mainView.birthdayTextField.text = viewModel.dateToString(date: viewModel.birthdayDate, type: .simple)
         
         mainView.birthdayTextField.endEditing(true)
     }
@@ -200,7 +188,7 @@ final class RegisterPetViewController: BaseViewController {
     }
     @objc private func deletePet() {
         handlerAlert(title: AlertTitle.checkDelete, message: "") { [weak self] _ in
-            guard let self = self, let task = self.task else { return }
+            guard let self = self, let task = self.viewModel.task else { return }
             
             self.viewModel.removeNoti(identifier: "\(task.registerDate)")
             self.viewModel.deletePet(item: task)
@@ -213,17 +201,9 @@ final class RegisterPetViewController: BaseViewController {
         
         let currentDate = Date()
         
-        switch currentStatus {
-        case CurrentStatus.edit:
-            
-        case CurrentStatus.new:
-            
-        }
-        
-        //switch -> 가독형
-        if currentStatus == CurrentStatus.edit {
-            
-            guard let task = task else { return }
+        switch viewModel.currentStatus {
+        case .edit:
+            guard let task = viewModel.task else { return }
 
             if viewModel.checkName(name: mainView.nameTextField.text!, text: "") {
                 noHandlerAlert(title: AlertTitle.noPetName, message: "")
@@ -232,25 +212,24 @@ final class RegisterPetViewController: BaseViewController {
             
             //이름이 수정되지 않은 경우
 
-            if viewModel.checkName(name: mainView.nameTextField.text!, text: currentName) {
+            if viewModel.checkName(name: mainView.nameTextField.text!, text: viewModel.currentName) {
                 updatePetInfo(task)
                 return
             }
             
             //추가된 이름들과 겹치는지
 
-            if viewModel.checkNameEqual(petList: petList, name: mainView.nameTextField.text!) {
+            if viewModel.checkNameEqual(petList: viewModel.petList, name: mainView.nameTextField.text!) {
                 noHandlerAlert(title: AlertTitle.alreadyRegisteredName, message: AlertMessage.anotherName)
                 return
             }
             
             //이름 안겹침
-            viewModel.updateMemoryPetList(memories: memories, currentName: currentName, newName:  mainView.nameTextField.text!)
+            viewModel.updateMemoryPetList(memories: viewModel.memories, currentName: viewModel.currentName, newName:  mainView.nameTextField.text!)
             
             updatePetInfo(task)
             
-        } else {
-            
+        case .new:
             //성별 선택 안함
 
             if viewModel.checkGenderEmpty(gender: viewModel.gender.value) {
@@ -281,7 +260,7 @@ final class RegisterPetViewController: BaseViewController {
             
             //이름 중복됨
 
-            if viewModel.checkNameEqual(petList: petList,name: mainView.nameTextField.text!) {
+            if viewModel.checkNameEqual(petList: viewModel.petList,name: mainView.nameTextField.text!) {
                 noHandlerAlert(title: AlertTitle.alreadyRegisteredName, message: "")
                 return
             }
@@ -314,9 +293,9 @@ extension RegisterPetViewController {
 
         guard let profileImage = viewModel.profileImage.value, let name = mainView.nameTextField.text, let comment = mainView.memoTextView.text else { return }
         
-        viewModel.updatePet(task: task, profileImage: profileImage, name: name, birthday: birthdayDate, gender: viewModel.gender.value, comment: comment)
+        viewModel.updatePet(task: task, profileImage: profileImage, name: name, birthday: viewModel.birthdayDate, gender: viewModel.gender.value, comment: comment)
         viewModel.removeNoti(identifier: "\(task.registerDate)")
-        viewModel.sendNotification(name: name, date: birthdayDate, identifier: "\(task.registerDate)")
+        viewModel.sendNotification(name: name, date: viewModel.birthdayDate, identifier: "\(task.registerDate)")
         
         transition(self, transitionStyle: .dismiss)
     }
@@ -325,13 +304,13 @@ extension RegisterPetViewController {
         
         guard let profileImage = viewModel.profileImage.value, let name = mainView.nameTextField.text, let comment = mainView.memoTextView.text else { return }
         
-        let pet = UserPet(profileImage: profileImage, petName: name, birthday: birthdayDate, gender: viewModel.gender.value, comment: comment, registerDate: currentDate)
+        let pet = UserPet(profileImage: profileImage, petName: name, birthday: viewModel.birthdayDate, gender: viewModel.gender.value, comment: comment, registerDate: currentDate)
         Analytics.logEvent("Add_Pet", parameters: [
             "name": "Add Pet",
         ])
 
         viewModel.addPet(item: pet)
-        viewModel.sendNotification(name: name, date: birthdayDate, identifier: "\(currentDate)")
+        viewModel.sendNotification(name: name, date: viewModel.birthdayDate, identifier: "\(currentDate)")
         transition(self, transitionStyle: .dismiss)
     }
 }

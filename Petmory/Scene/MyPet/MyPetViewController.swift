@@ -97,10 +97,12 @@ extension MyPetViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
-            //데이터 전달해서 작성 화면 채우기.(push)
+            
             let registerPetVC = RegisterPetViewController()
-            registerPetVC.currentStatus = CurrentStatus.edit
-            registerPetVC.task = viewModel.tasks.value?[indexPath.row]
+//            registerPetVC.currentStatus = CurrentStatus.edit
+//            registerPetVC.task = viewModel.tasks.value?[indexPath.row]
+            registerPetVC.viewModel.currentStatus = CurrentStatus.edit
+            registerPetVC.viewModel.task = viewModel.tasks.value?[indexPath.row]
             transition(registerPetVC, transitionStyle: .presentNavigation)
         }
     }
