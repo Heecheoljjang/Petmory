@@ -12,16 +12,8 @@ final class MemoryDetailViewController: BaseViewController {
     
     private var mainView = MemoryDetailView()
     
-    private var memoryTask: UserMemory?
-    
-    var objectId: String = ""
-    
-    private let repository = UserRepository()
-    
-    var imageList: List<Data>?
-    
-    private var isEditStatus = false
-    
+    var viewModel = MemoryDetailViewModel()
+
     override func loadView() {
         self.view = mainView
     }
@@ -29,36 +21,21 @@ final class MemoryDetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        bind()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         //편집 상태에서 돌아올때는 노티피케이션으로 memoryTasks를 주기 위해
-        if isEditStatus == false {
-            memoryTask = repository.fetchWithObjectId(objectId: objectId).first
+        if viewModel.checkStatus() {
             
-            if let memoryTask = memoryTask {
-                
-                //mainView.titleLabel.text = memoryTask.memoryTitle
-                mainView.titleLabel.attributedText = setAttributedString(text: memoryTask.memoryTitle)
-                
-                mainView.contentTextView.text = memoryTask.memoryContent
-                
-                mainView.navigationTitleViewLabel.text = memoryTask.memoryDateString
-                
-                navigationItem.titleView = mainView.navigationTitleViewLabel
-               
-            }
-            if let imageList = imageList {
-                if imageList.count == 0 {
-                    mainView.imageCollectionView.isHidden = true
-                } else {
-                    mainView.imageCollectionView.isHidden = false
-                }
-            }
+            viewModel.fetchWithObjectId()
+        
+            navigationItem.titleView = mainView.navigationTitleViewLabel
+
         }
-        mainView.imageCollectionView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -67,6 +44,28 @@ final class MemoryDetailViewController: BaseViewController {
         mainView.imageCollectionView.reloadData()
     }
 
+    private func bind() {
+        viewModel.memoryTask.bind { [weak self] task in
+            
+            guard let task = task else { return }
+            
+            self?.mainView.titleLabel.attributedText = self?.setAttributedString(text: task.memoryTitle)
+            
+            self?.mainView.contentTextView.text = task.memoryContent
+            
+            self?.mainView.navigationTitleViewLabel.text = task.memoryDateString
+        }
+        
+        viewModel.imageList.bind { [weak self] _ in
+             
+            guard let checkCount = self?.viewModel.checkImageListCount() else { return }
+            
+            self?.mainView.imageCollectionView.isHidden = checkCount
+            
+            self?.mainView.imageCollectionView.reloadData()
+        }
+    }
+    
     override func configure() {
         super.configure()
     }
@@ -81,7 +80,6 @@ final class MemoryDetailViewController: BaseViewController {
         navigationController?.navigationBar.tintColor = .diaryColor
 
         //바버튼
-
         let menus = [
             UIAction(title: AlertText.edit, image: UIImage(systemName: ImageName.pencil)) { [weak self] _ in
                 self?.presentEditView()
@@ -104,39 +102,36 @@ final class MemoryDetailViewController: BaseViewController {
     
     private func presentEditView() {
         let editViewController = WritingViewController()
-        editViewController.currentStatus = CurrentStatus.edit
-        editViewController.currentTask = memoryTask
+        editViewController.currentStatus = viewModel.setStatusEdit()
+        editViewController.currentTask = viewModel.memoryTask.value
+        
+        guard let memoryTask = viewModel.memoryTask.value else { return }
         
         //memoryDate가 초기화되는 것을 막기위해 전달
-        if let memoryTask = memoryTask {
-            editViewController.memoryDate = memoryTask.memoryDate
-        }
+        editViewController.memoryDate = memoryTask.memoryDate
+
+        viewModel.appendImageData(list: editViewController.imageList)
         
-        memoryTask?.imageData.forEach {
-            editViewController.imageList.append($0)
-        }
         editViewController.settingDetailView = {
-            self.memoryTask = self.repository.fetchWithObjectId(objectId: self.objectId).first
+        
+            self.viewModel.fetchWithObjectId()
             
-            if let memoryTask = self.memoryTask {
-                
-                self.mainView.titleLabel.attributedText = self.setAttributedString(text: memoryTask.memoryTitle)
-                self.mainView.contentTextView.text = memoryTask.memoryContent
-                self.mainView.navigationTitleViewLabel.text = memoryTask.memoryDateString
-                self.navigationItem.titleView = self.mainView.navigationTitleViewLabel
-            }
-            if let imageList = self.imageList {
-                if imageList.count == 0 {
-                    self.mainView.imageCollectionView.isHidden = true
-                } else {
-                    self.mainView.imageCollectionView.isHidden = false
-                }
-            }
+            guard let memoryTask = self.viewModel.memoryTask.value else { return }
+            
+            let checkCount = self.viewModel.checkImageListCount()
+            
+            self.mainView.titleLabel.attributedText = self.setAttributedString(text: memoryTask.memoryTitle)
+            self.mainView.contentTextView.text = memoryTask.memoryContent
+            self.mainView.navigationTitleViewLabel.text = memoryTask.memoryDateString
+            self.navigationItem.titleView = self.mainView.navigationTitleViewLabel
+            
+            self.mainView.imageCollectionView.isHidden = checkCount
             
             self.mainView.imageCollectionView.reloadData()
         }
         
-        isEditStatus = true
+        viewModel.isEditStatus = true
+        
         transition(editViewController, transitionStyle: .presentNavigation)
         
     }
@@ -153,11 +148,10 @@ final class MemoryDetailViewController: BaseViewController {
     
     @objc private func deleteMemory() {
         //MARK: 진짜 지울건지 확인하는 alert띄우기
-        handlerAlert(title: AlertTitle.checkDelete, message: nil) { _ in
-            if let memoryTask = self.memoryTask {
-                self.repository.deleteMemory(item: memoryTask)
-                self.transition(self, transitionStyle: .pop)
-            }
+        handlerAlert(title: AlertTitle.checkDelete, message: nil) { [weak self] _ in
+            guard let memoryTask = self?.viewModel.memoryTask.value, let self = self else { return }
+            self.viewModel.deleteMemory(item: memoryTask)
+            self.transition(self, transitionStyle: .pop)
         }
     }
     @objc private func popView() {
@@ -168,17 +162,14 @@ final class MemoryDetailViewController: BaseViewController {
 extension MemoryDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let imageList = imageList else { return 0 }
-
-        return imageList.count
+        
+        return viewModel.fetchImageListCount()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemoryDetailImageCollectionViewCell.identifier, for: indexPath) as? MemoryDetailImageCollectionViewCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemoryDetailImageCollectionViewCell.identifier, for: indexPath) as? MemoryDetailImageCollectionViewCell, let imageList = viewModel.imageList.value else { return UICollectionViewCell() }
         
-        guard let imageList = imageList else { return UICollectionViewCell() }
-
         cell.photoImageView.image = UIImage(data: imageList[indexPath.item])
         return cell
     }
@@ -193,8 +184,8 @@ extension MemoryDetailViewController: UICollectionViewDelegate, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let photoViewController = PhotoViewController()
-        if imageList?.count != 0 {
-            photoViewController.viewModel.imageList.value = imageList
+        if !viewModel.checkImageListCount() {
+            photoViewController.viewModel.imageList.value = viewModel.imageList.value
             transition(photoViewController, transitionStyle: .present)
         }
     }
