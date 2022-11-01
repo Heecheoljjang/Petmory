@@ -18,7 +18,7 @@ final class MonthMemoryViewModel {
 //    var tasks: Observable<Results<UserMemory>?> = Observable(nil)
 //
 //    var monthDate: Observable<String> = Observable("")
-    var tasks = BehaviorSubject<[UserMemory]>(value: [])
+    var tasks = BehaviorRelay<[UserMemory]>(value: [])
     
     var monthDate = ""
     
@@ -26,15 +26,17 @@ final class MonthMemoryViewModel {
 //        tasks.value = repository.fetchDateFiltered(dateString: monthDate.value)
         
 //        날짜 필터링한 결과를 tasks에 onNext
-        tasks.onNext(repository.fetchDateFiltered(dateString: monthDate).map { $0 })
-        print(try! tasks.value())
+        tasks.accept(repository.fetchDateFiltered(dateString: monthDate).map { $0 })
+    }
+    
+    func fetchImageArray(imageList: List<Data>) -> [Data]{
+        return imageList.map { $0 }
     }
     
     func fetchTaskData() -> [UserMemory] {
         
-        guard let taskData = try? tasks.value() else { return [] }
-        
-        return taskData
+//        guard let taskData = tasks.value else { return [] }
+        return tasks.value
     }
     
 //    func checkTasksCount() -> Bool {

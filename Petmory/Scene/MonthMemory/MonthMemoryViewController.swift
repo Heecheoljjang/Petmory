@@ -81,8 +81,12 @@ final class MonthMemoryViewController: BaseViewController {
                 
                 //MARK: - Behavior일때 이렇게 접근해서 사용해도괜찮은지
                 let task = vc.viewModel.fetchTaskData()
+                let imageList = vc.viewModel.fetchImageArray(imageList: task[indexPath.row].imageData)
+                
                 memoryDetailViewController.viewModel.objectId = task[indexPath.row].objectId
-                memoryDetailViewController.viewModel.imageList.value = task[indexPath.row].imageData
+//                memoryDetailViewController.viewModel.imageList.value = task[indexPath.row].imageData
+//                memoryDetailViewController.viewModel.imageList.accept(task[indexPath.row].imageData)
+                memoryDetailViewController.viewModel.imageList.accept(imageList)
                 vc.transition(memoryDetailViewController, transitionStyle: .push)
 
             })
