@@ -7,16 +7,20 @@
 
 import Foundation
 import RealmSwift
+import RxSwift
+import RxCocoa
 
 final class MemoryDetailViewModel {
     
     let repository = UserRepository()
     
-    var memoryTask: Observable<UserMemory?> = Observable(nil)
+//    var memoryTask: Observable<UserMemory?> = Observable(nil)
+    var memoryTask = BehaviorRelay<UserMemory?>(value: nil)
     
     var objectId = ""
     
-    var imageList: Observable<List<Data>?> = Observable(nil)
+//    var imageList: Observable<List<Data>?> = Observable(nil)
+    var imageList = BehaviorRelay<[Data]>(value: [])
     
     var isEditStatus = false
     
@@ -25,15 +29,15 @@ final class MemoryDetailViewModel {
     }
     
     func fetchWithObjectId() {
-        memoryTask.value = repository.fetchWithObjectId(objectId: objectId).first
+        memoryTask.accept(repository.fetchWithObjectId(objectId: objectId).first)
     }
     
     func checkImageListCount() -> Bool {
-        return imageList.value?.count == 0 ? true : false
+        return imageList.value.count == 0 ? true : false
     }
     
     func fetchImageListCount() -> Int {
-        return imageList.value?.count ?? 0
+        return imageList.value.count
     }
     
     func deleteMemory(item: UserMemory) {

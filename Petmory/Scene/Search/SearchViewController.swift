@@ -97,7 +97,8 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UISe
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let memoryDetailViewController = MemoryDetailViewController()
         memoryDetailViewController.viewModel.objectId = tasks[indexPath.row].objectId
-        memoryDetailViewController.viewModel.imageList.value = tasks[indexPath.row].imageData
+//        memoryDetailViewController.viewModel.imageList.value = tasks[indexPath.row].imageData
+        memoryDetailViewController.viewModel.imageList.accept(tasks[indexPath.row].imageData.map { $0 })
         transition(memoryDetailViewController, transitionStyle: .push)
     }
     

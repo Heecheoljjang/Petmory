@@ -6,13 +6,16 @@
 //
 
 import UIKit
-import RealmSwift
+import RxSwift
+import RxCocoa
 
 final class MemoryDetailViewController: BaseViewController {
     
     private var mainView = MemoryDetailView()
     
     var viewModel = MemoryDetailViewModel()
+    
+    let disposeBag = DisposeBag()
 
     override func loadView() {
         self.view = mainView
@@ -31,7 +34,7 @@ final class MemoryDetailViewController: BaseViewController {
         //편집 상태에서 돌아올때는 노티피케이션으로 memoryTasks를 주기 위해
         if viewModel.checkStatus() {
             
-            viewModel.fetchWithObjectId()
+            viewModel.fetchWithObjectId() //바인드된 코드로 인해 텍스트 설정
         
             navigationItem.titleView = mainView.navigationTitleViewLabel
 
@@ -45,7 +48,30 @@ final class MemoryDetailViewController: BaseViewController {
     }
 
     private func bind() {
-        viewModel.memoryTask.bind { [weak self] task in
+//        viewModel.memoryTask.bind { [weak self] task in
+//
+//            guard let task = task else { return }
+//
+//            self?.mainView.titleLabel.attributedText = self?.setAttributedString(text: task.memoryTitle)
+//
+//            self?.mainView.contentTextView.text = task.memoryContent
+//
+//            self?.mainView.navigationTitleViewLabel.text = task.memoryDateString
+//        }
+//
+//        viewModel.imageList.bind { [weak self] _ in
+//
+//            guard let checkCount = self?.viewModel.checkImageListCount() else { return }
+//
+//            self?.mainView.imageCollectionView.isHidden = checkCount
+//
+//            self?.mainView.imageCollectionView.reloadData()
+//        }
+        
+        //MARK: - 하나의 시퀀스에서 하나의 코드만 실행되어야하는지, 아래처럼 한 번에 해도 괜찮은지
+        viewModel.memoryTask
+            .asDriver(onErrorJustReturn: nil)
+            .drive(onNext: { [weak self] task in
             
             guard let task = task else { return }
             
@@ -54,16 +80,43 @@ final class MemoryDetailViewController: BaseViewController {
             self?.mainView.contentTextView.text = task.memoryContent
             
             self?.mainView.navigationTitleViewLabel.text = task.memoryDateString
-        }
+            
+            self?.viewModel.imageList.accept(task.imageData.map{ $0 })
+        })
+        .disposed(by: disposeBag)
         
-        viewModel.imageList.bind { [weak self] _ in
-             
+        viewModel.imageList
+            .asDriver(onErrorJustReturn: [])
+            .drive(onNext: { [weak self] _ in
             guard let checkCount = self?.viewModel.checkImageListCount() else { return }
             
             self?.mainView.imageCollectionView.isHidden = checkCount
             
             self?.mainView.imageCollectionView.reloadData()
-        }
+        })
+        .disposed(by: disposeBag)
+        
+        viewModel.imageList
+            .asDriver(onErrorJustReturn: [])
+            .drive(mainView.imageCollectionView.rx.items(cellIdentifier: MemoryDetailImageCollectionViewCell.identifier, cellType: MemoryDetailImageCollectionViewCell.self)) { (row, element, cell) in
+                
+                cell.photoImageView.image = UIImage(data: element)
+                
+            }
+            .disposed(by: disposeBag)
+        
+        mainView.imageCollectionView.rx.itemSelected
+            .bind(onNext: { [weak self] indexPath in
+                let photoViewController = PhotoViewController()
+                guard let checkCount = self?.viewModel.checkImageListCount(),
+                let imageList = self?.viewModel.imageList.value else { return }
+                
+                if !checkCount {
+                    photoViewController.viewModel.imageList.value = imageList
+                    self?.transition(photoViewController, transitionStyle: .present)
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     override func configure() {
@@ -73,9 +126,8 @@ final class MemoryDetailViewController: BaseViewController {
     override func setUpController() {
         super.setUpController()
 
-
         mainView.imageCollectionView.delegate = self
-        mainView.imageCollectionView.dataSource = self
+//        mainView.imageCollectionView.dataSource = self
 
         navigationController?.navigationBar.tintColor = .diaryColor
 
@@ -159,20 +211,20 @@ final class MemoryDetailViewController: BaseViewController {
     }
 }
 
-extension MemoryDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension MemoryDetailViewController: UICollectionViewDelegateFlowLayout {
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        return viewModel.fetchImageListCount()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemoryDetailImageCollectionViewCell.identifier, for: indexPath) as? MemoryDetailImageCollectionViewCell, let imageList = viewModel.imageList.value else { return UICollectionViewCell() }
-        
-        cell.photoImageView.image = UIImage(data: imageList[indexPath.item])
-        return cell
-    }
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//
+//        return viewModel.fetchImageListCount()
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//
+//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemoryDetailImageCollectionViewCell.identifier, for: indexPath) as? MemoryDetailImageCollectionViewCell, let imageList = viewModel.imageList.value else { return UICollectionViewCell() }
+//
+//        cell.photoImageView.image = UIImage(data: imageList[indexPath.item])
+//        return cell
+//    }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         
@@ -182,11 +234,11 @@ extension MemoryDetailViewController: UICollectionViewDelegate, UICollectionView
         return cellSize
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let photoViewController = PhotoViewController()
-        if !viewModel.checkImageListCount() {
-            photoViewController.viewModel.imageList.value = viewModel.imageList.value
-            transition(photoViewController, transitionStyle: .present)
-        }
-    }
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        let photoViewController = PhotoViewController()
+//        if !viewModel.checkImageListCount() {
+//            photoViewController.viewModel.imageList.value = viewModel.imageList.value
+//            transition(photoViewController, transitionStyle: .present)
+//        }
+//    }
 }

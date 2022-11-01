@@ -164,7 +164,8 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
         let memoryDetailViewController = MemoryDetailViewController()
 
         memoryDetailViewController.viewModel.objectId = tempTask.objectId
-        memoryDetailViewController.viewModel.imageList.value = tempTask.imageData
+//        memoryDetailViewController.viewModel.imageList.value = tempTask.imageData
+        memoryDetailViewController.viewModel.imageList.accept(tempTask.imageData.map { $0 })
         transition(memoryDetailViewController, transitionStyle: .push)
     }
     
