@@ -10,7 +10,7 @@ import RealmSwift
 
 final class MyPetViewModel {
     
-    var tasks: Observable<Results<UserPet>?> = Observable(nil)
+    var tasks: MVVMObservable<Results<UserPet>?> = MVVMObservable(nil)
     
     let repository = UserRepository()
     

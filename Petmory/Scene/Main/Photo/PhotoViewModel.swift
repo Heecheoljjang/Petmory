@@ -10,7 +10,7 @@ import RealmSwift
 
 final class PhotoViewModel {
     
-    var imageList: Observable<[Data]> = Observable([])
+    var imageList: MVVMObservable<[Data]> = MVVMObservable([])
     
     func fetchImageListCount() -> Int {
         return imageList.value.count

@@ -12,13 +12,13 @@ final class AllMemoryViewModel {
     
     let repository = UserRepository()
     
-    var tasks: Observable<Results<UserMemory>?> = Observable(nil)
+    var tasks: MVVMObservable<Results<UserMemory>?> = MVVMObservable(nil)
     
-    var petList: Observable<Results<UserPet>?> = Observable(nil)
+    var petList: MVVMObservable<Results<UserPet>?> = MVVMObservable(nil)
     
-    var filterPetName: Observable<String> = Observable("")
+    var filterPetName: MVVMObservable<String> = MVVMObservable("")
     
-    var dateList: Observable<[String]> = Observable([])
+    var dateList: MVVMObservable<[String]> = MVVMObservable([])
     
     func fetchAllMemory() {
         tasks.value = repository.fetchAllMemory()

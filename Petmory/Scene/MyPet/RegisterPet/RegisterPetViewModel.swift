@@ -15,9 +15,9 @@ final class RegisterPetViewModel {
     
     let notificationCenter = UNUserNotificationCenter.current()
 
-    var gender: Observable<String> = Observable("")
+    var gender: MVVMObservable<String> = MVVMObservable("")
     
-    var profileImage: Observable<Data?> = Observable(nil)
+    var profileImage: MVVMObservable<Data?> = MVVMObservable(nil)
     
     var birthdayDate: Date = Date()
     

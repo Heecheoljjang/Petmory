@@ -5,7 +5,7 @@
 //  Created by HeecheolYoon on 2022/10/24.
 //
 
-class Observable<T> {
+class MVVMObservable<T> {
     private var listener: ((T) -> Void)?
     
     var value: T {
