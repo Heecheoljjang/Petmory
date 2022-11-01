@@ -40,20 +40,19 @@ final class MonthMemoryViewController: BaseViewController {
         viewModel.tasks
             .bind(to: mainView.tableView.rx.items(cellIdentifier: MonthMemoryTableViewCell.identifier, cellType: MonthMemoryTableViewCell.self)) { [weak self] (row, element, cell) in
                 
-                guard let task = self?.viewModel.fetchTaskData(),
-                let equal = self?.viewModel.checkImageDataCount(task: task[row], compareType: .equal),
-                let greater = self?.viewModel.checkImageDataCount(task: task[row], compareType: .greater) else { return }
+                guard let equal = self?.viewModel.checkImageDataCount(task: element, compareType: .equal),
+                let greater = self?.viewModel.checkImageDataCount(task: element, compareType: .greater) else { return }
                 
-                cell.memoryTitle.text = self?.viewModel.cellText(task: task[row], type: .title)
-                cell.memoryContentLabel.text = self?.viewModel.cellText(task: task[row], type: .content)
+                cell.memoryTitle.text = self?.viewModel.cellText(task: element, type: .title)
+                cell.memoryContentLabel.text = self?.viewModel.cellText(task: element, type: .content)
                 
                 if equal {
                     cell.thumbnailImageView.isHidden = equal
                 } else {
                     cell.thumbnailImageView.isHidden = equal
-                    cell.thumbnailImageView.image = UIImage(data: task[row].imageData.first!)
+                    cell.thumbnailImageView.image = UIImage(data: element.imageData.first!)
                 }
-                cell.dateLabel.text = self?.viewModel.cellText(task: task[row], type: .date)
+                cell.dateLabel.text = self?.viewModel.cellText(task: element, type: .date)
                 if greater {
                     cell.multiSign.isHidden = !greater
                 } else {
