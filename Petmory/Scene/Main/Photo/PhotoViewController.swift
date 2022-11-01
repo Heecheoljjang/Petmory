@@ -28,9 +28,9 @@ final class PhotoViewController: BaseViewController {
     private func bind() {
         viewModel.imageList.bind { [weak self] value in
             
-            guard let imageList = value else { return }
+//            guard let imageList = value else { return }
             
-            self?.mainView.pageControl.numberOfPages = imageList.count
+            self?.mainView.pageControl.numberOfPages = value.count
         }
     }
     
@@ -62,8 +62,10 @@ extension PhotoViewController: UICollectionViewDelegate, UICollectionViewDataSou
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell, let imageList = viewModel.imageList.value else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else { return UICollectionViewCell() }
 
+        let imageList = viewModel.imageList.value
+        
         cell.photoImageView.image = UIImage(data: imageList[indexPath.item])
         
         return cell
