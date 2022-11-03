@@ -4,8 +4,6 @@
 //
 //  Created by HeecheolYoon on 2022/09/09.
 //
-
-import Foundation
 import UIKit
 import SnapKit
 
@@ -18,6 +16,8 @@ final class AllMemoryView: BaseView {
         view.separatorColor = .systemGray5
         view.separatorInset = UIEdgeInsets(top: 0, left: 28, bottom: 0, right: 28)
         view.sectionHeaderTopPadding = 0
+        view.rowHeight = 88
+        view.sectionHeaderHeight = 32
         return view
     }()
     
