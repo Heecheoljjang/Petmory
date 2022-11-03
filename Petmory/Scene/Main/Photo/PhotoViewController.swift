@@ -27,9 +27,7 @@ final class PhotoViewController: BaseViewController {
 
     private func bind() {
         viewModel.imageList.bind { [weak self] value in
-            
-//            guard let imageList = value else { return }
-            
+                        
             self?.mainView.pageControl.numberOfPages = value.count
         }
     }

@@ -35,9 +35,7 @@ final class MemoryDetailViewController: BaseViewController {
         if viewModel.checkStatus() {
             
             viewModel.fetchWithObjectId() //바인드된 코드로 인해 텍스트 설정
-        
             navigationItem.titleView = mainView.navigationTitleViewLabel
-
         }
     }
     
@@ -48,26 +46,6 @@ final class MemoryDetailViewController: BaseViewController {
     }
 
     private func bind() {
-//        viewModel.memoryTask.bind { [weak self] task in
-//
-//            guard let task = task else { return }
-//
-//            self?.mainView.titleLabel.attributedText = self?.setAttributedString(text: task.memoryTitle)
-//
-//            self?.mainView.contentTextView.text = task.memoryContent
-//
-//            self?.mainView.navigationTitleViewLabel.text = task.memoryDateString
-//        }
-//
-//        viewModel.imageList.bind { [weak self] _ in
-//
-//            guard let checkCount = self?.viewModel.checkImageListCount() else { return }
-//
-//            self?.mainView.imageCollectionView.isHidden = checkCount
-//
-//            self?.mainView.imageCollectionView.reloadData()
-//        }
-        
         //MARK: - 하나의 시퀀스에서 하나의 코드만 실행되어야하는지, 아래처럼 한 번에 해도 괜찮은지
         viewModel.memoryTask
             .asDriver(onErrorJustReturn: nil)
@@ -76,11 +54,8 @@ final class MemoryDetailViewController: BaseViewController {
             guard let task = task else { return }
             
             self?.mainView.titleLabel.attributedText = self?.setAttributedString(text: task.memoryTitle)
-            
             self?.mainView.contentTextView.text = task.memoryContent
-            
             self?.mainView.navigationTitleViewLabel.text = task.memoryDateString
-            
             self?.viewModel.imageList.accept(task.imageData.map{ $0 })
         })
         .disposed(by: disposeBag)
@@ -91,7 +66,6 @@ final class MemoryDetailViewController: BaseViewController {
             guard let checkCount = self?.viewModel.checkImageListCount() else { return }
             
             self?.mainView.imageCollectionView.isHidden = checkCount
-            
             self?.mainView.imageCollectionView.reloadData()
         })
         .disposed(by: disposeBag)
@@ -127,7 +101,6 @@ final class MemoryDetailViewController: BaseViewController {
         super.setUpController()
 
         mainView.imageCollectionView.delegate = self
-//        mainView.imageCollectionView.dataSource = self
 
         navigationController?.navigationBar.tintColor = .diaryColor
 
@@ -176,9 +149,7 @@ final class MemoryDetailViewController: BaseViewController {
             self.mainView.contentTextView.text = memoryTask.memoryContent
             self.mainView.navigationTitleViewLabel.text = memoryTask.memoryDateString
             self.navigationItem.titleView = self.mainView.navigationTitleViewLabel
-            
             self.mainView.imageCollectionView.isHidden = checkCount
-            
             self.mainView.imageCollectionView.reloadData()
         }
         
@@ -212,19 +183,7 @@ final class MemoryDetailViewController: BaseViewController {
 }
 
 extension MemoryDetailViewController: UICollectionViewDelegateFlowLayout {
-    
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//
-//        return viewModel.fetchImageListCount()
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//
-//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemoryDetailImageCollectionViewCell.identifier, for: indexPath) as? MemoryDetailImageCollectionViewCell, let imageList = viewModel.imageList.value else { return UICollectionViewCell() }
-//
-//        cell.photoImageView.image = UIImage(data: imageList[indexPath.item])
-//        return cell
-//    }
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         
@@ -233,12 +192,4 @@ extension MemoryDetailViewController: UICollectionViewDelegateFlowLayout {
         
         return cellSize
     }
-    
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let photoViewController = PhotoViewController()
-//        if !viewModel.checkImageListCount() {
-//            photoViewController.viewModel.imageList.value = viewModel.imageList.value
-//            transition(photoViewController, transitionStyle: .present)
-//        }
-//    }
 }

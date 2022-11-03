@@ -32,7 +32,6 @@ final class MonthMemoryViewController: BaseViewController {
         super.viewWillAppear(animated)
         
         viewModel.fetchDateFiltered()
-
     }
     
     private func bind() {
@@ -83,14 +82,10 @@ final class MonthMemoryViewController: BaseViewController {
                 let imageList = vc.viewModel.fetchImageArray(imageList: task[indexPath.row].imageData)
                 
                 memoryDetailViewController.viewModel.objectId = task[indexPath.row].objectId
-//                memoryDetailViewController.viewModel.imageList.value = task[indexPath.row].imageData
-//                memoryDetailViewController.viewModel.imageList.accept(task[indexPath.row].imageData)
                 memoryDetailViewController.viewModel.imageList.accept(imageList)
                 vc.transition(memoryDetailViewController, transitionStyle: .push)
-
             })
             .disposed(by: disposeBag)
-
     }
     
     override func setUpController() {
@@ -120,48 +115,4 @@ final class MonthMemoryViewController: BaseViewController {
         transition(self, transitionStyle: .pop)
     }
 }
-
-//MARK: - TableView
-//extension MonthMemoryViewController: UITableViewDelegate, UITableViewDataSource {
-    //저절로 되는듯
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return viewModel.fetchTasksCount()
-//    }
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        guard let cell = tableView.dequeueReusableCell(withIdentifier: MonthMemoryTableViewCell.identifier) as? MonthMemoryTableViewCell, let task = viewModel.tasks.value?[indexPath.row] else { return UITableViewCell() }
-//
-//        cell.memoryTitle.text = viewModel.cellText(task: task, type: .title)
-//        cell.memoryContentLabel.text = viewModel.cellText(task: task, type: .content)
-//
-//        if viewModel.checkImageDataCount(task: task, compareType: .equal) {
-//            cell.thumbnailImageView.isHidden = true
-//        } else {
-//            cell.thumbnailImageView.isHidden = false
-//            cell.thumbnailImageView.image = UIImage(data: task.imageData.first!)
-//        }
-//        cell.dateLabel.text = viewModel.cellText(task: task, type: .date)
-//        if viewModel.checkImageDataCount(task: task, compareType: .greater) {
-//            cell.multiSign.isHidden = false
-//        } else {
-//            cell.multiSign.isHidden = true
-//        }
-//
-//        return cell
-//    }
-    
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let memoryDetailViewController = MemoryDetailViewController()
-//        guard let task = viewModel.tasks.value?[indexPath.row] else { return }
-//
-//        memoryDetailViewController.objectId = task.objectId
-//        memoryDetailViewController.imageList = task.imageData
-//        transition(memoryDetailViewController, transitionStyle: .push)
-//    }
-    
-    
-    //함
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 88
-//    }
-//}
 

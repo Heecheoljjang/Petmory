@@ -14,18 +14,12 @@ import RxCocoa
 final class MonthMemoryViewModel {
     
     let repository = UserRepository()
-    
-//    var tasks: Observable<Results<UserMemory>?> = Observable(nil)
-//
-//    var monthDate: Observable<String> = Observable("")
+
     var tasks = BehaviorRelay<[UserMemory]>(value: [])
     
     var monthDate = ""
     
     func fetchDateFiltered() {
-//        tasks.value = repository.fetchDateFiltered(dateString: monthDate.value)
-        
-//        날짜 필터링한 결과를 tasks에 onNext
         tasks.accept(repository.fetchDateFiltered(dateString: monthDate).map { $0 })
     }
     
@@ -35,22 +29,9 @@ final class MonthMemoryViewModel {
     
     func fetchTaskData() -> [UserMemory] {
         
-//        guard let taskData = tasks.value else { return [] }
         return tasks.value
     }
-    
-//    func checkTasksCount() -> Bool {
-//        return tasks.value?.count == 0 ? true : false
-//    }
-//
 
-    
-//    func fetchTasksCount() -> Int {
-//        return tasks.value?.count ?? 0
-//    }
-    
-//    func fetchTasksCount(tasks: )
-    
     func cellText(task: UserMemory, type: CellTextType) -> String {
         switch type {
         case .title:

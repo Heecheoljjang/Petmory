@@ -99,8 +99,6 @@ extension MyPetViewController: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 0 {
             
             let registerPetVC = RegisterPetViewController()
-//            registerPetVC.currentStatus = CurrentStatus.edit
-//            registerPetVC.task = viewModel.tasks.value?[indexPath.row]
             registerPetVC.viewModel.currentStatus = CurrentStatus.edit
             registerPetVC.viewModel.task = viewModel.tasks.value?[indexPath.row]
             transition(registerPetVC, transitionStyle: .presentNavigation)
