@@ -19,6 +19,8 @@
 		97332AA128D95D220015ECE8 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97332AA028D95D220015ECE8 /* SettingView.swift */; };
 		97332AA328D95D2D0015ECE8 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97332AA228D95D2D0015ECE8 /* SettingViewController.swift */; };
 		9736007728D8463300FD9285 /* MyPetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9736007628D8463300FD9285 /* MyPetTableViewCell.swift */; };
+		973A126129140FEB0082B1B8 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 973A126029140FEB0082B1B8 /* RxDataSources */; };
+		973A1263291446610082B1B8 /* AllMemorySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A1262291446610082B1B8 /* AllMemorySection.swift */; };
 		9740D04A28E45C020018680C /* MonthMemoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9740D04928E45C020018680C /* MonthMemoryView.swift */; };
 		9740D04C28E45C0D0018680C /* MonthMemoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9740D04B28E45C0D0018680C /* MonthMemoryViewController.swift */; };
 		9740D04E28E45C1B0018680C /* MonthMemoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9740D04D28E45C1B0018680C /* MonthMemoryTableViewCell.swift */; };
@@ -116,6 +118,7 @@
 		97332AA028D95D220015ECE8 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		97332AA228D95D2D0015ECE8 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		9736007628D8463300FD9285 /* MyPetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPetTableViewCell.swift; sourceTree = "<group>"; };
+		973A1262291446610082B1B8 /* AllMemorySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllMemorySection.swift; sourceTree = "<group>"; };
 		9740D04928E45C020018680C /* MonthMemoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthMemoryView.swift; sourceTree = "<group>"; };
 		9740D04B28E45C0D0018680C /* MonthMemoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthMemoryViewController.swift; sourceTree = "<group>"; };
 		9740D04D28E45C1B0018680C /* MonthMemoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthMemoryTableViewCell.swift; sourceTree = "<group>"; };
@@ -210,6 +213,7 @@
 				974107A628D0459300617F8F /* CropViewController in Frameworks */,
 				9769226628F500A300896547 /* FirebaseCrashlytics in Frameworks */,
 				9769226428F500A300896547 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
+				973A126129140FEB0082B1B8 /* RxDataSources in Frameworks */,
 				9769226828F500A300896547 /* FirebaseMessaging in Frameworks */,
 				97CF588228C8C9390062FEB9 /* SnapKit in Frameworks */,
 			);
@@ -411,6 +415,7 @@
 				97CF589328C9058E0062FEB9 /* Repository.swift */,
 				977CB69228D47222001342E9 /* enum.swift */,
 				97EA95F029054FEC00397D5F /* Setting.swift */,
+				973A1262291446610082B1B8 /* AllMemorySection.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -597,6 +602,7 @@
 				9769226728F500A300896547 /* FirebaseMessaging */,
 				97E8E575290D7D7F002614F3 /* RxCocoa */,
 				97E8E577290D7D7F002614F3 /* RxSwift */,
+				973A126029140FEB0082B1B8 /* RxDataSources */,
 			);
 			productName = Petmory;
 			productReference = 9799F84128C7741C00E1C12C /* Petmory.app */;
@@ -636,6 +642,7 @@
 				97F5DC7B28E34FE5004A53B3 /* XCRemoteSwiftPackageReference "JGProgressHUD" */,
 				9769226228F500A300896547 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				97E8E574290D7D7F002614F3 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				973A125F29140FEB0082B1B8 /* XCRemoteSwiftPackageReference "RxDataSources" */,
 			);
 			productRefGroup = 9799F84228C7741C00E1C12C /* Products */;
 			projectDirPath = "";
@@ -710,6 +717,7 @@
 				97CF58B428CB4DF10062FEB9 /* UITableViewCell+Extension.swift in Sources */,
 				97D19CDB28D1FB6D0074226C /* AddCalendarViewController.swift in Sources */,
 				9783B142290597E000620D92 /* RegisterPetViewModel.swift in Sources */,
+				973A1263291446610082B1B8 /* AllMemorySection.swift in Sources */,
 				9781F0B328D1E37E008E6DBB /* UserCalendar.swift in Sources */,
 				9786305428CC3B570042C2E2 /* WritingView.swift in Sources */,
 				976FF40228E2E58B007185BE /* BackupRestoreViewController.swift in Sources */,
@@ -926,7 +934,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 1.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hee.Petmory;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -962,7 +970,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 1.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hee.Petmory;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1012,6 +1020,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.0.0;
+			};
+		};
+		973A125F29140FEB0082B1B8 /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
 			};
 		};
 		974107A428D0459300617F8F /* XCRemoteSwiftPackageReference "TOCropViewController" */ = {
@@ -1082,6 +1098,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9732ABF928E1C4DC00112962 /* XCRemoteSwiftPackageReference "Zip" */;
 			productName = Zip;
+		};
+		973A126029140FEB0082B1B8 /* RxDataSources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 973A125F29140FEB0082B1B8 /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = RxDataSources;
 		};
 		974107A528D0459300617F8F /* CropViewController */ = {
 			isa = XCSwiftPackageProductDependency;
