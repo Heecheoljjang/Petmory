@@ -16,34 +16,25 @@ final class MainViewModel {
     let repository = UserRepository()
     
     let notificationCenter = UNUserNotificationCenter.current()
-    
-//    var tasks: Observable<Results<UserMemory>?> = Observable(nil)
-//
-//    var petList: Observable<Results<UserPet>?> = Observable(nil)
-    
+
     var tasks = BehaviorRelay<[UserMemory]?>(value: [])
     
     var petList = BehaviorRelay<[UserPet]?>(value: [])
-    
-    let monthList = [". 01", ". 02", ". 03", ". 04", ". 05", ". 06", ". 07", ". 08", ". 09", ". 10", ". 11", ". 12"]
-    
-//    var tempList: Observable<[String]> = Observable([])
+
+    let monthList = [Int](1...12).map { ". " + String(format: "%02d", $0) }
+
     var tempList = BehaviorRelay<[String]>(value: []) //MARK: 2022.01
-//
-//    var selectedDate: Observable<String> = Observable("")
+
     var selectedDate = BehaviorRelay<String>(value: "")
-//
-//    var currentYear: Observable<String> = Observable("")
+
     var currentYear = BehaviorRelay<String>(value: "") //MARK: 2022년
-//
-//    var countList: Observable<[Int]> = Observable([])
+
     var countList = BehaviorRelay<[Int]>(value: []) //MARK: 각 월의 작성된 기록 수
     
     let yearList = BehaviorRelay<[Int]>(value: [Int](1990...2050))
-
-//    let yearList = [Int](1990...2050)
     
-//    var isFirst: Observable<Bool> = Observable(true)
+    var tempAndCount = BehaviorRelay<[(String, Int)]>(value: [])
+
     var isFirst = BehaviorRelay<Bool>(value: true)
     
     func requestAuthorization() {
@@ -58,17 +49,14 @@ final class MainViewModel {
     }
     
     func setCurrentYear() {
-//        currentYear.value = Date().dateToString(type: .onlyYear)
         currentYear.accept(Date().dateToString(type: .onlyYear))
     }
     
     func fetchAllMemory() {
-//        tasks.value = repository.fetchAllMemory()
         tasks.accept(repository.fetchAllMemory().map { $0 })
     }
     
     func fetchPet() {
-//        petList.value = repository.fetchPet()
         petList.accept(repository.fetchPet().map { $0 })
     }
     
@@ -78,7 +66,6 @@ final class MainViewModel {
     
     func setCountList() {
         
-//        countList.value = []
         countList.accept([])
         
         var tempArr: [Int] = []
@@ -86,18 +73,14 @@ final class MainViewModel {
         guard let memory = tasks.value else { return }
         
         tempList.value.forEach { date in
-//            countList.value.append(memory.filter("\(RealmModelColumn.memoryDateString) CONTAINS[c] '\(date)'").count)
+
             tempArr.append(memory.filter { $0.memoryDateString.contains(date) }.count)
         }
         countList.accept(tempArr)
+        setTempAndCount()
     }
     
     func setTempList() {
-        
-//        tempList.value = monthList
-//        for i in 0..<monthList.count {
-//            tempList.value[i] = currentYear.value + monthList[i]
-//        }
         var tempArr: [String] = []
         
         tempArr.append(contentsOf: monthList)
@@ -109,7 +92,6 @@ final class MainViewModel {
     }
     
     func setSelectedDate(date: String) {
-//        selectedDate.value = date
         selectedDate.accept(date)
     }
     
@@ -123,5 +105,14 @@ final class MainViewModel {
     
     func setIsNotFirst() {
         isFirst.accept(!isFirst.value)
+    }
+
+    func setTempAndCount() {
+        var temp: [(String, Int)] = []
+        
+        for i in 0..<tempList.value.count {
+            temp.append((tempList.value[i], countList.value[i]))
+        }
+        tempAndCount.accept(temp)
     }
 }
