@@ -22,12 +22,13 @@ final class AllMemoryViewModel {
     
     var dateList = BehaviorRelay<[String]>(value: [])
     
-    var tasksCount = BehaviorRelay<Bool>(value: true) //태스크의 카운트가 0인지 확인하는 프로퍼티
+    var tasksCount = BehaviorRelay<Bool>(value: true)
     
     var petListCount = BehaviorRelay<Bool>(value: true)
     
-    var imageCount = BehaviorRelay<Int>(value: 0) //이미지 카운트 => tasks 불러올때마다 같이 업데이트되게하면될듯
-    //그리고 메서드로 bool값 이용해야할ㄷ스
+    var imageCount = BehaviorRelay<Int>(value: 0)
+    
+    var sectionCount = BehaviorRelay<Int>(value: 0)
     
     func fetchAllMemory() {
         tasks.accept(repository.fetchAllMemory().map { $0 })
@@ -66,40 +67,27 @@ final class AllMemoryViewModel {
     func fetchPetName(item: Int) -> String {
         return petList.value[item].petName
     }
-    //MARK: task의 카운트 바뀔때마다 값 바꿔주고, 이 tasksCount가 바뀔때마다 isHidden bind
-//    func checkTasksCount() {
-//        return tasks.value?.count == 0 ? true : false
-//    }
     
-    //MARK: 얘도 따로 생각해보기
-//    func checkPetListCount(item: Int) -> Bool {
-//        guard let count = petList.value?[item].petName.count else { return false }
-//
-//        return count > 1 ? true : false
-//    }
-    
-//    func numberOfRows(section: Int) -> Int {
-//        return tasks.value?.filter("\(RealmModelColumn.memoryDateString) CONTAINS[c] '\(dateList.value[section])'").count ?? 0
-//    }
-//
-//    func numberOfItems() -> Int {
-//        return petList.value?.count ?? 0
-//    }
-//
-//    func tableViewCellTask(section: Int, row: Int) -> UserMemory? {
-//        return tasks.value?.filter("\(RealmModelColumn.memoryDateString) CONTAINS[c] '\(dateList.value[section])'").sorted(byKeyPath: RealmModelColumn.memoryDate, ascending: false)[row]
-//    }
-    
-//    func cellText(task: UserMemory, type: CellTextType) -> String {
-//        switch type {
-//        case .title:
-//            return task.memoryTitle
-//        case .content:
-//            return task.memoryContent
-//        case .date:
-//            return task.memoryDate.dateToString(type: .monthDay)
-//        }
-//    }
-    
+    func checkFilterPetName(name: String) -> Bool {
+        return name.isEmpty ? true : false
+    }
 
+    func numberOfRows(section: Int) -> Int {
+        return tasks.value.filter { $0.memoryDateString.contains("\(dateList.value[section])") }.count
+    }
+
+    func tableViewCellTask(section: Int, row: Int) -> UserMemory? {
+        return tasks.value.filter { $0.memoryDateString.contains("\(dateList.value[section])") }.sorted { $0.memoryDate > $1.memoryDate }[row]
+    }
+    
+    func cellText(task: UserMemory, type: CellTextType) -> String {
+        switch type {
+        case .title:
+            return task.memoryTitle
+        case .content:
+            return task.memoryContent
+        case .date:
+            return task.memoryDate.dateToString(type: .monthDay)
+        }
+    }
 }

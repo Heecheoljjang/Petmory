@@ -19,8 +19,6 @@ final class AllMemoryViewController: BaseViewController {
     
     private let disposeBag = DisposeBag()
     
-    var dataSource = RxTableViewSectionedReloadDataSource<SectionModel<,>>(configureCell: <#T##(TableViewSectionedDataSource<SectionModelType>, UITableView, IndexPath, SectionModelType.Item) -> UITableViewCell#>)
-
     override func loadView() {
         self.view = mainView
     }
@@ -73,20 +71,23 @@ final class AllMemoryViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
+        viewModel.dateList
+            .asDriver(onErrorJustReturn: [])
+            .drive(onNext: { [weak self] value in
+                self?.viewModel.sectionCount.accept(value.count)
+                self?.mainView.tableView.reloadData()
+            })
+            .disposed(by: disposeBag)
         
-        
-        
-//        viewModel.filterPetName.bind { [weak self] value in
-//            if value == "" {
-//                self?.viewModel.fetchAllMemory()
-//            } else {
-//                self?.viewModel.fetchFiltered(name: value)
-//            }
-//        }
-//
-//        viewModel.dateList.bind { [weak self] _ in
-//            self?.mainView.tableView.reloadData()
-//        }
+        viewModel.filterPetName
+            .asDriver(onErrorJustReturn: "")
+            .drive(onNext: { [weak self] value in
+                
+                guard let self = self else { return }
+                self.viewModel.checkFilterPetName(name: value) ? self.viewModel.fetchAllMemory() : self.viewModel.fetchFiltered(name: value)
+            })
+            .disposed(by: disposeBag)
+
     }
     
     override func setUpController() {
@@ -111,7 +112,7 @@ final class AllMemoryViewController: BaseViewController {
     
     override func configure() {
         mainView.tableView.delegate = self
-//        mainView.tableView.dataSource = self
+        mainView.tableView.dataSource = self
 //        mainView.collectionView.dataSource = self
         mainView.collectionView.delegate = self
     }
@@ -132,7 +133,7 @@ final class AllMemoryViewController: BaseViewController {
 extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.dateList.value.count
+        return viewModel.sectionCount.value
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -158,7 +159,8 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: AllMemoryTableViewCell.identifier, for: indexPath) as? AllMemoryTableViewCell, let tempTask = viewModel.tableViewCellTask(section: indexPath.section, row: indexPath.row) else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: AllMemoryTableViewCell.identifier, for: indexPath) as? AllMemoryTableViewCell,
+              let tempTask = viewModel.tableViewCellTask(section: indexPath.section, row: indexPath.row) else { return UITableViewCell() }
         
         cell.memoryTitle.text = viewModel.cellText(task: tempTask, type: .title)
         cell.memoryContentLabel.text = viewModel.cellText(task: tempTask, type: .content)
@@ -191,28 +193,12 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
         memoryDetailViewController.viewModel.imageList.accept(tempTask.imageData.map { $0 })
         transition(memoryDetailViewController, transitionStyle: .push)
     }
-    
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 88
-//    }
 }
 
 //MARK: - CollectionView
 
 extension AllMemoryViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return viewModel.numberOfItems()
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AllMemoryCollectionViewCell.identifier, for: indexPath) as? AllMemoryCollectionViewCell else { return UICollectionViewCell() }
-//
-//        cell.nameLabel.text = viewModel.petList.value?[indexPath.item].petName
-//
-//        return cell
-//    }
-    
+
     //MARK: didSelect로 되는지 다시 확인
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         guard let cell = collectionView.cellForItem(at: indexPath) else { return true }
