@@ -94,6 +94,8 @@ final class AllMemoryViewController: BaseViewController {
                 self.viewModel.checkFilterPetName(name: value) ? self.viewModel.fetchAllMemory() : self.viewModel.fetchFiltered(name: value)
             })
             .disposed(by: disposeBag)
+        
+        
     }
     
     override func setUpController() {

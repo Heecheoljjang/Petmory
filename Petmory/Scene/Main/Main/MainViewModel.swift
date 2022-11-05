@@ -11,7 +11,41 @@ import UserNotifications
 import RxSwift
 import RxCocoa
 
-final class MainViewModel {
+final class MainViewModel: CommonViewModel {
+    
+    struct Input {
+        let tapWritingButton: ControlEvent<Void>
+        let tapTitleViewButton: ControlEvent<Void>
+        let yearList: BehaviorRelay<[Int]>
+        let pickerViewSelected: ControlEvent<(row: Int, component: Int)>
+        let selectCollectionViewCell: ControlEvent<IndexPath>
+    }
+    
+    struct Output {
+        let currentYear: Driver<String>
+        let tempList: Driver<[String]>
+        let tasks: Driver<[UserMemory]?>
+        let countList: Driver<[Int]>
+        let tapWritingButton: ControlEvent<Void>
+        let tapTitleViewButton: ControlEvent<Void>
+        let pickerViewTitle: Observable<[String]>
+        let pickerViewSelected: ControlEvent<(row: Int, component: Int)>
+        let tempAndCount: Driver<[(String, Int)]>
+        let selectCollectionViewCell: ControlEvent<IndexPath>
+    }
+    
+    func transform(input: Input) -> Output {
+        let currentYear = currentYear.asDriver(onErrorJustReturn: "error")
+        let tempList = tempList.asDriver(onErrorJustReturn: [])
+        let tasks = tasks.asDriver(onErrorJustReturn: [])
+        let countList = countList.asDriver(onErrorJustReturn: [])
+        let pickerViewTitle = input.yearList.map { $0.map{ "\($0)년" } }
+        let tempAndCount = tempAndCount.asDriver(onErrorJustReturn: [])
+        
+        return Output(currentYear: currentYear, tempList: tempList, tasks: tasks, countList: countList, tapWritingButton: input.tapWritingButton, tapTitleViewButton: input.tapTitleViewButton, pickerViewTitle: pickerViewTitle, pickerViewSelected: input.pickerViewSelected, tempAndCount: tempAndCount, selectCollectionViewCell: input.selectCollectionViewCell)
+    }
+    
+    let monthList = [Int](1...12).map { ". " + String(format: "%02d", $0) }
     
     let repository = UserRepository()
     
@@ -20,8 +54,6 @@ final class MainViewModel {
     var tasks = BehaviorRelay<[UserMemory]?>(value: [])
     
     var petList = BehaviorRelay<[UserPet]?>(value: [])
-
-    let monthList = [Int](1...12).map { ". " + String(format: "%02d", $0) }
 
     var tempList = BehaviorRelay<[String]>(value: []) //MARK: 2022.01
 
@@ -101,6 +133,10 @@ final class MainViewModel {
     
     func selectedDate(count: Int) -> Int {
         return Int(Date().dateToString(type: .onlyYear))! - count
+    }
+    
+    func checkIsFirst() -> Bool {
+        return isFirst.value
     }
     
     func setIsNotFirst() {

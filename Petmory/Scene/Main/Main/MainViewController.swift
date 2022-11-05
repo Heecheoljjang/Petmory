@@ -44,9 +44,18 @@ final class MainViewController: BaseViewController {
     }
     
     private func bind() {
+        
+        let input = MainViewModel.Input(tapWritingButton: mainView.writingButton.rx.tap,
+                                        tapTitleViewButton: mainView.titleViewButton.rx.tap,
+                                        yearList: viewModel.yearList,
+                                        pickerViewSelected: mainView.pickerView.rx.itemSelected,
+                                        selectCollectionViewCell: mainView.diaryCollectionView.rx.itemSelected)
+        let output = viewModel.transform(input: input)
+        
         //MARK: 연도바뀜 -> templist바뀜 -> task바꾼뒤 countList구함
-        viewModel.currentYear
-            .asDriver(onErrorJustReturn: "error")
+//        viewModel.currentYear
+//            .asDriver(onErrorJustReturn: "error")
+        output.currentYear
             .drive(onNext: { [weak self] year in
                 var attributedTitle = AttributedString(year + "년")
                 attributedTitle.font = UIFont(name: CustomFont.medium, size: 16)
@@ -56,47 +65,54 @@ final class MainViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        viewModel.tempList
-            .asDriver(onErrorJustReturn: [])
+//        viewModel.tempList
+//            .asDriver(onErrorJustReturn: [])
+        output.tempList
             .drive(onNext: { [weak self] _ in
                 self?.viewModel.fetchAllMemory()
             })
             .disposed(by: disposeBag)
         
-        viewModel.tasks
-            .asDriver(onErrorJustReturn: [])
+//        viewModel.tasks
+//            .asDriver(onErrorJustReturn: [])
+        output.tasks
             .drive(onNext: { [weak self] _ in
                 self?.viewModel.setCountList()
             })
             .disposed(by: disposeBag)
 
-        viewModel.countList
-            .asDriver(onErrorJustReturn: [])
+//        viewModel.countList
+//            .asDriver(onErrorJustReturn: [])
+        output.countList
             .drive(onNext: { [weak self] _ in
                 self?.mainView.diaryCollectionView.reloadData()
             })
             .disposed(by: disposeBag)
         
-        mainView.writingButton.rx.tap
+//        mainView.writingButton.rx.tap
+        output.tapWritingButton
             .bind { [weak self] _ in
                 self?.presentWritingView()
             }
             .disposed(by: disposeBag)
         
-        mainView.titleViewButton.rx.tap
+//        mainView.titleViewButton.rx.tap
+        output.tapTitleViewButton
             .bind { [weak self] _ in
                 self?.presentPickerView()
             }
             .disposed(by: disposeBag)
         
-        viewModel.yearList
-            .map { $0.map{ "\($0)년" } }
+//        viewModel.yearList
+//            .map { $0.map{ "\($0)년" } }
+        output.pickerViewTitle
             .bind(to: mainView.pickerView.rx.itemTitles) { (row, element) in
                 return element
             }
             .disposed(by: disposeBag)
         
-        mainView.pickerView.rx.itemSelected
+//        mainView.pickerView.rx.itemSelected
+        output.pickerViewSelected
             .bind(onNext: { [weak self] row, component in
                 guard let self = self else { return }
                 
@@ -105,15 +121,17 @@ final class MainViewController: BaseViewController {
             .disposed(by: disposeBag)
 
         //MARK: 해결 오래걸림
-        viewModel.tempAndCount
-            .asDriver(onErrorJustReturn: [] )
+//        viewModel.tempAndCount
+//            .asDriver(onErrorJustReturn: [] )
+        output.tempAndCount
             .drive(mainView.diaryCollectionView.rx.items(cellIdentifier: MainCollectionViewCell.identifier, cellType: MainCollectionViewCell.self)) { (row, element, cell) in
                 cell.dateLabel.text = element.0
                 cell.pageLabel.text = "\(element.1) 페이지"
             }
             .disposed(by: disposeBag)
 
-        mainView.diaryCollectionView.rx.itemSelected
+//        mainView.diaryCollectionView.rx.itemSelected
+        output.selectCollectionViewCell
             .bind(onNext: { [weak self] indexPath in
                 let monthMemoryVC = MonthMemoryViewController()
 
@@ -129,7 +147,7 @@ final class MainViewController: BaseViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        if viewModel.isFirst.value {
+        if viewModel.checkIsFirst() {
             let indexPath = viewModel.firstScrollIndex()
             mainView.diaryCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
             viewModel.setIsNotFirst()
