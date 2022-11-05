@@ -6,7 +6,6 @@
 //
 
 import UIKit
-//import RealmSwift
 import RxCocoa
 import RxSwift
 
@@ -16,8 +15,8 @@ final class MonthMemoryViewController: BaseViewController {
     
     let viewModel = MonthMemoryViewModel()
     
-    let disposeBag = DisposeBag()
-
+    private let disposeBag = DisposeBag()
+    
     override func loadView() {
         self.view = mainView
     }
@@ -36,7 +35,11 @@ final class MonthMemoryViewController: BaseViewController {
     
     private func bind() {
 
-        viewModel.tasks
+        let input = MonthMemoryViewModel.Input(tasks: viewModel.tasks, tableViewDidSelect: mainView.tableView.rx.itemSelected)
+        let output = viewModel.transform(input: input)
+        
+//        viewModel.tasks
+        output.tableViewCellForRowAt
             .bind(to: mainView.tableView.rx.items(cellIdentifier: MonthMemoryTableViewCell.identifier, cellType: MonthMemoryTableViewCell.self)) { [weak self] (row, element, cell) in
                 
                 guard let equal = self?.viewModel.checkImageDataCount(task: element, compareType: .equal),
@@ -61,8 +64,9 @@ final class MonthMemoryViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
         
-        viewModel.tasks
-            .map { $0.count == 0 }
+//        viewModel.tasks
+//            .map { $0.count == 0 }
+        output.checkTasksCount
             .bind(onNext: { [weak self] value in
 
                 self?.mainView.tableView.isHidden = value
@@ -72,7 +76,8 @@ final class MonthMemoryViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        mainView.tableView.rx.itemSelected
+//        mainView.tableView.rx.itemSelected
+        output.tableViewIndex
             .withUnretained(self)
             .bind(onNext: { (vc, indexPath) in
                 let memoryDetailViewController = MemoryDetailViewController()
@@ -102,7 +107,6 @@ final class MonthMemoryViewController: BaseViewController {
         navigationController?.navigationBar.standardAppearance = appearance
     
         navigationItem.titleView = mainView.titleLabel
-        
     }
     
     override func configure() {
@@ -110,7 +114,6 @@ final class MonthMemoryViewController: BaseViewController {
     }
 
     //MARK: - @objc
-
     @objc private func popView() {
         transition(self, transitionStyle: .pop)
     }

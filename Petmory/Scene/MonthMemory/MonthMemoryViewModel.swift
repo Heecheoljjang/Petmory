@@ -10,8 +10,24 @@ import RealmSwift
 import RxSwift
 import RxCocoa
 
-//MARK: 옵저버블처럼 value에 접근하는 방식이 아닌 매번 메서드에서 repository의 메서드를 실행하는 느낌인지 궁금
-final class MonthMemoryViewModel {
+final class MonthMemoryViewModel: CommonViewModel {
+    
+    struct Input {
+        let tasks: BehaviorRelay<[UserMemory]>
+        let tableViewDidSelect: ControlEvent<IndexPath>
+    }
+    
+    struct Output {
+        let tableViewCellForRowAt: BehaviorRelay<[UserMemory]>
+        let checkTasksCount: Observable<Bool>
+        let tableViewIndex: ControlEvent<IndexPath>
+    }
+    
+    func transform(input: Input) -> Output {
+        let checkTasksCount = input.tasks.map { $0.count == 0 }
+        
+        return Output(tableViewCellForRowAt: input.tasks, checkTasksCount: checkTasksCount, tableViewIndex: input.tableViewDidSelect)
+    }
     
     let repository = UserRepository()
 
