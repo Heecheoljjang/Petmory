@@ -38,8 +38,12 @@ final class AllMemoryViewController: BaseViewController {
     
     private func bind() {
         
-        viewModel.tasks
-            .asDriver(onErrorJustReturn: [])
+        let input = AllMemoryViewModel.Input(petCount: viewModel.petList) //MARK: 흐름을 보기 위해 일부러 따로 설정해뒀는데 이렇게 해도되는지
+        let output = viewModel.transform(input: input)
+        
+//        viewModel.tasks
+//            .asDriver(onErrorJustReturn: [])
+        output.tasks
             .drive(onNext: { [weak self] value in
                 //MARK: dateList세팅, tasksCount세팅
                 self?.viewModel.fetchDateList(tasks: value)
@@ -47,47 +51,49 @@ final class AllMemoryViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        viewModel.tasksCount
-            .asDriver(onErrorJustReturn: false)
+//        viewModel.tasksCount
+//            .asDriver(onErrorJustReturn: false)
+        output.tasksCount
             .drive(onNext: { [weak self] value in
                 self?.mainView.tableView.isHidden = value
                 self?.mainView.noMemoryLabel.isHidden = !value
             })
             .disposed(by: disposeBag)
         
-        //MARK: collectionView 바꾸기
-        viewModel.petList
-            .asDriver(onErrorJustReturn: [])
+//        viewModel.petList
+//            .asDriver(onErrorJustReturn: [])
+        output.petList
             .drive(mainView.collectionView.rx.items(cellIdentifier: AllMemoryCollectionViewCell.identifier, cellType: AllMemoryCollectionViewCell.self)) { (row, element, cell) in
                 cell.nameLabel.text = element.petName
             }
             .disposed(by: disposeBag)
         
-        viewModel.petList
-            .map {$0.count > 1}
-            .asDriver(onErrorJustReturn: false)
+//        viewModel.petList
+//            .map {$0.count > 1}
+//            .asDriver(onErrorJustReturn: false)
+        output.checkPetCount
             .drive(onNext: { [weak self] value in
                 self?.viewModel.petListCount.accept(true)
             })
             .disposed(by: disposeBag)
         
-        viewModel.dateList
-            .asDriver(onErrorJustReturn: [])
+//        viewModel.dateList
+//            .asDriver(onErrorJustReturn: [])
+        output.dateList
             .drive(onNext: { [weak self] value in
                 self?.viewModel.sectionCount.accept(value.count)
                 self?.mainView.tableView.reloadData()
             })
             .disposed(by: disposeBag)
         
-        viewModel.filterPetName
-            .asDriver(onErrorJustReturn: "")
+//        viewModel.filterPetName
+//            .asDriver(onErrorJustReturn: "")
+        output.filterPetName
             .drive(onNext: { [weak self] value in
-                
                 guard let self = self else { return }
                 self.viewModel.checkFilterPetName(name: value) ? self.viewModel.fetchAllMemory() : self.viewModel.fetchFiltered(name: value)
             })
             .disposed(by: disposeBag)
-
     }
     
     override func setUpController() {
@@ -148,10 +154,6 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
         
         return view
     }
-    
-//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        return 32
-//    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 

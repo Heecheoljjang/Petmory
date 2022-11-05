@@ -6,11 +6,34 @@
 //
 
 import Foundation
-import RealmSwift
 import RxCocoa
 import RxSwift
 
-final class AllMemoryViewModel {
+final class AllMemoryViewModel: CommonViewModel {
+    
+    struct Input {
+        let petCount: BehaviorRelay<[UserPet]> //checkPetCount를 위해서는 petList를 받아서 map을 이용해 타입 변환. 근데 인풋으로 사용되는 것 같긴한데 뷰모델에 있는 값이라 이렇게 해주는게 맞나싶음. 근데 흐름을 보기 위해선 이렇게 하는게 자연스러울 것 같긴함
+    }
+    
+    struct Output {
+        let tasks: Driver<[UserMemory]>
+        let tasksCount: Driver<Bool>
+        let petList: Driver<[UserPet]>
+        let checkPetCount: Driver<Bool>
+        let dateList: Driver<[String]>
+        let filterPetName: Driver<String>
+    }
+    
+    func transform(input: Input) -> Output {
+        let tasks = tasks.asDriver(onErrorJustReturn: [])
+        let tasksCount = tasksCount.asDriver(onErrorJustReturn: false)
+        let petList = petList.asDriver(onErrorJustReturn: [])
+        let checkPetCount = input.petCount.map{ $0.count > 1 }.asDriver(onErrorJustReturn: false)
+        let dateList = dateList.asDriver(onErrorJustReturn: [])
+        let filterPetName = filterPetName.asDriver(onErrorJustReturn: "").asDriver(onErrorJustReturn: "")
+        
+        return Output(tasks: tasks, tasksCount: tasksCount, petList: petList, checkPetCount: checkPetCount, dateList: dateList, filterPetName: filterPetName)
+    }
     
     let repository = UserRepository()
     
