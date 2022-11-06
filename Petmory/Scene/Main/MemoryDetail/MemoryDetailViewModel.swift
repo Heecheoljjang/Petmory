@@ -53,4 +53,8 @@ final class MemoryDetailViewModel {
             list.append($0)
         }
     }
+    
+    func acceptImageData(imageData: BehaviorRelay<[Data]>) {
+        imageData.accept(imageList.value)
+    }
 }

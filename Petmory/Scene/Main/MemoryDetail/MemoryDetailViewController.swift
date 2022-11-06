@@ -82,11 +82,10 @@ final class MemoryDetailViewController: BaseViewController {
         mainView.imageCollectionView.rx.itemSelected
             .bind(onNext: { [weak self] indexPath in
                 let photoViewController = PhotoViewController()
-                guard let checkCount = self?.viewModel.checkImageListCount(),
-                let imageList = self?.viewModel.imageList.value else { return }
+                guard let checkCount = self?.viewModel.checkImageListCount() else { return }
                 
                 if !checkCount {
-                    photoViewController.viewModel.imageList.value = imageList
+                    self?.viewModel.acceptImageData(imageData: photoViewController.viewModel.imageList)
                     self?.transition(photoViewController, transitionStyle: .present)
                 }
             })
