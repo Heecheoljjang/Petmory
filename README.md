@@ -1388,5 +1388,6 @@ guard let width = vc.mainView.window?.windowScene?.screen.bounds.width else { re
 
 #### 내용
 
-- Allmemory화면 바버튼 수정
-    - 버튼을 뷰로 옮기고 인풋아웃풋 적용
+- Allmemory화면
+    - 바버튼을 뷰로 옮기고 인풋아웃풋 적용
+    - 뷰모델에서 처리할 수 있는 건 굳이 뷰컨에서 처리하지 않게 수정
