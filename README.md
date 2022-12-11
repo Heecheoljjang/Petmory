@@ -1340,3 +1340,53 @@ Main화면에서 하나의 컬렉션뷰 셀 안의 뷰모델의 두 프로퍼티
 
 - 인풋아웃풋
     - 적용해보는데에 굉장히 오랜 시간이 걸림. 인풋아웃풋을 쓰는 이유는 데이터의 흐름을 쉽게 보기 위해서라고 생각함. 그래서 고민을 하다가 나름대로 나만의 기준으로 작성해보았음. 물론 수업시간에 배웠던 내용이긴하지만 실제로 프로젝트에서 적용해보려하니 뭔가 설계를 잘못한 느낌도 들고 어떤것을 인풋으로 해야할지 생각이 많이 들었음. 아무튼 작성하고 드는 의문이 있는데, 뷰모델의 프로퍼티의 값을 이용하는 경우엔 따로 인풋으로 넣어주지않았음. 아웃풋에서 viewModel.프로퍼티 이렇게 작성해주면 충분히 알아볼 수 있다고 생각했음. 근데 뷰모델의 프로퍼티 값을 받아와서 처리를 한 뒤에 다른 타입으로 사용하는 경우에는 뷰모델의 프로퍼티라도 인풋에 적어줘도 된다고 생각함. 그래서 뷰모델에 선언된 타입을 그대로 작성했는데 맞는지 의문이 들긴함.
+
+### 11/6
+
+#### 내용
+
+- Photo화면
+    - Rx 적용
+    - 인풋 아웃풋 적용
+
+#### 이슈
+
+- Photo화면을 Rx로 바꿔보면서 scrollViewDidScroll메서드도 있을 것만 같아서 찾아보니 contentOffSet으로 적용이 가능했음. 
+원래 코드는 아래와 같음
+~~~
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let width = scrollView.frame.width
+        mainView.pageControl.currentPage = viewModel.pageControlPage(xOffset: scrollView.contentOffset.x, width: width)
+    }
+~~~
+
+이렇게 바뀜
+~~~
+        output.collectionViewXOffset
+            .withUnretained(self)
+            .bind(onNext: { vc, value in
+//                let width = vc.mainView.imageCollectionView.frame.width
+                guard let width = vc.mainView.window?.windowScene?.screen.bounds.width else { return }
+                print(value, width)
+                vc.mainView.pageControl.currentPage = vc.viewModel.pageControlPage(xOffset: value, width: width)
+            })
+            .disposed(by: disposeBag)
+~~~
+
+주석처리된 곳에서 컬렉션뷰의 width를 가져옴. 근데 뷰가 그려지기 전에 값을 가져와서 0.0으로 나타나다보니 아래같은 오류가 뜸.
+Double value cannot be converted to Int because it is either infinite or NaN
+0으로 나눌 수 없기때문임.
+
+그래서 UIScreen.main에서 bounds를 이용해 값을 사용하려 했는데 나중에 deprecated된다는 말이 있고 다른 방법을 이용하라길래 아래와 같은 방법을 이용함.
+~~~
+guard let width = vc.mainView.window?.windowScene?.screen.bounds.width else { return }
+~~~
+
+내용은 같지만 mainView가 그려질 윈도우 신의 스크린 bounds값을 가져온다고 생각하면됨.                
+
+### 12/11
+
+#### 내용
+
+- Allmemory화면 바버튼 수정
+    - 버튼을 뷰로 옮기고 인풋아웃풋 적용
