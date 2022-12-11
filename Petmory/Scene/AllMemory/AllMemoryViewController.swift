@@ -56,12 +56,7 @@ final class AllMemoryViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        output.tasks
-            .drive(onNext: { [weak self] value in
-                self?.viewModel.fetchDateList(tasks: value)
-                self?.viewModel.fetchTasksCount(tasks: value)
-            })
-            .disposed(by: disposeBag)
+        output.fetchDateListAndTaskCount
 
         output.tasksCount
             .drive(onNext: { [weak self] value in
@@ -77,10 +72,6 @@ final class AllMemoryViewController: BaseViewController {
             .disposed(by: disposeBag)
 
         output.checkPetCount
-            .drive(onNext: { [weak self] value in
-                self?.viewModel.petListCount.accept(true)
-            })
-            .disposed(by: disposeBag)
 
         output.dateList
             .drive(onNext: { [weak self] value in
@@ -90,11 +81,6 @@ final class AllMemoryViewController: BaseViewController {
             .disposed(by: disposeBag)
 
         output.filterPetName
-            .drive(onNext: { [weak self] value in
-                guard let self = self else { return }
-                self.viewModel.checkFilterPetName(name: value) ? self.viewModel.fetchAllMemory() : self.viewModel.fetchFiltered(name: value)
-            })
-            .disposed(by: disposeBag)
     }
     
     override func setUpController() {

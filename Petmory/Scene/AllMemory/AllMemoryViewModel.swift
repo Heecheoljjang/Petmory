@@ -11,6 +11,8 @@ import RxSwift
 
 final class AllMemoryViewModel: CommonViewModel {
     
+    private let disposeBag = DisposeBag()
+    
     struct Input {
         let petCount: BehaviorRelay<[UserPet]> //checkPetCount를 위해서는 petList를 받아서 map을 이용해 타입 변환. 근데 인풋으로 사용되는 것 같긴한데 뷰모델에 있는 값이라 이렇게 해주는게 맞나싶음. 근데 흐름을 보기 위해선 이렇게 하는게 자연스러울 것 같긴함
         let tapDismissButton: ControlEvent<Void>
@@ -19,26 +21,37 @@ final class AllMemoryViewModel: CommonViewModel {
     }
     
     struct Output {
-        let tasks: Driver<[UserMemory]>
+        let fetchDateListAndTaskCount: Void
         let tasksCount: Driver<Bool>
         let petList: Driver<[UserPet]>
-        let checkPetCount: Driver<Bool>
+        let checkPetCount: Void
         let dateList: Driver<[String]>
-        let filterPetName: Driver<String>
+        let filterPetName: Void
         let tapDismissButton: ControlEvent<Void>
         let tapSearchButton: ControlEvent<Void>
         let tapBackButton: ControlEvent<Void>
     }
     
     func transform(input: Input) -> Output {
-        let tasks = tasks.asDriver(onErrorJustReturn: [])
+        let tasks: Void = tasks.asDriver(onErrorJustReturn: []).drive(onNext: { [weak self] value in
+            self?.fetchDateList(tasks: value)
+            self?.fetchTasksCount(tasks: value)
+        })
+        .disposed(by: disposeBag)
         let tasksCount = tasksCount.asDriver(onErrorJustReturn: false)
         let petList = petList.asDriver(onErrorJustReturn: [])
-        let checkPetCount = input.petCount.map{ $0.count > 1 }.asDriver(onErrorJustReturn: false)
+        let checkPetCount: Void = input.petCount.map{ $0.count > 1 }.asDriver(onErrorJustReturn: false).drive(onNext: { [weak self] value in
+            self?.petListCount.accept(true)
+        })
+        .disposed(by: disposeBag)
         let dateList = dateList.asDriver(onErrorJustReturn: [])
-        let filterPetName = filterPetName.asDriver(onErrorJustReturn: "").asDriver(onErrorJustReturn: "")
+        let filterPetName: Void = filterPetName.asDriver(onErrorJustReturn: "").asDriver(onErrorJustReturn: "")
+            .drive(onNext: { [unowned self] value in
+            self.checkFilterPetName(name: value) ? self.fetchAllMemory() : self.fetchFiltered(name: value)
+        })
+        .disposed(by: disposeBag)
         
-        return Output(tasks: tasks, tasksCount: tasksCount, petList: petList, checkPetCount: checkPetCount, dateList: dateList, filterPetName: filterPetName, tapDismissButton: input.tapDismissButton, tapSearchButton: input.tapSearchButton, tapBackButton: input.tapBackButton)
+        return Output(fetchDateListAndTaskCount: tasks, tasksCount: tasksCount, petList: petList, checkPetCount: checkPetCount, dateList: dateList, filterPetName: filterPetName, tapDismissButton: input.tapDismissButton, tapSearchButton: input.tapSearchButton, tapBackButton: input.tapBackButton)
     }
     
     let repository = UserRepository()
@@ -92,7 +105,6 @@ final class AllMemoryViewModel: CommonViewModel {
         filterPetName.accept(name)
     }
 
-    //MARK: filterPetName으로 바인딩해보기
     func fetchPetName(item: Int) -> String {
         return petList.value[item].petName
     }
