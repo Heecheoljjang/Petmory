@@ -14,100 +14,98 @@ import RxCocoa
 final class AllMemoryViewController: BaseViewController {
     
     private var mainView = AllMemoryView()
-    
     private let viewModel = AllMemoryViewModel()
-    
     private let disposeBag = DisposeBag()
     
     override func loadView() {
-        self.view = mainView
+        view = mainView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        viewModel.fetchAllMemory() //tasks 값 바뀜
-        viewModel.fetchPetList() //petList 값 바뀜
+        viewModel.fetchAllMemory()
+        viewModel.fetchPetList()
     }
     
     private func bind() {
         
-        let input = AllMemoryViewModel.Input(petCount: viewModel.petList) //MARK: 흐름을 보기 위해 일부러 따로 설정해뒀는데 이렇게 해도되는지
+        let input = AllMemoryViewModel.Input(petCount: viewModel.petList, tapDismissButton: mainView.dismissButton.rx.tap, tapSearchButton: mainView.searchButton.rx.tap, tapBackButton: mainView.backButton.rx.tap)
         let output = viewModel.transform(input: input)
+
+        output.tapDismissButton
+            .bind(onNext: { [weak self] _ in
+                self?.dismissView()
+            })
+            .disposed(by: disposeBag)
         
-//        viewModel.tasks
-//            .asDriver(onErrorJustReturn: [])
+        output.tapSearchButton
+            .bind(onNext: { [weak self] _ in
+                self?.pushSearchView()
+            })
+            .disposed(by: disposeBag)
+        
+        output.tapBackButton
+            .bind(onNext: { [weak self] _ in
+                self?.popView()
+            })
+            .disposed(by: disposeBag)
+        
         output.tasks
             .drive(onNext: { [weak self] value in
-                //MARK: dateList세팅, tasksCount세팅
                 self?.viewModel.fetchDateList(tasks: value)
                 self?.viewModel.fetchTasksCount(tasks: value)
             })
             .disposed(by: disposeBag)
-        
-//        viewModel.tasksCount
-//            .asDriver(onErrorJustReturn: false)
+
         output.tasksCount
             .drive(onNext: { [weak self] value in
                 self?.mainView.tableView.isHidden = value
                 self?.mainView.noMemoryLabel.isHidden = !value
             })
             .disposed(by: disposeBag)
-        
-//        viewModel.petList
-//            .asDriver(onErrorJustReturn: [])
+
         output.petList
             .drive(mainView.collectionView.rx.items(cellIdentifier: AllMemoryCollectionViewCell.identifier, cellType: AllMemoryCollectionViewCell.self)) { (row, element, cell) in
                 cell.nameLabel.text = element.petName
             }
             .disposed(by: disposeBag)
-        
-//        viewModel.petList
-//            .map {$0.count > 1}
-//            .asDriver(onErrorJustReturn: false)
+
         output.checkPetCount
             .drive(onNext: { [weak self] value in
                 self?.viewModel.petListCount.accept(true)
             })
             .disposed(by: disposeBag)
-        
-//        viewModel.dateList
-//            .asDriver(onErrorJustReturn: [])
+
         output.dateList
             .drive(onNext: { [weak self] value in
                 self?.viewModel.sectionCount.accept(value.count)
                 self?.mainView.tableView.reloadData()
             })
             .disposed(by: disposeBag)
-        
-//        viewModel.filterPetName
-//            .asDriver(onErrorJustReturn: "")
+
         output.filterPetName
             .drive(onNext: { [weak self] value in
                 guard let self = self else { return }
                 self.viewModel.checkFilterPetName(name: value) ? self.viewModel.fetchAllMemory() : self.viewModel.fetchFiltered(name: value)
             })
             .disposed(by: disposeBag)
-        
-        
     }
     
     override func setUpController() {
         //네비게이션 바버튼
-        let dismissButton = UIBarButtonItem(image: UIImage(systemName: ImageName.chevronDown), style: .plain, target: self, action: #selector(dismissView))
-        let searchButton = UIBarButtonItem(image: UIImage(systemName: ImageName.magnifyingglass), style: .plain, target: self, action: #selector(pushSearchView))
-        navigationItem.leftBarButtonItem = dismissButton
-        navigationItem.rightBarButtonItem = searchButton
+        
+        navigationItem.leftBarButtonItem = mainView.dismissButton
+        navigationItem.rightBarButtonItem = mainView.searchButton
         
         navigationController?.navigationBar.tintColor = .diaryColor
         navigationItem.backButtonTitle = ""
-        navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(systemName: ImageName.chevronLeft), style: .plain, target: self, action: #selector(popView))
+        navigationItem.backBarButtonItem = mainView.backButton
         
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .white
@@ -121,18 +119,16 @@ final class AllMemoryViewController: BaseViewController {
     override func configure() {
         mainView.tableView.delegate = self
         mainView.tableView.dataSource = self
-//        mainView.collectionView.dataSource = self
         mainView.collectionView.delegate = self
     }
 
-    //MARK: - @objc
-    @objc private func dismissView() {
+    private func dismissView() {
         transition(self, transitionStyle: .dismiss)
     }
-    @objc private func pushSearchView() {
+    private func pushSearchView() {
         transition(SearchViewController(), transitionStyle: .push)
     }
-    @objc private func popView() {
+    private func popView() {
         transition(self, transitionStyle: .pop)
     }
 }
@@ -203,7 +199,6 @@ extension AllMemoryViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension AllMemoryViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
-    //MARK: didSelect로 되는지 다시 확인
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         guard let cell = collectionView.cellForItem(at: indexPath) else { return true }
 

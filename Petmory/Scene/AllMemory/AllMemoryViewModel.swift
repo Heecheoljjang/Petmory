@@ -13,6 +13,9 @@ final class AllMemoryViewModel: CommonViewModel {
     
     struct Input {
         let petCount: BehaviorRelay<[UserPet]> //checkPetCount를 위해서는 petList를 받아서 map을 이용해 타입 변환. 근데 인풋으로 사용되는 것 같긴한데 뷰모델에 있는 값이라 이렇게 해주는게 맞나싶음. 근데 흐름을 보기 위해선 이렇게 하는게 자연스러울 것 같긴함
+        let tapDismissButton: ControlEvent<Void>
+        let tapSearchButton: ControlEvent<Void>
+        let tapBackButton: ControlEvent<Void>
     }
     
     struct Output {
@@ -22,6 +25,9 @@ final class AllMemoryViewModel: CommonViewModel {
         let checkPetCount: Driver<Bool>
         let dateList: Driver<[String]>
         let filterPetName: Driver<String>
+        let tapDismissButton: ControlEvent<Void>
+        let tapSearchButton: ControlEvent<Void>
+        let tapBackButton: ControlEvent<Void>
     }
     
     func transform(input: Input) -> Output {
@@ -32,7 +38,7 @@ final class AllMemoryViewModel: CommonViewModel {
         let dateList = dateList.asDriver(onErrorJustReturn: [])
         let filterPetName = filterPetName.asDriver(onErrorJustReturn: "").asDriver(onErrorJustReturn: "")
         
-        return Output(tasks: tasks, tasksCount: tasksCount, petList: petList, checkPetCount: checkPetCount, dateList: dateList, filterPetName: filterPetName)
+        return Output(tasks: tasks, tasksCount: tasksCount, petList: petList, checkPetCount: checkPetCount, dateList: dateList, filterPetName: filterPetName, tapDismissButton: input.tapDismissButton, tapSearchButton: input.tapSearchButton, tapBackButton: input.tapBackButton)
     }
     
     let repository = UserRepository()

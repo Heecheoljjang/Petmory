@@ -9,6 +9,10 @@ import SnapKit
 
 final class AllMemoryView: BaseView {
 
+    let dismissButton = UIBarButtonItem(image: UIImage(systemName: ImageName.chevronDown), style: .plain, target: nil, action: nil)
+    let searchButton = UIBarButtonItem(image: UIImage(systemName: ImageName.magnifyingglass), style: .plain, target: nil, action: nil)
+    let backButton = UIBarButtonItem(image: UIImage(systemName: ImageName.chevronLeft), style: .plain, target: nil, action: nil)
+    
     let tableView: UITableView = {
         let view = UITableView()
         view.register(AllMemoryTableViewCell.self, forCellReuseIdentifier: AllMemoryTableViewCell.identifier)
