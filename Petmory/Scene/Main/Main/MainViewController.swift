@@ -51,10 +51,7 @@ final class MainViewController: BaseViewController {
                                         pickerViewSelected: mainView.pickerView.rx.itemSelected,
                                         selectCollectionViewCell: mainView.diaryCollectionView.rx.itemSelected)
         let output = viewModel.transform(input: input)
-        
-        //MARK: 연도바뀜 -> templist바뀜 -> task바꾼뒤 countList구함
-//        viewModel.currentYear
-//            .asDriver(onErrorJustReturn: "error")
+
         output.currentYear
             .drive(onNext: { [weak self] year in
                 var attributedTitle = AttributedString(year + "년")
@@ -64,65 +61,37 @@ final class MainViewController: BaseViewController {
                 self?.viewModel.setTempList()
             })
             .disposed(by: disposeBag)
-        
-//        viewModel.tempList
-//            .asDriver(onErrorJustReturn: [])
-        output.tempList
-            .drive(onNext: { [weak self] _ in
-                self?.viewModel.fetchAllMemory()
-            })
-            .disposed(by: disposeBag)
-        
-//        viewModel.tasks
-//            .asDriver(onErrorJustReturn: [])
-        output.tasks
-            .drive(onNext: { [weak self] _ in
-                self?.viewModel.setCountList()
-            })
-            .disposed(by: disposeBag)
 
-//        viewModel.countList
-//            .asDriver(onErrorJustReturn: [])
+        output.tempList
+
+        output.tasks
+
         output.countList
             .drive(onNext: { [weak self] _ in
                 self?.mainView.diaryCollectionView.reloadData()
             })
             .disposed(by: disposeBag)
         
-//        mainView.writingButton.rx.tap
         output.tapWritingButton
             .bind { [weak self] _ in
                 self?.presentWritingView()
             }
             .disposed(by: disposeBag)
         
-//        mainView.titleViewButton.rx.tap
         output.tapTitleViewButton
             .bind { [weak self] _ in
                 self?.presentPickerView()
             }
             .disposed(by: disposeBag)
-        
-//        viewModel.yearList
-//            .map { $0.map{ "\($0)년" } }
+
         output.pickerViewTitle
             .bind(to: mainView.pickerView.rx.itemTitles) { (row, element) in
                 return element
             }
             .disposed(by: disposeBag)
         
-//        mainView.pickerView.rx.itemSelected
         output.pickerViewSelected
-            .bind(onNext: { [weak self] row, component in
-                guard let self = self else { return }
-                
-                self.viewModel.selectedDate.accept("\(self.viewModel.yearList.value[row])")
-            })
-            .disposed(by: disposeBag)
 
-        //MARK: 해결 오래걸림
-//        viewModel.tempAndCount
-//            .asDriver(onErrorJustReturn: [] )
         output.tempAndCount
             .drive(mainView.diaryCollectionView.rx.items(cellIdentifier: MainCollectionViewCell.identifier, cellType: MainCollectionViewCell.self)) { (row, element, cell) in
                 cell.dateLabel.text = element.0
@@ -130,13 +99,10 @@ final class MainViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
 
-//        mainView.diaryCollectionView.rx.itemSelected
         output.selectCollectionViewCell
             .bind(onNext: { [weak self] indexPath in
                 let monthMemoryVC = MonthMemoryViewController()
-
                 guard let monthDate = self?.viewModel.tempList.value[indexPath.item] else { return }
-                
                 monthMemoryVC.viewModel.monthDate = monthDate
                 
                 self?.transition(monthMemoryVC, transitionStyle: .push)

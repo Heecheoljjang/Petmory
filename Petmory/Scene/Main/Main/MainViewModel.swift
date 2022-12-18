@@ -13,6 +13,8 @@ import RxCocoa
 
 final class MainViewModel: CommonViewModel {
     
+    let disposeBag = DisposeBag()
+    
     struct Input {
         let tapWritingButton: ControlEvent<Void>
         let tapTitleViewButton: ControlEvent<Void>
@@ -23,26 +25,40 @@ final class MainViewModel: CommonViewModel {
     
     struct Output {
         let currentYear: Driver<String>
-        let tempList: Driver<[String]>
-        let tasks: Driver<[UserMemory]?>
+//        let tempList: Driver<[String]>
+        let tempList: Void
+//        let tasks: Driver<[UserMemory]?>
+        let tasks: Void
         let countList: Driver<[Int]>
         let tapWritingButton: ControlEvent<Void>
         let tapTitleViewButton: ControlEvent<Void>
         let pickerViewTitle: Observable<[String]>
-        let pickerViewSelected: ControlEvent<(row: Int, component: Int)>
+//        let pickerViewSelected: ControlEvent<(row: Int, component: Int)>
+        let pickerViewSelected: Void
         let tempAndCount: Driver<[(String, Int)]>
         let selectCollectionViewCell: ControlEvent<IndexPath>
     }
     
     func transform(input: Input) -> Output {
         let currentYear = currentYear.asDriver(onErrorJustReturn: "error")
-        let tempList = tempList.asDriver(onErrorJustReturn: [])
-        let tasks = tasks.asDriver(onErrorJustReturn: [])
+        let tempList: Void = tempList.asDriver(onErrorJustReturn: []).drive(onNext: { [weak self] _ in
+            self?.fetchAllMemory()
+        })
+        .disposed(by: disposeBag)
+        let tasks: Void = tasks.asDriver(onErrorJustReturn: []).drive(onNext: { [weak self] _ in
+            self?.setCountList()
+        })
+        .disposed(by: disposeBag)
         let countList = countList.asDriver(onErrorJustReturn: [])
         let pickerViewTitle = input.yearList.map { $0.map{ "\($0)년" } }
+        let pickerViewSelected: Void = input.pickerViewSelected.bind(onNext: { [unowned self] row, component in
+            
+            self.selectedDate.accept("\(self.yearList.value[row])")
+        })
+        .disposed(by: disposeBag)
         let tempAndCount = tempAndCount.asDriver(onErrorJustReturn: [])
         
-        return Output(currentYear: currentYear, tempList: tempList, tasks: tasks, countList: countList, tapWritingButton: input.tapWritingButton, tapTitleViewButton: input.tapTitleViewButton, pickerViewTitle: pickerViewTitle, pickerViewSelected: input.pickerViewSelected, tempAndCount: tempAndCount, selectCollectionViewCell: input.selectCollectionViewCell)
+        return Output(currentYear: currentYear, tempList: tempList, tasks: tasks, countList: countList, tapWritingButton: input.tapWritingButton, tapTitleViewButton: input.tapTitleViewButton, pickerViewTitle: pickerViewTitle, pickerViewSelected: pickerViewSelected, tempAndCount: tempAndCount, selectCollectionViewCell: input.selectCollectionViewCell)
     }
     
     let monthList = [Int](1...12).map { ". " + String(format: "%02d", $0) }
